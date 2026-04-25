@@ -5,760 +5,437 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Artificial Eyes la giai phap ho tro nguoi khiem thi ket hop AI, ung dung di dong va phan cung ESP32 de ho tro di chuyen, doc van ban va canh bao khan cap.">
-    <title>Artificial Eyes | Ho tro nguoi khiem thi bang AI</title>
+        content="Artificial Eyes là giải pháp hỗ trợ người khiếm thị bằng trí tuệ nhân tạo, ứng dụng di động và phần cứng nhúng.">
+    <title>Artificial Eyes - Hỗ trợ người khiếm thị</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: "#eff6ff",
-                            100: "#dbeafe",
-                            200: "#bfdbfe",
-                            300: "#93c5fd",
-                            400: "#60a5fa",
-                            500: "#3b82f6",
-                            600: "#2563eb",
-                            700: "#1d4ed8",
-                            800: "#1e40af",
-                            900: "#172554"
-                        }
-                    },
-                    fontFamily: {
-                        heading: ["Sora", "sans-serif"],
-                        body: ["Be Vietnam Pro", "sans-serif"]
-                    }
-                }
-            }
-        };
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        body {
-            font-family: "Be Vietnam Pro", sans-serif;
-            background: #f8fbff;
-            color: #0f172a;
+        .hero-gradient {
+            background: linear-gradient(135deg, #2563eb 60%, #38bdf8 100%);
         }
 
-        .hero-shell {
-            background:
-                radial-gradient(circle at top right, rgba(96, 165, 250, 0.24), transparent 28%),
-                radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.18), transparent 30%),
-                linear-gradient(135deg, #0f172a 0%, #1d4ed8 52%, #0ea5e9 100%);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.15), 0 10px 10px -5px rgba(37, 99, 235, 0.08);
         }
 
-        .grid-pattern {
-            background-image:
-                linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-            background-size: 32px 32px;
+        .mode-icon {
+            transition: all 0.3s ease;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(191, 219, 254, 0.28);
-            backdrop-filter: blur(14px);
+        .mode-card:hover .mode-icon {
+            transform: scale(1.1);
         }
 
-        .card-hover {
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 24px 50px -24px rgba(37, 99, 235, 0.35);
-            border-color: rgba(96, 165, 250, 0.45);
-        }
-
-        .section-fade {
-            background:
-                radial-gradient(circle at top left, rgba(219, 234, 254, 0.75), transparent 30%),
-                linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(239, 246, 255, 0.82));
-        }
-
-        .poster-frame {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .poster-frame::after {
-            content: "";
-            position: absolute;
-            inset: auto 18px 18px auto;
-            width: 112px;
-            height: 112px;
-            border-radius: 9999px;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.26), transparent 68%);
-        }
-
-        html {
-            scroll-behavior: smooth;
+        .hardware-img {
+            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
         }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900">
-    <header class="relative overflow-hidden hero-shell">
-        <div class="absolute inset-0 grid-pattern opacity-40"></div>
-
-        <nav class="relative z-20 border-b border-white/10 bg-slate-950/10 backdrop-blur-sm">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-                <a href="#top" class="flex items-center gap-3">
-                    <img src="assets/images/logo-primary.png" alt="Artificial Eyes logo" class="h-12 w-12 rounded-2xl bg-white/90 p-1 shadow-lg">
-                    <div class="text-white">
-                        <p class="font-heading text-lg font-bold">Artificial Eyes</p>
-                        <p class="text-xs uppercase tracking-[0.28em] text-blue-100">AI For Accessibility</p>
-                    </div>
-                </a>
-
-                <div class="hidden items-center gap-7 text-sm font-medium text-blue-50 md:flex">
-                    <a href="#overview" class="transition hover:text-white">Gioi thieu</a>
-                    <a href="#features" class="transition hover:text-white">Tinh nang</a>
-                    <a href="#system" class="transition hover:text-white">Nen tang</a>
-                    <a href="#impact" class="transition hover:text-white">Thu nghiem</a>
-                    <a href="#usage" class="transition hover:text-white">Su dung</a>
-                    <a href="#contact" class="transition hover:text-white">Lien he</a>
+<body class="bg-gray-50 font-sans">
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/images/logo-primary.png" width="45" alt="Logo Artificial Eyes">
+                    <span class="ml-3 text-xl font-bold text-gray-800">Artificial Eyes</span>
                 </div>
-
-                <button id="menu-toggle"
-                    class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white md:hidden"
-                    aria-label="Mo menu">
-                    <i class="fas fa-bars"></i>
+                <div class="hidden items-center space-x-8 md:flex">
+                    <a href="#about" class="text-gray-800 hover:text-blue-600">Giới thiệu</a>
+                    <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
+                    <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
+                    <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
+                    <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
+                </div>
+                <button class="md:hidden focus:outline-none" aria-label="Mở menu">
+                    <i class="fas fa-bars text-2xl text-gray-800"></i>
                 </button>
             </div>
+        </div>
+    </nav>
 
-            <div id="mobile-menu" class="mx-6 mb-4 hidden rounded-3xl border border-white/15 bg-slate-950/70 p-4 text-sm text-blue-50 backdrop-blur md:hidden lg:mx-8">
-                <div class="flex flex-col gap-4">
-                    <a href="#overview" data-nav-link>Gioi thieu</a>
-                    <a href="#features" data-nav-link>Tinh nang</a>
-                    <a href="#system" data-nav-link>Nen tang</a>
-                    <a href="#impact" data-nav-link>Thu nghiem</a>
-                    <a href="#usage" data-nav-link>Su dung</a>
-                    <a href="#contact" data-nav-link>Lien he</a>
-                </div>
-            </div>
-        </nav>
-
-        <section id="top" class="relative z-10">
-            <div class="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-16 lg:flex-row lg:items-center lg:px-8 lg:py-24">
-                <div class="max-w-2xl text-white">
-                    <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-blue-50">
-                        <i class="fas fa-wave-square text-cyan-300"></i>
-                        San pham ket hop AI, ung dung di dong va phan cung nhung
-                    </div>
-                    <h1 class="font-heading text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
-                        Artificial Eyes
-                    </h1>
-                    <p class="mt-5 max-w-2xl text-lg leading-8 text-blue-50 sm:text-xl">
-                        Giai phap ho tro nguoi khiem thi di chuyen an toan, doc van ban, nhan dien nguoi xung quanh
-                        va lien lac khan cap bang mot he thong nho gon deo truoc nguc.
-                    </p>
-
-                    <div class="mt-8 flex flex-wrap gap-4">
-                        <a href="#features"
-                            class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow-lg shadow-blue-900/20 transition hover:bg-blue-50">
-                            Kham pha 7 tinh nang
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </a>
-                        <a href="#usage"
-                            class="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-                            Xem cach su dung
-                        </a>
-                    </div>
-
-                    <div class="mt-10 grid gap-4 sm:grid-cols-3">
-                        <div class="glass-panel rounded-3xl p-4">
-                            <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Phan hoi</p>
-                            <p class="mt-2 text-2xl font-bold text-white">&lt; 1 giay</p>
-                            <p class="mt-1 text-sm text-blue-100">Toc do canh bao vat can gan nhu tuc thi.</p>
-                        </div>
-                        <div class="glass-panel rounded-3xl p-4">
-                            <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Do chinh xac</p>
-                            <p class="mt-2 text-2xl font-bold text-white">&gt; 95%</p>
-                            <p class="mt-1 text-sm text-blue-100">Canh bao chuong ngai vat trong dieu kien binh thuong.</p>
-                        </div>
-                        <div class="glass-panel rounded-3xl p-4">
-                            <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Nguyen mau</p>
-                            <p class="mt-2 text-2xl font-bold text-white">3 the he</p>
-                            <p class="mt-1 text-sm text-blue-100">Tu mo hinh carton den vo 3D hoan thien hon.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w-full max-w-xl lg:ml-auto">
-                    <div class="relative">
-                        <div class="absolute inset-0 -translate-x-4 translate-y-4 rounded-[2rem] bg-cyan-300/20 blur-3xl"></div>
-                        <img src="assets/images/hero-device.jpg" alt="Nguyen mau thiet bi Artificial Eyes"
-                            class="relative z-10 w-full rounded-[2rem] border border-white/10 object-cover shadow-2xl shadow-slate-950/30"
-                            loading="eager">
-                        <div class="glass-panel absolute bottom-5 left-5 right-5 z-20 rounded-3xl p-4 text-white shadow-xl">
-                            <div class="flex items-center justify-between gap-3">
-                                <div>
-                                    <p class="text-xs uppercase tracking-[0.24em] text-blue-100">Nguyen mau deo truoc nguc</p>
-                                    <p class="mt-1 text-lg font-semibold">ESP32 + 4 cam bien HC-SR04 + dien thoai thong minh</p>
-                                </div>
-                                <span class="rounded-full bg-cyan-300/15 px-3 py-1 text-xs font-semibold text-cyan-100">
-                                    Voice-first
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mx-auto grid max-w-7xl gap-4 px-6 pb-16 lg:grid-cols-3 lg:px-8">
-                <article class="rounded-3xl border border-white/12 bg-white/10 p-6 text-white backdrop-blur">
-                    <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Nhom tac gia</p>
-                    <h2 class="mt-3 font-heading text-2xl font-bold">Vu Dang Khoa - Quach Tan Hung</h2>
-                    <p class="mt-2 text-sm leading-7 text-blue-50">
-                        Phat trien y tuong, app di dong, website, mo hinh phan cung va quy trinh thu nghiem thuc te.
-                    </p>
-                </article>
-
-                <article class="rounded-3xl border border-white/12 bg-white/10 p-6 text-white backdrop-blur">
-                    <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Giao vien huong dan</p>
-                    <h2 class="mt-3 font-heading text-2xl font-bold">ThS. Dinh Thi Van Ha</h2>
-                    <p class="mt-2 text-sm leading-7 text-blue-50">
-                        Dong hanh xay dung huong nghien cuu, hoan thien thuyet minh va danh gia tinh ung dung.
-                    </p>
-                </article>
-
-                <article class="rounded-3xl border border-white/12 bg-white/10 p-6 text-white backdrop-blur">
-                    <p class="text-xs uppercase tracking-[0.28em] text-blue-100">Thoi gian phat trien</p>
-                    <h2 class="mt-3 font-heading text-2xl font-bold">2,5 thang</h2>
-                    <p class="mt-2 text-sm leading-7 text-blue-50">
-                        Tu 01/08/2025 den 15/10/2025, lien tuc cai tien tu nguyen mau dau tien den vo 3D hien tai.
-                    </p>
-                </article>
-            </div>
-        </section>
-    </header>
-
-    <main>
-        <section id="overview" class="section-fade py-20">
-            <div class="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8">
-                <div>
-                    <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700">
-                        <i class="fas fa-eye"></i>
-                        Gioi thieu san pham
-                    </div>
-                    <h2 class="font-heading text-3xl font-bold text-slate-900 sm:text-4xl">
-                        Giai phap ho tro toan dien cho nguoi khiem thi trong boi canh su dung thuc te tai Viet Nam
-                    </h2>
-                    <p class="mt-6 text-base leading-8 text-slate-600">
-                        Artificial Eyes duoc xay dung voi muc tieu ket hop nhieu tinh nang von thuong tach roi tren thi
-                        truong vao cung mot he thong. San pham gom ung dung di dong, phan cung ESP32 va co che dieu khien
-                        bang giong noi de giam thao tac tay cho nguoi dung.
-                    </p>
-                    <p class="mt-4 text-base leading-8 text-slate-600">
-                        Thiet bi huong den ba bai toan chinh: phat hien vat can som de tranh va cham, giup doc van ban
-                        bang OCR ket hop Text-to-Speech va giu ket noi khan cap voi nguoi than khi xay ra su co te nga.
-                    </p>
-                    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                        <div class="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
-                            <div class="flex items-start gap-4">
-                                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-                                    <i class="fas fa-microphone-lines"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-slate-900">Uu tien khau lenh</h3>
-                                    <p class="mt-2 text-sm leading-7 text-slate-600">
-                                        Giao dien va luong su dung duoc thiet ke de nguoi dung co the kich hoat chuc nang bang giong noi.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
-                            <div class="flex items-start gap-4">
-                                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-                                    <i class="fas fa-mobile-screen-button"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-slate-900">De tiep can</h3>
-                                    <p class="mt-2 text-sm leading-7 text-slate-600">
-                                        Tan dung dien thoai thong minh va linh kien pho bien de huong toi chi phi hop ly hon.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm sm:col-span-2">
-                            <div class="flex items-start gap-4">
-                                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-                                    <i class="fas fa-layer-group"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-slate-900">Hoan thien qua nhieu vong thu nghiem</h3>
-                                    <p class="mt-2 text-sm leading-7 text-slate-600">
-                                        Nhom da cai tien lien tuc tu hop carton ban dau sang vo 3D nhe hon, on dinh hon va phu hop cho viec deo truoc nguc.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-5">
-                    <img src="assets/images/about-user.jpg" alt="Nguoi dung trai nghiem tinh nang Artificial Eyes"
-                        class="w-full rounded-[2rem] border border-blue-100 object-cover shadow-xl shadow-blue-100/70" loading="lazy">
-                    <div class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-lg shadow-blue-100/60">
-                        <p class="text-xs uppercase tracking-[0.28em] text-brand-500">Muc tieu cot loi</p>
-                        <div class="mt-4 space-y-4">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-circle-check mt-1 text-brand-600"></i>
-                                <p class="text-sm leading-7 text-slate-600">Ho tro di chuyen an toan va nhan biet chuong ngai vat som hon.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-circle-check mt-1 text-brand-600"></i>
-                                <p class="text-sm leading-7 text-slate-600">Doc van ban in va cung cap noi dung bang giong noi ngay tren dien thoai.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-circle-check mt-1 text-brand-600"></i>
-                                <p class="text-sm leading-7 text-slate-600">Lien lac nhanh voi nguoi than khi nguoi dung te nga hoac gap tinh huong bat thuong.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-circle-check mt-1 text-brand-600"></i>
-                                <p class="text-sm leading-7 text-slate-600">Phu hop boi canh su dung va kha nang tiep can tai Viet Nam.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="features" class="py-20">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="max-w-3xl">
-                    <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700">
-                        <i class="fas fa-sparkles"></i>
-                        Tinh nang cot loi
-                    </div>
-                    <h2 class="font-heading text-3xl font-bold text-slate-900 sm:text-4xl">
-                        7 tinh nang duoc tich hop trong cung mot he thong
-                    </h2>
-                    <p class="mt-5 text-base leading-8 text-slate-600">
-                        Thay vi tach rieng nhieu thiet bi ho tro, Artificial Eyes tap trung cac nhu cau thiet yeu cua nguoi khiem thi vao mot quy trinh su dung thong nhat, uu tien giong noi va phan hoi bang am thanh.
-                    </p>
-                </div>
-
-                <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-person-walking"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Canh bao chuong ngai vat</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Camera va AI phat hien vat can hoac nguoi xuat hien tren huong di, giup nguoi dung chu dong tranh va cham.
-                        </p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-ruler-combined"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Do khoang cach bang sieu am</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Cam bien HC-SR04 do khoang cach vat can trong tam 20 - 150 cm va gui canh bao khi xuong duoi nguong an toan.
-                        </p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-book-open-reader"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Doc van ban bang OCR offline</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Dien thoai chup anh van ban, nhan dang noi dung bang OCR va doc lai bang giong noi de nguoi dung tiep can thong tin nhanh hon.
-                        </p>
-                    </article>
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-user-group"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Nhan dien nguoi o gan</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            He thong co the nhan dien nguoi than hoac nguoi xung quanh de ho tro di chuyen va tang cam giac an tam khi su dung.
-                        </p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Tro chuyen cung AI</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Nguoi dung dat cau hoi bang giong noi, he thong xu ly noi dung va phat lai cau tra loi de ho tro hoi dap nhanh.
-                        </p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Thong tin thoi gian - thoi tiet</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Ung dung cung cap thong tin thoi gian hien tai, cap nhat thoi tiet va goi y khi di ra ngoai.
-                        </p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm md:col-span-2 xl:col-span-1">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl text-brand-700">
-                            <i class="fas fa-triangle-exclamation"></i>
-                        </div>
-                        <h3 class="mt-5 text-xl font-semibold text-slate-900">Canh bao te nga khan cap</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">
-                            Khi phat hien te nga keo dai, he thong co the phat canh bao va tu dong goi dien hoac gui dinh vi cho nguoi than.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="system" class="section-fade py-20">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="grid gap-12 xl:grid-cols-[0.95fr_1.05fr]">
-                    <div>
-                        <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700">
-                            <i class="fas fa-microchip"></i>
-                            Nen tang phat trien
-                        </div>
-                        <h2 class="font-heading text-3xl font-bold text-slate-900 sm:text-4xl">
-                            Ket hop phan mem di dong va bo phan cung nhung trong mot he thong thong nhat
-                        </h2>
-
-                        <div class="mt-8 space-y-5">
-                            <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-                                        <i class="fas fa-mobile-screen-button"></i>
-                                    </div>
-                                    <h3 class="text-xl font-semibold text-slate-900">Phan mem di dong</h3>
-                                </div>
-                                <p class="mt-4 text-sm leading-7 text-slate-600">
-                                    Ung dung duoc phat trien tren MIT App Inventor, dam nhan viec ket noi Bluetooth/Wi-Fi, xu ly OCR, Text-to-Speech, chatbot AI, thoi gian - thoi tiet va giao tiep khan cap.
-                                </p>
-                            </article>
-
-                            <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-                                        <i class="fas fa-microchip"></i>
-                                    </div>
-                                    <h3 class="text-xl font-semibold text-slate-900">Phan cung nhung</h3>
-                                </div>
-                                <p class="mt-4 text-sm leading-7 text-slate-600">
-                                    ESP32 dong vai tro dieu khien trung tam, nhan du lieu tu 4 cam bien HC-SR04, phoi hop voi servo, pin 18650 va cac tin hieu am thanh hoac rung de dua ra canh bao.
-                                </p>
-                            </article>
-                        </div>
-                        <div class="mt-8 rounded-[2rem] border border-blue-100 bg-slate-950 p-6 text-white shadow-2xl shadow-slate-900/10">
-                            <p class="text-xs uppercase tracking-[0.28em] text-blue-200">Thanh phan chinh</p>
-                            <div class="mt-5 grid gap-4 sm:grid-cols-2">
-                                <div class="rounded-3xl bg-white/5 p-4">
-                                    <p class="font-semibold">Dieu khien & ket noi</p>
-                                    <p class="mt-2 text-sm leading-7 text-slate-300">ESP32, Bluetooth, Wi-Fi, dien thoai thong minh co camera, GPS, loa va micro.</p>
-                                </div>
-                                <div class="rounded-3xl bg-white/5 p-4">
-                                    <p class="font-semibold">Cam bien & nguon</p>
-                                    <p class="mt-2 text-sm leading-7 text-slate-300">4 HC-SR04, dong co servo, pin 18650, day ket noi va vo deo truoc nguc.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
-                        <figure class="poster-frame overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-3 shadow-xl shadow-blue-100/70">
-                            <img src="assets/images/project-poster.png" alt="Poster du an Artificial Eyes"
-                                class="h-full w-full rounded-[1.5rem] object-cover" loading="lazy">
-                        </figure>
-
-                        <div class="space-y-6">
-                            <figure class="overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-3 shadow-xl shadow-blue-100/70">
-                                <img src="assets/images/hardware-shell.jpg" alt="Vo 3D va bo cam bien cua Artificial Eyes"
-                                    class="h-full w-full rounded-[1.5rem] object-cover" loading="lazy">
-                            </figure>
-
-                            <div class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                                <p class="text-xs uppercase tracking-[0.28em] text-brand-500">Y nghia thiet ke</p>
-                                <p class="mt-4 text-sm leading-7 text-slate-600">
-                                    Vo 3D giup bo tri cam bien gon hon, de deo hon va cai thien do on dinh khi su dung thuc te. Day la buoc chuyen tu mo hinh thu nghiem sang mot nguyen mau sat hon voi nhu cau trien khai.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="impact" class="py-20">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="max-w-3xl">
-                    <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700">
-                        <i class="fas fa-chart-line"></i>
-                        Ket qua thu nghiem
-                    </div>
-                    <h2 class="font-heading text-3xl font-bold text-slate-900 sm:text-4xl">
-                        So lieu thu nghiem va tiem nang ung dung cho thay gia tri thuc te cua san pham
-                    </h2>
-                </div>
-
-                <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-500">Vat can</p>
-                        <p class="mt-3 text-4xl font-bold text-slate-900">&gt; 95%</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">Do chinh xac canh bao vat can trong dieu kien thong thuong.</p>
-                    </article>
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-500">Te nga</p>
-                        <p class="mt-3 text-4xl font-bold text-slate-900">&gt; 90%</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">Ti le phat hien canh bao te nga trong cac bai thu nghiem noi bo.</p>
-                    </article>
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-500">OCR</p>
-                        <p class="mt-3 text-4xl font-bold text-slate-900">70 - 85%</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">Do nhan dang van ban offline tren anh ro, phu thuoc vao anh sang va do net.</p>
-                    </article>
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-500">Doc sach</p>
-                        <p class="mt-3 text-4xl font-bold text-slate-900">4/5</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">Hoc sinh khiem thi trong thu nghiem thuc te kich hoat thanh cong che do doc sach.</p>
-                    </article>
-                </div>
-                <div class="mt-10 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-7 shadow-sm">
-                        <h3 class="text-2xl font-semibold text-slate-900">Tiem nang ung dung</h3>
-                        <p class="mt-4 text-sm leading-8 text-slate-600">
-                            Artificial Eyes co the duoc su dung trong sinh hoat hang ngay, tai gia dinh, truong hoc chuyen biet va cac trung tam ho tro nguoi mu. Thu nghiem thuc te tai Truong THPT chuyen biet Nguyen Dinh Chieu cho thay nhu cau su dung la ro rang va thiet bi co kha nang tao khac biet trong tiep can thong tin.
-                        </p>
-                        <div class="mt-6 grid gap-4 sm:grid-cols-3">
-                            <div class="rounded-3xl bg-brand-50 p-4">
-                                <p class="text-2xl font-bold text-brand-700">92%</p>
-                                <p class="mt-2 text-sm leading-7 text-slate-600">Nguoi duoc hoi muon co cong cu ho tro doc van ban.</p>
-                            </div>
-                            <div class="rounded-3xl bg-brand-50 p-4">
-                                <p class="text-2xl font-bold text-brand-700">85%</p>
-                                <p class="mt-2 text-sm leading-7 text-slate-600">Danh gia canh bao chuong ngai vat la rat can thiet.</p>
-                            </div>
-                            <div class="rounded-3xl bg-brand-50 p-4">
-                                <p class="text-2xl font-bold text-brand-700">70%</p>
-                                <p class="mt-2 text-sm leading-7 text-slate-600">Danh gia cao tinh nang chatbot ho tro hoi dap nhanh.</p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="rounded-[2rem] border border-blue-100 bg-slate-950 p-7 text-white shadow-2xl shadow-slate-900/10">
-                        <h3 class="text-2xl font-semibold">Ha tang can de trien khai</h3>
-                        <div class="mt-6 space-y-4 text-sm leading-7 text-slate-300">
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check mt-1 text-cyan-300"></i>
-                                <p>01 dien thoai thong minh co camera, GPS, loa, micro va ket noi Bluetooth/Wi-Fi.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check mt-1 text-cyan-300"></i>
-                                <p>01 bo phan cung gom ESP32, 4 cam bien HC-SR04, dong co servo, pin 18650 va vo deo truoc nguc.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check mt-1 text-cyan-300"></i>
-                                <p>Nguon sac, khu vuc thu nghiem co vat can mau va ket noi internet cho tinh nang thoi tiet hoac chatbot.</p>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <i class="fas fa-check mt-1 text-cyan-300"></i>
-                                <p>Khi thu nghiem voi nguoi khiem thi can co nguoi ho tro di kem de dam bao an toan.</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="usage" class="section-fade py-20">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="max-w-3xl">
-                    <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700">
-                        <i class="fas fa-list-check"></i>
-                        Huong dan su dung
-                    </div>
-                    <h2 class="font-heading text-3xl font-bold text-slate-900 sm:text-4xl">
-                        Quy trinh su dung co ban de kich hoat Artificial Eyes
-                    </h2>
-                    <p class="mt-5 text-base leading-8 text-slate-600">
-                        Luong su dung duoc xay dung de don gian hoa thao tac cho nguoi dung, trong do nguoi than co the ho tro cai dat ban dau va he thong uu tien giong noi o cac buoc tiep theo.
-                    </p>
-                </div>
-
-                <div class="mt-12 grid gap-5 lg:grid-cols-2">
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">1</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Thiet lap lien he khan cap</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Nguoi than hoac nguoi ho tro nhap so dien thoai can lien he khi xay ra su co te nga.</p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">2</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Deo thiet bi va mo nguon</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Gan dien thoai va bo thiet bi truoc nguc, sau do kiem tra trang thai ket noi voi ESP32.</p>
-                    </article>
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">3</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Su dung nut Bam de noi hoac khau lenh</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">He thong uu tien kich hoat bang giong noi de nguoi dung chuyen giua cac che do nhanh va de hon.</p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">4</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Kich hoat che do di chuyen</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Noi "di" hoac "di bo" de he thong canh bao vat can, nguoi o gan va khoang cach nguy hiem.</p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">5</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Kich hoat che do doc van ban</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Noi "doc" hoac "doc sach", giu camera on dinh de OCR chup anh va doc lai noi dung bang giong noi.</p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">6</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Theo doi canh bao te nga</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Neu phat hien te nga keo dai, he thong phat canh bao va chu dong lien lac theo so da cai dat.</p>
-                    </article>
-
-                    <article class="card-hover rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm lg:col-span-2">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold text-white">7</span>
-                        <h3 class="mt-4 text-xl font-semibold text-slate-900">Bao duong dinh ky</h3>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Sac pin, kiem tra ket noi va ve sinh camera hoac cam bien truoc khi su dung de duy tri do chinh xac va do ben.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20">
-            <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="grid gap-6 xl:grid-cols-2">
-                    <article class="rounded-[2rem] border border-blue-100 bg-white p-8 shadow-sm">
-                        <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-700">
-                            <i class="fas fa-screwdriver-wrench"></i>
-                            Van de can tiep tuc khac phuc
-                        </div>
-                        <div class="space-y-4 text-sm leading-7 text-slate-600">
-                            <p>Do chinh xac OCR va nhan dien nguoi van bi anh huong boi dieu kien anh sang, do net cua anh va chat luong camera.</p>
-                            <p>Toc do xu ly co the giam tren dien thoai cau hinh thap hoac khi ket noi mang khong on dinh.</p>
-                            <p>He thong chua co co che tu dieu chinh do nhay, chua lap duoc ban do moi truong 3D de nhan biet tot hon bac thang, o ga hay vat can tren cao.</p>
-                            <p>Quy mo thu nghiem con nho va san pham moi o muc nguyen mau, can tiep tuc cai thien do ben va kha nang chong nuoc nhe.</p>
-                        </div>
-                    </article>
-
-                    <article class="rounded-[2rem] border border-blue-100 bg-slate-950 p-8 text-white shadow-2xl shadow-slate-900/10">
-                        <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-cyan-100">
-                            <i class="fas fa-rocket"></i>
-                            Huong phat trien trong tuong lai
-                        </div>
-                        <div class="space-y-4 text-sm leading-7 text-slate-300">
-                            <p>Hoan thien ung dung de co the dua len Google Play hoac App Store.</p>
-                            <p>Nang cao do chinh xac cua OCR, mo rong da ngon ngu va cai thien kha nang nhan dien trong dieu kien anh sang phuc tap.</p>
-                            <p>Bo sung LiDAR 2D hoac camera do chieu sau de phat hien bac thang, o ga va vat can tren cao tot hon.</p>
-                            <p>Mo rong thu nghiem tren quy mo lon hon va them tinh nang dan duong GPS, doc tai lieu dai va dich ngon ngu.</p>
-                        </div>
-                        <div class="mt-6 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                            <p class="text-sm leading-7 text-slate-200">
-                                Nhom tac gia ky vong Artificial Eyes se tro thanh mot giai phap co the ung dung rong rai tai truong chuyen biet, trung tam ho tro nguoi mu va trong moi truong gia dinh de giup nguoi khiem thi song chu dong hon.
-                            </p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <section id="contact" class="bg-slate-950 py-20 text-white">
-        <div class="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-            <div>
-                <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-cyan-100">
-                    <i class="fas fa-address-card"></i>
-                    Lien he du an
-                </div>
-                <h2 class="font-heading text-3xl font-bold sm:text-4xl">
-                    Artificial Eyes duoc xay dung de mo rong kha nang tu chu cho nguoi khiem thi
-                </h2>
-                <p class="mt-5 max-w-2xl text-base leading-8 text-slate-300">
-                    Neu ban muon tim hieu them ve nguyen mau, qua trinh nghien cuu hay kha nang trien khai trong giao duc va ho tro cong dong, co the lien he truc tiep voi nhom tac gia.
+    <section class="hero-gradient py-20 text-white">
+        <div class="container mx-auto flex flex-col items-center px-6 md:flex-row">
+            <div class="mb-10 md:mb-0 md:w-1/2">
+                <h1 class="mb-6 text-4xl font-bold leading-tight md:text-6xl">Artificial Eyes</h1>
+                <h2 class="mb-6 text-2xl font-semibold md:text-3xl">Giải pháp hỗ trợ người khiếm thị bằng AI</h2>
+                <p class="mb-8 text-lg">
+                    Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng giúp người khiếm thị di chuyển
+                    an toàn, đọc văn bản, nhận diện người xung quanh và liên lạc khẩn cấp thuận tiện hơn.
                 </p>
-
-                <div class="mt-8 grid gap-4 md:grid-cols-2">
-                    <article class="rounded-[2rem] border border-white/10 bg-white/5 p-6">
-                        <p class="text-xs uppercase tracking-[0.28em] text-blue-200">Tac gia</p>
-                        <p class="mt-3 text-lg font-semibold">Vu Dang Khoa - Quach Tan Hung</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-300">Nghien cuu, phat trien app, thiet ke he thong va website gioi thieu san pham.</p>
-                    </article>
-
-                    <article class="rounded-[2rem] border border-white/10 bg-white/5 p-6">
-                        <p class="text-xs uppercase tracking-[0.28em] text-blue-200">Huong dan</p>
-                        <p class="mt-3 text-lg font-semibold">ThS. Dinh Thi Van Ha</p>
-                        <p class="mt-2 text-sm leading-7 text-slate-300">Dong hanh xay dung de tai va hoan thien ung dung thuc tien cua san pham.</p>
-                    </article>
+                <div class="flex space-x-4">
+                    <a href="#features"
+                        class="rounded-full bg-white px-6 py-3 font-semibold text-blue-600 transition duration-300 hover:bg-gray-100">
+                        Khám phá tính năng
+                    </a>
+                    <a href="#contact"
+                        class="rounded-full border-2 border-white px-6 py-3 font-semibold text-white transition duration-300 hover:bg-white hover:text-blue-600">
+                        Tìm hiểu thêm
+                    </a>
                 </div>
             </div>
-
-            <div class="space-y-6">
-                <article class="rounded-[2rem] border border-white/10 bg-gradient-to-br from-brand-700 to-sky-500 p-7 text-white shadow-2xl shadow-blue-950/20">
-                    <img src="assets/images/logo-transparent.png" alt="Artificial Eyes logo"
-                        class="h-16 w-auto" loading="lazy">
-                    <div class="mt-6 space-y-4 text-sm leading-7">
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-envelope mt-1"></i>
-                            <a href="mailto:Quachtanhung12@gmail.com" class="transition hover:text-blue-100">Quachtanhung12@gmail.com</a>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-phone mt-1"></i>
-                            <a href="tel:+840896486912" class="transition hover:text-blue-100">(+84) 0896486912</a>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-location-dot mt-1"></i>
-                            <p>139 Nguyen Du Street, Ben Thanh Ward, District 1, Ho Chi Minh City</p>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="rounded-[2rem] border border-white/10 bg-white/5 p-7">
-                    <p class="text-xs uppercase tracking-[0.28em] text-blue-200">Gia tri noi bat</p>
-                    <div class="mt-5 space-y-3 text-sm leading-7 text-slate-300">
-                        <p>Tich hop nhieu tinh nang trong mot thiet bi nho gon, deo duoc va co dinh huong chi phi hop ly.</p>
-                        <p>Tiep can thong tin, di chuyen va lien lac khan cap tren cung mot he thong su dung bang giong noi.</p>
-                        <p>Co the tiep tuc mo rong thanh mot giai phap ho tro rong hon trong giao duc va doi song.</p>
-                    </div>
-                </article>
+            <div class="flex justify-center md:w-1/2">
+                <img src="assets/images/hero-device.jpg" alt="Thiết bị Artificial Eyes"
+                    class="w-full max-w-md rounded-lg shadow-2xl">
             </div>
         </div>
     </section>
 
-    <footer class="border-t border-white/5 bg-slate-950 py-8 text-center text-sm text-slate-500">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <p>&copy; 2026 Artificial Eyes. Website cap nhat theo thuyet minh san pham va duoc dong goi de dua len repo moi.</p>
+    <section id="about" class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Giới thiệu dự án</h2>
+                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+            </div>
+            <div class="flex flex-col items-center md:flex-row">
+                <div class="mb-10 md:mb-0 md:w-1/2">
+                    <img src="assets/images/about-user.jpg" alt="Người dùng trải nghiệm Artificial Eyes"
+                        class="w-full rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h3 class="mb-6 text-2xl font-bold text-gray-800">Trao thêm sự chủ động cho người khiếm thị</h3>
+                    <p class="mb-6 text-gray-600">
+                        Artificial Eyes được xây dựng với mục tiêu tạo ra một giải pháp hỗ trợ toàn diện cho người
+                        khiếm thị trong đời sống hằng ngày. Thay vì chỉ giải quyết một nhu cầu riêng lẻ, hệ thống tích
+                        hợp nhiều chức năng quan trọng vào cùng một nền tảng duy nhất.
+                    </p>
+                    <p class="mb-6 text-gray-600">
+                        Sản phẩm kết hợp phần mềm trên điện thoại, xử lý AI, điều khiển bằng giọng nói và phần cứng
+                        đeo trước ngực để hỗ trợ di chuyển, đọc văn bản, nhận diện người ở gần, cập nhật thời gian,
+                        thời tiết và gửi cảnh báo khẩn cấp khi cần.
+                    </p>
+                    <div class="flex items-center">
+                        <i class="fas fa-lightbulb mr-4 text-3xl text-yellow-500"></i>
+                        <p class="font-semibold text-gray-600">
+                            Định hướng chi phí hợp lý, dễ tiếp cận và phù hợp điều kiện sử dụng thực tế tại Việt Nam
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="bg-gray-50 py-20">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Tính năng nổi bật</h2>
+                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+            </div>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+                        <i class="fas fa-brain text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">Hỗ trợ bằng AI</h3>
+                    <p class="text-gray-600">
+                        Ứng dụng AI để nhận diện vật cản, xử lý văn bản, trả lời câu hỏi bằng giọng nói và hỗ trợ người
+                        dùng trong nhiều tình huống khác nhau.
+                    </p>
+                </div>
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+                        <i class="fas fa-robot text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">7 chế độ tích hợp</h3>
+                    <p class="text-gray-600">
+                        Bao gồm hỗ trợ di chuyển, đọc văn bản, trò chuyện với AI, báo giờ, cập nhật thời tiết,
+                        nhận diện người ở gần và cảnh báo khẩn cấp.
+                    </p>
+                </div>
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-sky-100">
+                        <i class="fas fa-print text-3xl text-sky-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">Vỏ phần cứng in 3D</h3>
+                    <p class="text-gray-600">
+                        Thiết kế gọn nhẹ, dễ đeo trước ngực, tối ưu cho việc bố trí cảm biến và phù hợp với quá trình
+                        phát triển nguyên mẫu thực tế.
+                    </p>
+                </div>
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-100">
+                        <i class="fas fa-microphone-alt text-3xl text-cyan-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">Điều khiển bằng giọng nói</h3>
+                    <p class="text-gray-600">
+                        Giao diện và quy trình sử dụng ưu tiên khẩu lệnh để giúp người dùng thao tác thuận tiện và giảm
+                        phụ thuộc vào thao tác tay.
+                    </p>
+                </div>
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
+                        <i class="fas fa-mobile-alt text-3xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">Tận dụng điện thoại thông minh</h3>
+                    <p class="text-gray-600">
+                        Sử dụng camera, loa, micro, GPS và kết nối không dây trên điện thoại để giảm chi phí và mở rộng
+                        khả năng triển khai thực tế.
+                    </p>
+                </div>
+                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
+                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
+                        <i class="fas fa-shield-heart text-3xl text-amber-600"></i>
+                    </div>
+                    <h3 class="mb-3 text-xl font-bold text-gray-800">Cảnh báo an toàn</h3>
+                    <p class="text-gray-600">
+                        Khi phát hiện té ngã kéo dài, hệ thống có thể phát cảnh báo và liên hệ người thân theo số điện
+                        thoại đã được cài đặt trước.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="modes" class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Bảy chế độ hỗ trợ chính</h2>
+                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+            </div>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                            <i class="fas fa-walking mode-icon text-xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Hỗ trợ di chuyển</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Camera và AI giúp phát hiện người hoặc vật cản, kết hợp cảm biến siêu âm để thông báo khoảng
+                        cách, giúp người dùng di chuyển an toàn hơn.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                            <i class="fas fa-book-reader mode-icon text-xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Chế độ đọc văn bản</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Ứng dụng chụp ảnh văn bản, dùng OCR để nhận diện nội dung rồi đọc lại bằng giọng nói cho người dùng.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-sky-100">
+                            <i class="fas fa-comments mode-icon text-xl text-sky-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Trợ lý trò chuyện AI</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Lắng nghe câu hỏi của người dùng, gửi nội dung để xử lý và đọc lại câu trả lời bằng giọng nói.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                            <i class="fas fa-clock mode-icon text-xl text-red-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Báo giờ</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Cung cấp thời gian hiện tại và nhắc các mốc thông tin cần thiết cho người sử dụng.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100">
+                            <i class="fas fa-cloud-sun mode-icon text-xl text-cyan-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Cập nhật thời tiết</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Thông báo thời tiết hiện tại và gợi ý cơ bản trước khi người dùng ra ngoài.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+                            <i class="fas fa-user-shield mode-icon text-xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Nhận diện người ở gần</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Hệ thống hỗ trợ nhận diện người thân hoặc người xung quanh để tăng cảm giác an tâm cho người dùng.
+                    </p>
+                </div>
+
+                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
+                    <div class="mb-4 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-pink-100">
+                            <i class="fas fa-triangle-exclamation mode-icon text-xl text-pink-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Cảnh báo khẩn cấp</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Khi phát hiện té ngã hoặc tình huống bất thường, hệ thống có thể kích hoạt cảnh báo để liên hệ người thân.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hardware" class="bg-gray-50 py-20">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Phần cứng in 3D</h2>
+                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+            </div>
+            <div class="flex flex-col items-center md:flex-row">
+                <div class="mb-10 md:mb-0 md:w-1/2">
+                    <img src="assets/images/hardware-shell.jpg" alt="Phần cứng Artificial Eyes"
+                        class="hardware-img mx-auto w-full max-w-md rounded-lg">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h3 class="mb-6 text-2xl font-bold text-gray-800">Thiết kế tối ưu cho việc đeo và cảnh báo khoảng cách</h3>
+                    <p class="mb-6 text-gray-600">
+                        Vỏ phần cứng được phát triển qua nhiều lần thử nghiệm để bố trí cảm biến hợp lý hơn, tăng độ ổn
+                        định khi sử dụng và giúp hệ thống gọn nhẹ hơn khi đeo trước ngực.
+                    </p>
+                    <ul class="mb-6 space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
+                            <span class="text-gray-600">Bố trí chính xác cho cảm biến siêu âm HC-SR04</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
+                            <span class="text-gray-600">Thiết kế dễ đeo, phù hợp thử nghiệm thực tế</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
+                            <span class="text-gray-600">Hỗ trợ quá trình nâng cấp từ mô hình carton sang nguyên mẫu 3D</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="bg-blue-700 py-20 text-white">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold md:text-4xl">Liên hệ dự án</h2>
+                <div class="mx-auto h-1 w-20 bg-white"></div>
+            </div>
+            <div class="mx-auto max-w-4xl">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+                    <div>
+                        <h3 class="mb-6 text-2xl font-bold">Thông tin liên hệ</h3>
+                        <p class="mb-6">
+                            Nếu bạn muốn tìm hiểu thêm về sản phẩm, quá trình nghiên cứu hoặc khả năng ứng dụng thực tế,
+                            hãy liên hệ với nhóm phát triển.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope mr-4 mt-1"></i>
+                                <span>Quachtanhung12@gmail.com</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-phone-alt mr-4 mt-1"></i>
+                                <span>(84) 0896486912</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt mr-4 mt-1"></i>
+                                <span>139 Nguyễn Du, phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <form class="space-y-4">
+                            <div>
+                                <label for="name" class="mb-1 block">Họ và tên</label>
+                                <input type="text" id="name"
+                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
+                                    placeholder="Nhập họ và tên">
+                            </div>
+                            <div>
+                                <label for="email" class="mb-1 block">Email</label>
+                                <input type="email" id="email"
+                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
+                                    placeholder="Nhập email">
+                            </div>
+                            <div>
+                                <label for="message" class="mb-1 block">Nội dung</label>
+                                <textarea id="message" rows="4"
+                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
+                                    placeholder="Nhập nội dung"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="rounded-full bg-white px-6 py-3 font-semibold text-blue-600 transition duration-300 hover:bg-gray-100">
+                                Gửi tin nhắn
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-blue-950 py-12 text-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+                <div>
+                    <div class="mb-4 flex items-center">
+                        <img src="assets/images/logo-transparent.png" width="45" alt="Logo chân trang">
+                        <span class="ml-3 text-xl font-bold">Artificial Eyes</span>
+                    </div>
+                    <p class="text-gray-300">Ứng dụng công nghệ để hỗ trợ người khiếm thị sống chủ động hơn mỗi ngày.</p>
+                </div>
+                <div>
+                    <h4 class="mb-4 text-lg font-semibold">Liên kết nhanh</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-300 hover:text-white">Giới thiệu</a></li>
+                        <li><a href="#features" class="text-gray-300 hover:text-white">Tính năng</a></li>
+                        <li><a href="#modes" class="text-gray-300 hover:text-white">Chế độ</a></li>
+                        <li><a href="#hardware" class="text-gray-300 hover:text-white">Phần cứng</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4 text-lg font-semibold">Tài nguyên</h4>
+                    <ul class="space-y-2">
+                        <li><a href="docs/artificial-eyes-description.docx" class="text-gray-300 hover:text-white">Thuyết minh sản phẩm</a></li>
+                        <li><a href="#features" class="text-gray-300 hover:text-white">Mô tả tính năng</a></li>
+                        <li><a href="#hardware" class="text-gray-300 hover:text-white">Thiết kế phần cứng</a></li>
+                        <li><a href="https://github.com/Hungvip69/artificial-eyes" class="text-gray-300 hover:text-white">Kho GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4 text-lg font-semibold">Thông tin dự án</h4>
+                    <p class="mb-4 text-gray-300">
+                        Nhóm tác giả: Vũ Đăng Khoa - Quách Tấn Hưng<br>
+                        Giáo viên hướng dẫn: ThS. Đinh Thị Vân Hà
+                    </p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email của bạn"
+                            class="w-full rounded-l-lg bg-blue-900 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <button class="rounded-r-lg bg-blue-600 px-4 py-2 hover:bg-blue-700">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-blue-900 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 Artificial Eyes. Bản quyền thuộc nhóm phát triển.</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        const menuToggle = document.getElementById("menu-toggle");
-        const mobileMenu = document.getElementById("mobile-menu");
-        const navLinks = document.querySelectorAll("[data-nav-link]");
-
-        if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener("click", () => {
-                mobileMenu.classList.toggle("hidden");
-            });
-        }
-
-        navLinks.forEach((link) => {
-            link.addEventListener("click", () => {
-                if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
-                    mobileMenu.classList.add("hidden");
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: "smooth"
+                    });
                 }
             });
         });
