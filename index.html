@@ -8,6 +8,8 @@
         content="Artificial Eyes là giải pháp hỗ trợ người khiếm thị bằng trí tuệ nhân tạo, ứng dụng di động và phần cứng nhúng.">
     <title>Artificial Eyes - Hỗ trợ người khiếm thị</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="assets/images/logo-primary.png">
+    <link rel="apple-touch-icon" href="assets/images/logo-primary.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         .hero-gradient {
@@ -51,6 +53,13 @@
                 <button class="md:hidden focus:outline-none" aria-label="Mở menu">
                     <i class="fas fa-bars text-2xl text-gray-800"></i>
                 </button>
+            </div>
+            <div id="mobile-menu" class="mt-4 hidden flex-col space-y-3 border-t border-gray-200 pt-4 md:hidden">
+                <a href="#about" class="text-gray-800 hover:text-blue-600">Giới thiệu</a>
+                <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
+                <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
+                <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
+                <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
             </div>
         </div>
     </nav>
@@ -347,31 +356,26 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <form class="space-y-4">
-                            <div>
-                                <label for="name" class="mb-1 block">Họ và tên</label>
-                                <input type="text" id="name"
-                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
-                                    placeholder="Nhập họ và tên">
+                    <div class="rounded-2xl bg-blue-600/40 p-6">
+                        <h4 class="mb-4 text-xl font-bold">Lưu ý về website</h4>
+                        <p class="mb-4 leading-7 text-blue-100">
+                            Website hiện dùng để giới thiệu dự án, hình ảnh và thông tin liên hệ chính thức.
+                            Các biểu mẫu nhập liệu chưa được kết nối hệ thống xử lý nên đã được lược bỏ để tránh gây nhầm lẫn.
+                        </p>
+                        <div class="space-y-3 text-blue-50">
+                            <div class="flex items-start">
+                                <i class="fas fa-circle-check mr-3 mt-1"></i>
+                                <span>Xem thông tin tổng quan, tính năng và phần cứng của dự án.</span>
                             </div>
-                            <div>
-                                <label for="email" class="mb-1 block">Email</label>
-                                <input type="email" id="email"
-                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
-                                    placeholder="Nhập email">
+                            <div class="flex items-start">
+                                <i class="fas fa-circle-check mr-3 mt-1"></i>
+                                <span>Tải thuyết minh sản phẩm và truy cập kho mã nguồn GitHub.</span>
                             </div>
-                            <div>
-                                <label for="message" class="mb-1 block">Nội dung</label>
-                                <textarea id="message" rows="4"
-                                    class="w-full rounded-lg border border-blue-400 bg-blue-500 px-4 py-2 placeholder-blue-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white"
-                                    placeholder="Nhập nội dung"></textarea>
+                            <div class="flex items-start">
+                                <i class="fas fa-circle-check mr-3 mt-1"></i>
+                                <span>Liên hệ trực tiếp với nhóm qua email hoặc số điện thoại ở bên cạnh.</span>
                             </div>
-                            <button type="submit"
-                                class="rounded-full bg-white px-6 py-3 font-semibold text-blue-600 transition duration-300 hover:bg-gray-100">
-                                Gửi tin nhắn
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -412,13 +416,10 @@
                         Nhóm tác giả: Vũ Đăng Khoa - Quách Tấn Hưng<br>
                         Giáo viên hướng dẫn: ThS. Đinh Thị Vân Hà
                     </p>
-                    <div class="flex">
-                        <input type="email" placeholder="Email của bạn"
-                            class="w-full rounded-l-lg bg-blue-900 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        <button class="rounded-r-lg bg-blue-600 px-4 py-2 hover:bg-blue-700">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
+                    <p class="text-gray-300">
+                        Website hiện tập trung vào phần giới thiệu dự án và tài liệu liên quan. Để trao đổi thêm,
+                        vui lòng sử dụng thông tin liên hệ ở mục bên trên.
+                    </p>
                 </div>
             </div>
             <div class="mt-8 border-t border-blue-900 pt-8 text-center text-gray-400">
@@ -428,6 +429,16 @@
     </footer>
 
     <script>
+        const menuButton = document.querySelector('button[aria-label="Mở menu"]');
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+                mobileMenu.classList.toggle("flex");
+            });
+        }
+
         document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
             anchor.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -436,6 +447,10 @@
                     target.scrollIntoView({
                         behavior: "smooth"
                     });
+                }
+                if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+                    mobileMenu.classList.add("hidden");
+                    mobileMenu.classList.remove("flex");
                 }
             });
         });
