@@ -10,10 +10,111 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="assets/images/Logo-notext-transparent.png">
     <link rel="apple-touch-icon" href="assets/images/Logo-notext-transparent.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
+        :root {
+            --blue: #2563eb;
+            --blue-dark: #0f2f75;
+            --cyan: #0891b2;
+            --ink: #0f172a;
+            --muted: #64748b;
+            --line: #dbeafe;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f8fafc;
+            color: var(--ink);
+            font-family: "Be Vietnam Pro", system-ui, sans-serif;
+        }
+
+        nav {
+            border-bottom: 1px solid rgba(219, 234, 254, 0.9);
+            backdrop-filter: blur(18px);
+        }
+
         .hero-gradient {
-            background: linear-gradient(135deg, #2563eb 60%, #38bdf8 100%);
+            background:
+                linear-gradient(90deg, rgba(15, 23, 42, 0.88) 0%, rgba(29, 78, 216, 0.68) 48%, rgba(14, 165, 233, 0.22) 100%),
+                url("assets/images/hero-device.jpg") center right / cover no-repeat;
+            min-height: 78vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-gradient::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            height: 120px;
+            background: linear-gradient(180deg, transparent, rgba(248, 250, 252, 0.96));
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+        }
+
+        .hero-badge {
+            border: 1px solid rgba(191, 219, 254, 0.45);
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            border-radius: 999px;
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            padding: 9px 14px;
+            color: #dbeafe;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .hero-stat {
+            border: 1px solid rgba(191, 219, 254, 0.35);
+            background: rgba(15, 23, 42, 0.32);
+            backdrop-filter: blur(12px);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .section-kicker {
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            color: var(--ink);
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .section-line {
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            border-radius: 999px;
+            height: 4px;
+            margin: 14px auto 0;
+            width: 76px;
+        }
+
+        .feature-card,
+        .mode-card,
+        #source .rounded-xl {
+            border: 1px solid var(--line);
+            border-radius: 8px !important;
+            box-shadow: 0 18px 45px -34px rgba(15, 23, 42, 0.45);
         }
 
         .feature-card:hover {
@@ -32,24 +133,59 @@
         .hardware-img {
             filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
         }
+
+        .image-frame {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 26px 70px -42px rgba(15, 23, 42, 0.5);
+        }
+
+        .primary-button,
+        .secondary-button {
+            border-radius: 8px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #contact {
+            background: linear-gradient(135deg, #0f2f75 0%, #2563eb 62%, #0891b2 100%);
+        }
+
+        #contact .rounded-2xl,
+        footer {
+            border-top: 1px solid rgba(191, 219, 254, 0.16);
+        }
+
+        footer {
+            background: #071735 !important;
+        }
+
+        @media (max-width: 768px) {
+            .hero-gradient {
+                background-position: center;
+                min-height: auto;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 font-sans">
-    <nav class="sticky top-0 z-50 bg-white shadow-md">
+    <nav class="sticky top-0 z-50 bg-white/90 shadow-sm">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <img src="assets/images/Logo-notext-transparent.png" width="45" alt="Logo Artificial Eyes">
                     <span class="ml-3 text-xl font-bold text-gray-800">Artificial Eyes</span>
                 </div>
-                <div class="hidden items-center space-x-8 md:flex">
-                    <a href="#about" class="text-gray-800 hover:text-blue-600">Giới thiệu</a>
-                    <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
-                    <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
-                    <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
-                    <a href="#source" class="text-gray-800 hover:text-blue-600">Mã nguồn</a>
-                    <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
+                <div class="hidden items-center space-x-7 text-sm font-semibold md:flex">
+                    <a href="#about" class="text-gray-700 transition hover:text-blue-600">Giới thiệu</a>
+                    <a href="#features" class="text-gray-700 transition hover:text-blue-600">Tính năng</a>
+                    <a href="#modes" class="text-gray-700 transition hover:text-blue-600">Chế độ</a>
+                    <a href="#hardware" class="text-gray-700 transition hover:text-blue-600">Phần cứng</a>
+                    <a href="#source" class="text-gray-700 transition hover:text-blue-600">Mã nguồn</a>
+                    <a href="#contact" class="text-gray-700 transition hover:text-blue-600">Liên hệ</a>
                 </div>
                 <button class="md:hidden focus:outline-none" aria-label="Mở menu">
                     <i class="fas fa-bars text-2xl text-gray-800"></i>
@@ -66,43 +202,62 @@
         </div>
     </nav>
 
-    <section class="hero-gradient py-20 text-white">
-        <div class="container mx-auto flex flex-col items-center px-6 md:flex-row">
-            <div class="mb-10 md:mb-0 md:w-1/2">
-                <h1 class="mb-6 text-4xl font-bold leading-tight md:text-6xl">Artificial Eyes</h1>
-                <h2 class="mb-6 text-2xl font-semibold md:text-3xl">Giải pháp hỗ trợ người khiếm thị bằng AI</h2>
-                <p class="mb-8 text-lg">
+    <section class="hero-gradient flex items-center py-20 text-white">
+        <div class="container mx-auto px-6">
+            <div class="hero-content">
+                <div class="hero-badge mb-6">
+                    <i class="fas fa-eye"></i>
+                    Trợ lý AI đeo trước ngực cho người khiếm thị
+                </div>
+                <h1 class="mb-6 text-5xl font-extrabold leading-tight md:text-7xl">Artificial Eyes</h1>
+                <h2 class="mb-6 max-w-2xl text-2xl font-semibold text-blue-100 md:text-3xl">
+                    Giải pháp hỗ trợ người khiếm thị bằng AI
+                </h2>
+                <p class="mb-8 max-w-2xl text-lg leading-8 text-blue-50">
                     Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng giúp người khiếm thị di chuyển
                     an toàn, đọc văn bản, nhận diện người xung quanh và liên lạc khẩn cấp thuận tiện hơn.
                 </p>
-                <div class="flex space-x-4">
+                <div class="flex flex-wrap gap-4">
                     <a href="#features"
-                        class="rounded-full bg-white px-6 py-3 font-semibold text-blue-600 transition duration-300 hover:bg-gray-100">
+                        class="primary-button bg-white px-6 py-3 font-semibold text-blue-700 transition duration-300 hover:bg-blue-50">
+                        <i class="fas fa-arrow-down"></i>
                         Khám phá tính năng
                     </a>
                     <a href="#contact"
-                        class="rounded-full border-2 border-white px-6 py-3 font-semibold text-white transition duration-300 hover:bg-white hover:text-blue-600">
+                        class="secondary-button border border-white/70 px-6 py-3 font-semibold text-white transition duration-300 hover:bg-white hover:text-blue-700">
+                        <i class="fas fa-envelope"></i>
                         Tìm hiểu thêm
                     </a>
                 </div>
-            </div>
-            <div class="flex justify-center md:w-1/2">
-                <img src="assets/images/hero-device.jpg" alt="Thiết bị Artificial Eyes"
-                    class="w-full max-w-md rounded-lg shadow-2xl">
+                <div class="mt-10 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div class="hero-stat">
+                        <p class="text-2xl font-bold">&lt; 1s</p>
+                        <p class="mt-1 text-sm text-blue-100">Phản hồi cảnh báo</p>
+                    </div>
+                    <div class="hero-stat">
+                        <p class="text-2xl font-bold">4</p>
+                        <p class="mt-1 text-sm text-blue-100">Cảm biến siêu âm</p>
+                    </div>
+                    <div class="hero-stat">
+                        <p class="text-2xl font-bold">7</p>
+                        <p class="mt-1 text-sm text-blue-100">Chế độ hỗ trợ</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="bg-white py-20">
+    <section id="about" class="bg-white py-24">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Giới thiệu dự án</h2>
-                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="section-kicker">Tổng quan</p>
+                <h2 class="section-title mb-4 text-3xl md:text-4xl">Giới thiệu dự án</h2>
+                <div class="section-line"></div>
             </div>
             <div class="flex flex-col items-center md:flex-row">
-                <div class="mb-10 md:mb-0 md:w-1/2">
+                <div class="image-frame mb-10 md:mb-0 md:w-1/2">
                     <img src="assets/images/about-user.jpg" alt="Người dùng trải nghiệm Artificial Eyes"
-                        class="w-full rounded-lg shadow-lg">
+                        class="w-full">
                 </div>
                 <div class="md:w-1/2 md:pl-12">
                     <h3 class="mb-6 text-2xl font-bold text-gray-800">Trao thêm sự chủ động cho người khiếm thị</h3>
@@ -127,11 +282,12 @@
         </div>
     </section>
 
-    <section id="features" class="bg-gray-50 py-20">
+    <section id="features" class="bg-slate-50 py-24">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Tính năng nổi bật</h2>
-                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="section-kicker">Điểm mạnh</p>
+                <h2 class="section-title mb-4 text-3xl md:text-4xl">Tính năng nổi bật</h2>
+                <div class="section-line"></div>
             </div>
             <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
@@ -198,11 +354,12 @@
         </div>
     </section>
 
-    <section id="modes" class="bg-white py-20">
+    <section id="modes" class="bg-white py-24">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Bảy chế độ hỗ trợ chính</h2>
-                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="section-kicker">Luồng sử dụng</p>
+                <h2 class="section-title mb-4 text-3xl md:text-4xl">Bảy chế độ hỗ trợ chính</h2>
+                <div class="section-line"></div>
             </div>
             <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
@@ -293,16 +450,17 @@
         </div>
     </section>
 
-    <section id="hardware" class="bg-gray-50 py-20">
+    <section id="hardware" class="bg-slate-50 py-24">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Phần cứng in 3D</h2>
-                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="section-kicker">Nguyên mẫu</p>
+                <h2 class="section-title mb-4 text-3xl md:text-4xl">Phần cứng in 3D</h2>
+                <div class="section-line"></div>
             </div>
             <div class="flex flex-col items-center md:flex-row">
-                <div class="mb-10 md:mb-0 md:w-1/2">
+                <div class="image-frame mb-10 bg-white p-3 md:mb-0 md:w-1/2">
                     <img src="assets/images/hardware-shell.jpg" alt="Phần cứng Artificial Eyes"
-                        class="hardware-img mx-auto w-full max-w-md rounded-lg">
+                        class="hardware-img mx-auto w-full max-w-md">
                 </div>
                 <div class="md:w-1/2 md:pl-12">
                     <h3 class="mb-6 text-2xl font-bold text-gray-800">Thiết kế tối ưu cho việc đeo và cảnh báo khoảng cách</h3>
@@ -329,11 +487,12 @@
         </div>
     </section>
 
-    <section id="source" class="bg-white py-20">
+    <section id="source" class="bg-white py-24">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Mã nguồn dự án</h2>
-                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="section-kicker">Minh bạch kỹ thuật</p>
+                <h2 class="section-title mb-4 text-3xl md:text-4xl">Mã nguồn dự án</h2>
+                <div class="section-line"></div>
                 <p class="mx-auto mt-6 max-w-3xl text-gray-600">
                     Dự án gồm mã phần cứng điều khiển ESP32 và phần mềm di động được xây dựng bằng MIT App Inventor.
                     Hai phần này phối hợp để nhận dữ liệu cảm biến, xử lý chế độ hỗ trợ và phản hồi bằng giọng nói.
@@ -405,7 +564,7 @@ void loop() {
         </div>
     </section>
 
-    <section id="contact" class="bg-blue-700 py-20 text-white">
+    <section id="contact" class="bg-blue-700 py-24 text-white">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
                 <h2 class="mb-4 text-3xl font-bold md:text-4xl">Liên hệ dự án</h2>
