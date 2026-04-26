@@ -1,0 +1,114 @@
+#include <BluetoothSerial.h>
+#include <ESP32Servo.h>
+
+BluetoothSerial SerialBT;
+
+#define WARNING_LOW 40
+#define HOLE_DISTANCE 120
+#define WALL_DISTANCE 70
+#define WARNING_HIGH 60
+
+Servo s1, s2, s3, s4;
+#define SERVO1_PIN 5
+#define SERVO2_PIN 13
+#define SERVO3_PIN 32
+#define SERVO4_PIN 4
+
+#define TRIG1 15
+#define ECHO1 2
+#define TRIG2 12
+#define ECHO2 14
+#define TRIG3 35
+#define ECHO3 34
+#define TRIG4 16
+#define ECHO4 17
+
+float getDistance(int trigPin, int echoPin) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  long duration = pulseIn(echoPin, HIGH, 25000);
+  if (duration == 0) return -1;
+  return duration * 0.0343 / 2;
+}
+
+void scanAllAtAngle(int angle) {
+
+  s1.write(angle);
+  s2.write(angle);
+  s3.write(angle);
+  s4.write(angle);
+  delay(500);
+
+  float d1 = getDistance(TRIG1, ECHO1);
+  float d2 = getDistance(TRIG2, ECHO2);
+  float d3 = getDistance(TRIG3, ECHO3);
+  float d4 = getDistance(TRIG4, ECHO4);
+
+  if (angle == 65) {
+    if (d1 > 0 && d1 < WARNING_LOW) SerialBT.println("2");
+    if (d2 > 0 && d2 < WARNING_LOW) SerialBT.println("2");
+    if (d3 > 0 && d3 < WARNING_LOW) SerialBT.println("2");
+    if (d4 > 0 && d4 < WARNING_LOW) SerialBT.println("2");
+
+    if (d1 > HOLE_DISTANCE || d2 > HOLE_DISTANCE || d3 > HOLE_DISTANCE || d4 > HOLE_DISTANCE)
+      SerialBT.println("3");
+  }
+
+  if (angle == 90) {
+    if ((d1 > 0 && d1 < WALL_DISTANCE) ||
+        (d2 > 0 && d2 < WALL_DISTANCE) ||
+        (d3 > 0 && d3 < WALL_DISTANCE) ||
+        (d4 > 0 && d4 < WALL_DISTANCE)) {
+      SerialBT.println("5");
+    }
+  }
+
+
+  if (angle == 115) {
+    if ((d1 > 0 && d1 < WARNING_HIGH) ||
+        (d2 > 0 && d2 < WARNING_HIGH) ||
+        (d3 > 0 && d3 < WARNING_HIGH) ||
+        (d4 > 0 && d4 < WARNING_HIGH)) {
+      SerialBT.println("4");
+    }
+  }
+
+  // Debug
+  Serial.print("A=");
+  Serial.print(angle);
+  Serial.print(" | d1=");
+  Serial.print(d1);
+  Serial.print(" d2=");
+  Serial.print(d2);
+  Serial.print(" d3=");
+  Serial.print(d3);
+  Serial.print(" d4=");
+  Serial.println(d4);
+}
+
+void setup() {
+  Serial.begin(9600);
+  SerialBT.begin("ESP32_Stick");
+
+  s1.attach(SERVO1_PIN);
+  s2.attach(SERVO2_PIN);
+  s3.attach(SERVO3_PIN);
+  s4.attach(SERVO4_PIN);
+
+  pinMode(TRIG1, OUTPUT); pinMode(ECHO1, INPUT);
+  pinMode(TRIG2, OUTPUT); pinMode(ECHO2, INPUT);
+  pinMode(TRIG3, OUTPUT); pinMode(ECHO3, INPUT);
+  pinMode(TRIG4, OUTPUT); pinMode(ECHO4, INPUT);
+
+  Serial.println("=== QUÉT 4 CẢM BIẾN CÙNG LÚC ===");
+}
+
+void loop() {
+  scanAllAtAngle(65);
+  scanAllAtAngle(90);
+  scanAllAtAngle(115);
+}
