@@ -48,6 +48,7 @@
                     <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
                     <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
                     <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
+                    <a href="#source" class="text-gray-800 hover:text-blue-600">Mã nguồn</a>
                     <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
                 </div>
                 <button class="md:hidden focus:outline-none" aria-label="Mở menu">
@@ -59,6 +60,7 @@
                 <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
                 <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
                 <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
+                <a href="#source" class="text-gray-800 hover:text-blue-600">Mã nguồn</a>
                 <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
             </div>
         </div>
@@ -327,6 +329,82 @@
         </div>
     </section>
 
+    <section id="source" class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <div class="mb-16 text-center">
+                <h2 class="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">Mã nguồn dự án</h2>
+                <div class="mx-auto h-1 w-20 bg-blue-600"></div>
+                <p class="mx-auto mt-6 max-w-3xl text-gray-600">
+                    Dự án gồm mã phần cứng điều khiển ESP32 và phần mềm di động được xây dựng bằng MIT App Inventor.
+                    Hai phần này phối hợp để nhận dữ liệu cảm biến, xử lý chế độ hỗ trợ và phản hồi bằng giọng nói.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <div class="rounded-xl bg-gray-50 p-6 shadow-md">
+                    <div class="mb-5 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                            <i class="fas fa-microchip text-xl text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Mã nguồn phần cứng</h3>
+                            <p class="text-sm text-gray-500">ESP32, Bluetooth, servo và cảm biến siêu âm</p>
+                        </div>
+                    </div>
+                    <p class="mb-5 text-gray-600">
+                        File mã nguồn phần cứng cấu hình 4 cảm biến siêu âm HC-SR04, 4 servo và gửi tín hiệu cảnh báo
+                        qua Bluetooth về ứng dụng điện thoại.
+                    </p>
+                    <div class="mb-5 overflow-hidden rounded-lg border border-blue-100 bg-slate-950">
+                        <pre class="max-h-64 overflow-auto p-4 text-sm leading-6 text-blue-50"><code>#include &lt;BluetoothSerial.h&gt;
+#include &lt;ESP32Servo.h&gt;
+
+#define WARNING_LOW 40
+#define HOLE_DISTANCE 120
+#define WALL_DISTANCE 70
+#define WARNING_HIGH 60
+
+void loop() {
+  scanAllAtAngle(65);
+  scanAllAtAngle(90);
+  scanAllAtAngle(115);
+}</code></pre>
+                    </div>
+                    <a href="docs/source-code/source-phancung.txt"
+                        class="inline-flex items-center rounded-full bg-blue-600 px-5 py-3 font-semibold text-white transition duration-300 hover:bg-blue-700">
+                        <i class="fas fa-file-code mr-2"></i>
+                        Xem mã phần cứng
+                    </a>
+                </div>
+
+                <div class="rounded-xl bg-gray-50 p-6 shadow-md">
+                    <div class="mb-5 flex items-center">
+                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-sky-100">
+                            <i class="fas fa-mobile-screen-button text-xl text-sky-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Mã nguồn phần mềm</h3>
+                            <p class="text-sm text-gray-500">Khối lệnh MIT App Inventor của ứng dụng</p>
+                        </div>
+                    </div>
+                    <p class="mb-5 text-gray-600">
+                        Ảnh dưới đây ghi lại các khối lệnh chính của ứng dụng, gồm nhận khẩu lệnh, gọi chế độ đọc,
+                        xử lý cảnh báo té ngã, đọc thời gian, thời tiết và phản hồi bằng Text-to-Speech.
+                    </p>
+                    <a href="assets/images/source-phanmem.jpg">
+                        <img src="assets/images/source-phanmem.jpg" alt="Mã nguồn phần mềm MIT App Inventor"
+                            class="mb-5 h-80 w-full rounded-lg object-cover object-left-top shadow">
+                    </a>
+                    <a href="assets/images/source-phanmem.jpg"
+                        class="inline-flex items-center rounded-full bg-white px-5 py-3 font-semibold text-blue-600 shadow transition duration-300 hover:bg-blue-50">
+                        <i class="fas fa-image mr-2"></i>
+                        Xem ảnh mã phần mềm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="bg-blue-700 py-20 text-white">
         <div class="container mx-auto px-6">
             <div class="mb-16 text-center">
@@ -368,7 +446,7 @@
                             </div>
                             <div class="flex items-start">
                                 <i class="fas fa-circle-check mr-3 mt-1"></i>
-                                <span>Tải thuyết minh sản phẩm và truy cập kho mã nguồn GitHub.</span>
+                                <span>Tải thuyết minh sản phẩm, mã nguồn phần cứng và ảnh mã nguồn phần mềm.</span>
                             </div>
                             <div class="flex items-start">
                                 <i class="fas fa-circle-check mr-3 mt-1"></i>
@@ -398,12 +476,15 @@
                         <li><a href="#features" class="text-gray-300 hover:text-white">Tính năng</a></li>
                         <li><a href="#modes" class="text-gray-300 hover:text-white">Chế độ</a></li>
                         <li><a href="#hardware" class="text-gray-300 hover:text-white">Phần cứng</a></li>
+                        <li><a href="#source" class="text-gray-300 hover:text-white">Mã nguồn</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="mb-4 text-lg font-semibold">Tài nguyên</h4>
                     <ul class="space-y-2">
                         <li><a href="docs/artificial-eyes-description.docx" class="text-gray-300 hover:text-white">Thuyết minh sản phẩm</a></li>
+                        <li><a href="docs/source-code/source-phancung.txt" class="text-gray-300 hover:text-white">Mã phần cứng ESP32</a></li>
+                        <li><a href="assets/images/source-phanmem.jpg" class="text-gray-300 hover:text-white">Ảnh mã phần mềm</a></li>
                         <li><a href="#features" class="text-gray-300 hover:text-white">Mô tả tính năng</a></li>
                         <li><a href="#hardware" class="text-gray-300 hover:text-white">Thiết kế phần cứng</a></li>
                         <li><a href="https://github.com/Hungvip69/artificial-eyes" class="text-gray-300 hover:text-white">Kho GitHub</a></li>
