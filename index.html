@@ -824,6 +824,31 @@
             }
         }
 
+
+
+        .impact-wall {
+            background: radial-gradient(circle at 20% 20%, rgba(var(--accent-rgb), 0.22), transparent 42%), radial-gradient(circle at 82% 10%, rgba(var(--cyan-rgb), 0.2), transparent 38%), var(--surface);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .impact-card {
+            background: color-mix(in srgb, var(--surface) 92%, transparent);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .impact-number {
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -1014,6 +1039,34 @@
                         <p class="mt-1 text-sm text-blue-100">Chế độ hỗ trợ</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="impact-wall py-20" id="impact">
+        <div class="container mx-auto px-6">
+            <div class="mb-12 text-center" data-reveal>
+                <p class="section-kicker">Hiệu ứng wow</p>
+                <h2 class="section-title text-3xl md:text-5xl">Ấn tượng hơn gấp 100 lần</h2>
+                <p class="mx-auto mt-4 max-w-3xl text-gray-600">Giao diện mới đậm chất tương lai: animation mượt, chỉ số sống động và các điểm chạm trực quan giúp Artificial Eyes nổi bật ngay từ lần nhìn đầu tiên.</p>
+            </div>
+            <div class="grid gap-6 md:grid-cols-3">
+                <article class="impact-card" data-reveal="left">
+                    <p class="impact-number" data-count="100">0</p>
+                    <h3 class="mt-3 text-xl font-bold text-gray-800">Mức độ ấn tượng</h3>
+                    <p class="mt-2 text-gray-600">Thiết kế được tăng chiều sâu thị giác, hiệu ứng ánh sáng và phản hồi hover để tạo cảm giác cao cấp.</p>
+                </article>
+                <article class="impact-card" data-reveal>
+                    <p class="impact-number" data-count="7">0</p>
+                    <h3 class="mt-3 text-xl font-bold text-gray-800">Tầng chuyển động</h3>
+                    <p class="mt-2 text-gray-600">Hiệu ứng nền, card, hero và chuyển cảnh đồng bộ theo theme/motion để vừa đẹp vừa dễ theo dõi.</p>
+                </article>
+                <article class="impact-card" data-reveal="right">
+                    <p class="impact-number" data-count="24">0</p>
+                    <h3 class="mt-3 text-xl font-bold text-gray-800">Điểm nhấn thị giác</h3>
+                    <p class="mt-2 text-gray-600">Tăng độ tương phản và nhịp bố cục cho mọi màn hình, từ mobile tới desktop.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -1635,6 +1688,33 @@ void loop() {
             revealTargets.forEach((element) => revealObserver.observe(element));
         } else {
             revealTargets.forEach((element) => element.classList.add("is-visible"));
+        }
+
+
+
+        const countElements = document.querySelectorAll("[data-count]");
+        const animateCount = (el) => {
+            const target = Number(el.dataset.count || 0);
+            const duration = 1200;
+            const start = performance.now();
+            const tick = (now) => {
+                const progress = Math.min((now - start) / duration, 1);
+                el.textContent = Math.floor(progress * target).toLocaleString("vi-VN");
+                if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        };
+
+        if ("IntersectionObserver" in window) {
+            const countObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    animateCount(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            }, { threshold: 0.5 });
+
+            countElements.forEach((el) => countObserver.observe(el));
         }
 
         const heroStats = document.querySelectorAll(".hero-stat .text-2xl");
