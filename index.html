@@ -249,6 +249,34 @@
             max-width: 720px;
         }
 
+        .hero-orb {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(0);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.4;
+            animation: orbPulse 10s ease-in-out infinite;
+        }
+
+        .hero-orb--one {
+            width: clamp(170px, 24vw, 330px);
+            height: clamp(170px, 24vw, 330px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.78) 0%, rgba(var(--cyan-rgb), 0.06) 70%, transparent 100%);
+            top: 8%;
+            right: 8%;
+            animation-delay: -1.2s;
+        }
+
+        .hero-orb--two {
+            width: clamp(210px, 28vw, 390px);
+            height: clamp(210px, 28vw, 390px);
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.46) 0%, rgba(var(--cyan-rgb), 0.12) 68%, transparent 100%);
+            bottom: -14%;
+            right: 22%;
+            animation-delay: -4s;
+        }
+
         .hero-content > * {
             animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
@@ -377,6 +405,24 @@
         .feature-card:hover::before,
         .mode-card:hover::before,
         #source .rounded-xl:hover::before {
+            opacity: 1;
+        }
+
+        
+
+        .feature-card::after,
+        .mode-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(255, 255, 255, 0.28), transparent 46%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .feature-card.is-tilting::after,
+        .mode-card.is-tilting::after {
             opacity: 1;
         }
 
@@ -753,6 +799,19 @@
             }
         }
 
+        @keyframes orbPulse {
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+                opacity: 0.36;
+            }
+
+            50% {
+                transform: translate3d(-10px, -16px, 0) scale(1.1);
+                opacity: 0.62;
+            }
+        }
+
         @keyframes panelIn {
             from {
                 opacity: 0;
@@ -913,6 +972,8 @@
     </div>
 
     <section class="hero-gradient flex items-center py-20 text-white">
+        <div class="hero-orb hero-orb--one" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb--two" aria-hidden="true"></div>
         <div class="container mx-auto px-6">
             <div class="hero-content">
                 <div class="hero-badge mb-6">
@@ -1636,6 +1697,36 @@ void loop() {
         };
 
         window.addEventListener("scroll", () => requestAnimationFrame(updateHeroParallax), { passive: true });
+
+        const interactiveCards = document.querySelectorAll(".feature-card, .mode-card");
+
+        const resetCardTilt = (card) => {
+            card.style.transform = "";
+            card.classList.remove("is-tilting");
+        };
+
+        interactiveCards.forEach((card) => {
+            card.addEventListener("pointermove", (event) => {
+                if (preferences.motion !== "rich" || reducedMotionQuery.matches) {
+                    return;
+                }
+
+                const rect = card.getBoundingClientRect();
+                const relX = event.clientX - rect.left;
+                const relY = event.clientY - rect.top;
+                const rotateY = ((relX / rect.width) - 0.5) * 7;
+                const rotateX = (0.5 - (relY / rect.height)) * 7;
+
+                card.classList.add("is-tilting");
+                card.style.setProperty("--spot-x", `${(relX / rect.width) * 100}%`);
+                card.style.setProperty("--spot-y", `${(relY / rect.height) * 100}%`);
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            });
+
+            card.addEventListener("pointerleave", () => resetCardTilt(card));
+            card.addEventListener("blur", () => resetCardTilt(card), true);
+        });
+
         applyPreferences({ persist: false });
         updateHeroParallax();
     </script>
