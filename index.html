@@ -6,119 +6,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Artificial Eyes là giải pháp hỗ trợ người khiếm thị bằng trí tuệ nhân tạo, ứng dụng di động và phần cứng nhúng.">
+    <meta name="theme-color" content="#fbfbfa">
     <title>Artificial Eyes - Hỗ trợ người khiếm thị</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="assets/images/Logo-notext-transparent.png">
     <link rel="apple-touch-icon" href="assets/images/Logo-notext-transparent.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script>
         (() => {
-            const storageKey = "artificial-eyes-view-options";
-            const root = document.documentElement;
-            const defaults = { theme: "system", accent: "blue", motion: "rich", font: "normal" };
-            let saved = {};
+            const themeKey = "artificial-eyes-theme";
+            const params = new URLSearchParams(window.location.search);
+            const requested = params.get("theme");
+            const saved = localStorage.getItem(themeKey);
+            const theme = requested === "dark" || requested === "light"
+                ? requested
+                : saved === "dark" || saved === "light"
+                    ? saved
+                    : "light";
 
-            try {
-                saved = JSON.parse(localStorage.getItem(storageKey)) || {};
-            } catch (error) {
-                saved = {};
-            }
-
-            const preferences = { ...defaults, ...saved };
-            const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-            root.dataset.theme = preferences.theme === "system" ? (prefersDark ? "dark" : "light") : preferences.theme;
-            root.dataset.themeChoice = preferences.theme;
-            root.dataset.accent = preferences.accent;
-            root.dataset.motion = preferences.motion;
-            root.dataset.font = preferences.font;
+            document.documentElement.dataset.theme = theme;
         })();
     </script>
     <style>
         :root {
-            --blue: #2563eb;
-            --blue-dark: #0f2f75;
-            --accent-rgb: 37, 99, 235;
-            --cyan: #0891b2;
-            --cyan-rgb: 8, 145, 178;
-            --ink: #0f172a;
-            --muted: #64748b;
-            --line: #dbeafe;
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --surface-soft: #f8fafc;
-            --surface-muted: #f1f5f9;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --hero-start: rgba(15, 23, 42, 0.9);
-            --hero-mid: rgba(29, 78, 216, 0.7);
-            --hero-end: rgba(14, 165, 233, 0.2);
-            --hero-fade: rgba(248, 250, 252, 0.96);
-            --contact-bg: linear-gradient(135deg, #0f2f75 0%, #2563eb 62%, #0891b2 100%);
-            --footer-bg: #071735;
-            --shadow-soft: 0 18px 45px -34px rgba(15, 23, 42, 0.45);
-            color-scheme: light;
+            --canvas: #fbfbfa;
+            --paper: #ffffff;
+            --paper-soft: #f7f6f3;
+            --ink: #111111;
+            --body: #2f3437;
+            --muted: #787774;
+            --line: #eaeaea;
+            --line-strong: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(251, 251, 250, 0.92);
+            --button-bg: #111111;
+            --button-bg-hover: #333333;
+            --button-text: #ffffff;
+            --blue-soft: #e1f3fe;
+            --blue-ink: #1f6c9f;
+            --green-soft: #edf3ec;
+            --green-ink: #346538;
+            --yellow-soft: #fbf3db;
+            --yellow-ink: #956400;
+            --red-soft: #fdebec;
+            --red-ink: #9f2f2d;
+            --radius: 10px;
+            --container: 1160px;
         }
 
         html[data-theme="dark"] {
-            --ink: #e5edf8;
-            --muted: #a8b6cc;
-            --line: rgba(148, 163, 184, 0.24);
-            --bg: #06111f;
-            --surface: #0f172a;
-            --surface-soft: #101b2d;
-            --surface-muted: #172238;
-            --nav-bg: rgba(6, 17, 31, 0.88);
-            --hero-start: rgba(2, 6, 23, 0.94);
-            --hero-mid: rgba(15, 23, 42, 0.78);
-            --hero-end: rgba(var(--cyan-rgb), 0.25);
-            --hero-fade: rgba(6, 17, 31, 0.98);
-            --contact-bg: linear-gradient(135deg, #06111f 0%, #12306f 56%, #075985 100%);
-            --footer-bg: #020617;
-            --shadow-soft: 0 22px 60px -38px rgba(0, 0, 0, 0.75);
+            --canvas: #10100f;
+            --paper: #171716;
+            --paper-soft: #131312;
+            --ink: #f4f1eb;
+            --body: #ded8ce;
+            --muted: #a9a198;
+            --line: rgba(255, 255, 255, 0.11);
+            --line-strong: rgba(255, 255, 255, 0.18);
+            --nav-bg: rgba(16, 16, 15, 0.9);
+            --button-bg: #f4f1eb;
+            --button-bg-hover: #ffffff;
+            --button-text: #111111;
+            --blue-soft: #172833;
+            --blue-ink: #9ecce6;
+            --green-soft: #1b2b20;
+            --green-ink: #acd4ad;
+            --yellow-soft: #332b1a;
+            --yellow-ink: #e0bd76;
+            --red-soft: #341f20;
+            --red-ink: #f0a8a6;
             color-scheme: dark;
         }
 
-        html[data-accent="emerald"] {
-            --blue: #059669;
-            --blue-dark: #064e3b;
-            --accent-rgb: 5, 150, 105;
-            --cyan: #65a30d;
-            --cyan-rgb: 101, 163, 13;
-        }
-
-        html[data-accent="rose"] {
-            --blue: #e11d48;
-            --blue-dark: #881337;
-            --accent-rgb: 225, 29, 72;
-            --cyan: #f97316;
-            --cyan-rgb: 249, 115, 22;
-        }
-
-        html[data-accent="violet"] {
-            --blue: #7c3aed;
-            --blue-dark: #4c1d95;
-            --accent-rgb: 124, 58, 237;
-            --cyan: #0ea5e9;
-            --cyan-rgb: 14, 165, 233;
-        }
-
-        html[data-font="large"] {
-            font-size: 17px;
-        }
-
         html {
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
         body {
-            background: var(--bg);
-            color: var(--ink);
-            font-family: "Be Vietnam Pro", system-ui, sans-serif;
+            background: var(--canvas);
+            color: var(--body);
+            font-family: "Be Vietnam Pro", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
-            transition: background-color 0.35s ease, color 0.35s ease;
+            transition: background-color 180ms ease, color 180ms ease;
         }
 
         body::before {
@@ -126,643 +101,727 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background-image:
-                linear-gradient(rgba(var(--accent-rgb), 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--cyan-rgb), 0.07) 1px, transparent 1px);
-            background-size: 54px 54px;
-            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 70%);
-            opacity: 0.65;
-            pointer-events: none;
-            animation: gridDrift 28s linear infinite;
-        }
-
-        body .bg-white {
-            background-color: var(--surface) !important;
-        }
-
-        body .bg-gray-50,
-        body .bg-slate-50 {
-            background-color: var(--surface-soft) !important;
-        }
-
-        body .text-gray-800 {
-            color: var(--ink) !important;
-        }
-
-        body .text-gray-700,
-        body .text-gray-600,
-        body .text-gray-500 {
-            color: var(--muted) !important;
-        }
-
-        body .border-gray-200 {
-            border-color: var(--line) !important;
-        }
-
-        body .bg-blue-100 {
-            background-color: rgba(var(--accent-rgb), 0.12) !important;
-        }
-
-        body .text-blue-500,
-        body .text-blue-600,
-        body .text-blue-700 {
-            color: var(--blue) !important;
-        }
-
-        body .bg-blue-600 {
-            background-color: var(--blue) !important;
-        }
-
-        body .hover\:bg-blue-700:hover {
-            background-color: var(--blue-dark) !important;
-        }
-
-        body .border-blue-100 {
-            border-color: rgba(var(--accent-rgb), 0.22) !important;
-        }
-
-        nav {
-            border-bottom: 1px solid rgba(219, 234, 254, 0.9);
-            backdrop-filter: blur(18px);
-            background: var(--nav-bg) !important;
-            transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-        }
-
-        nav a {
-            position: relative;
-        }
-
-        nav a::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: -7px;
-            left: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--blue), var(--cyan));
-            border-radius: 999px;
-            transform: scaleX(0);
-            transform-origin: center;
-            transition: transform 0.28s ease;
-        }
-
-        nav a:hover::after,
-        nav a:focus-visible::after {
-            transform: scaleX(1);
-        }
-
-        .hero-gradient {
-            background:
-                linear-gradient(90deg, var(--hero-start) 0%, var(--hero-mid) 48%, var(--hero-end) 100%),
-                url("assets/images/hero-device.jpg") center right / cover no-repeat;
-            min-height: 78vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-gradient::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(115deg, transparent 0 32%, rgba(255, 255, 255, 0.2) 43%, transparent 55% 100%),
-                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 1px, transparent 1px 96px);
-            opacity: 0.5;
-            mix-blend-mode: screen;
-            transform: translateX(-36%);
-            animation: heroScan 8s ease-in-out infinite;
+            background-image: url("assets/images/Logo-notext-transparent.png");
+            background-position: right 8vw top 22vh;
+            background-repeat: no-repeat;
+            background-size: min(520px, 72vw);
+            opacity: 0.025;
             pointer-events: none;
         }
 
-        .hero-gradient::after {
-            content: "";
-            position: absolute;
-            inset: auto 0 0;
-            height: 120px;
-            background: linear-gradient(180deg, transparent, var(--hero-fade));
-            pointer-events: none;
+        html[data-theme="dark"] body::before {
+            opacity: 0.045;
+            filter: grayscale(1) invert(1);
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 720px;
+        ::selection {
+            background: var(--yellow-soft);
+            color: var(--ink);
         }
 
-        .hero-content > * {
-            animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        .container-shell {
+            width: min(var(--container), calc(100% - 32px));
+            margin: 0 auto;
         }
 
-        .hero-content > :nth-child(2) {
-            animation-delay: 0.08s;
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--line);
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
         }
 
-        .hero-content > :nth-child(3) {
-            animation-delay: 0.16s;
-        }
-
-        .hero-content > :nth-child(4) {
-            animation-delay: 0.24s;
-        }
-
-        .hero-content > :nth-child(5) {
-            animation-delay: 0.32s;
-        }
-
-        .hero-content > :nth-child(6) {
-            animation-delay: 0.4s;
-        }
-
-        .hero-content h1 {
-            text-shadow: 0 0 32px rgba(255, 255, 255, 0.18), 0 10px 42px rgba(14, 165, 233, 0.28);
-        }
-
-        .hero-badge {
-            border: 1px solid rgba(191, 219, 254, 0.45);
-            background: rgba(255, 255, 255, 0.14);
-            backdrop-filter: blur(12px);
-            border-radius: 999px;
-            display: inline-flex;
-            gap: 10px;
-            align-items: center;
-            padding: 9px 14px;
-            color: #dbeafe;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .hero-stat {
-            border: 1px solid rgba(191, 219, 254, 0.35);
-            background: rgba(15, 23, 42, 0.32);
-            backdrop-filter: blur(12px);
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--line);
             border-radius: 8px;
-            padding: 14px 16px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            background: var(--paper);
+            object-fit: contain;
+            padding: 5px;
         }
 
-        .hero-stat::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-            transform: translateX(-120%);
-            transition: transform 0.65s ease;
-        }
-
-        .hero-stat:hover {
-            border-color: rgba(255, 255, 255, 0.62);
-            transform: translateY(-4px);
-        }
-
-        .hero-stat:hover::before {
-            transform: translateX(120%);
-        }
-
-        .section-kicker {
-            color: var(--blue);
+        .nav-link {
+            color: var(--muted);
             font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 0;
-            margin-bottom: 10px;
+            font-weight: 600;
+            transition: color 180ms ease;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus-visible {
+            color: var(--ink);
+            outline: none;
+        }
+
+        .brand-name {
+            color: var(--ink);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .desktop-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .language-switch,
+        .theme-switch {
+            display: inline-grid;
+            gap: 3px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-soft);
+            padding: 3px;
+        }
+
+        .language-switch {
+            grid-template-columns: repeat(2, minmax(42px, 1fr));
+        }
+
+        .theme-switch {
+            grid-template-columns: repeat(2, 34px);
+        }
+
+        .language-switch button,
+        .theme-switch button {
+            display: inline-grid;
+            min-height: 32px;
+            place-items: center;
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            transition: background-color 180ms ease, color 180ms ease;
+        }
+
+        .theme-switch button {
+            font-size: 16px;
+        }
+
+        .language-switch button.is-active,
+        .theme-switch button.is-active {
+            background: var(--paper);
+            color: var(--ink);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .menu-button,
+        .icon-box {
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        .menu-button {
+            width: 40px;
+            height: 40px;
+        }
+
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            color: var(--blue-ink);
+            font-size: 22px;
+        }
+
+        .hero-section {
+            padding: 88px 0 40px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.78fr);
+            gap: 52px;
+            align-items: end;
+        }
+
+        .eyebrow,
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
         }
 
-        .section-title {
-            color: var(--ink);
-            font-weight: 800;
-            letter-spacing: 0;
+        .eyebrow {
+            gap: 8px;
+            border: 1px solid var(--line);
+            background: var(--paper);
+            color: var(--blue-ink);
+            padding: 7px 11px;
         }
 
-        .section-line {
-            background: linear-gradient(90deg, var(--blue), var(--cyan));
-            border-radius: 999px;
-            height: 4px;
-            margin: 14px auto 0;
-            width: 76px;
+        .tag {
+            background: var(--green-soft);
+            color: var(--green-ink);
+            padding: 5px 9px;
+        }
+
+        .tag.blue {
+            background: var(--blue-soft);
+            color: var(--blue-ink);
+        }
+
+        .tag.yellow {
+            background: var(--yellow-soft);
+            color: var(--yellow-ink);
+        }
+
+        .tag.red {
+            background: var(--red-soft);
+            color: var(--red-ink);
+        }
+
+        .hero-title,
+        .section-title {
+            color: var(--ink);
+            font-family: "Newsreader", "Lyon Text", "Instrument Serif", Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.035em;
+            line-height: 0.98;
+        }
+
+        .hero-title {
+            max-width: 880px;
+            margin-top: 28px;
+            font-size: clamp(4rem, 11vw, 8.6rem);
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-copy {
+            max-width: 720px;
+            margin-top: 26px;
+            color: var(--body);
+            font-size: clamp(1.05rem, 1.4vw, 1.24rem);
+            line-height: 1.72;
+        }
+
+        .hero-actions,
+        .source-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 44px;
+            border-radius: 6px;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .button.primary {
+            border: 1px solid var(--ink);
+            background: var(--button-bg);
+            color: var(--button-text);
+        }
+
+        .button.primary:hover,
+        .button.primary:focus-visible {
+            background: var(--button-bg-hover);
+            border-color: var(--button-bg-hover);
+            outline: none;
+        }
+
+        .button.secondary {
+            border: 1px solid var(--line-strong);
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        .button.secondary:hover,
+        .button.secondary:focus-visible {
+            border-color: var(--ink);
+            outline: none;
+        }
+
+        .hero-media {
+            align-self: stretch;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--paper);
+            overflow: hidden;
+        }
+
+        .hero-media img {
+            width: 100%;
+            height: 100%;
+            min-height: 560px;
+            object-fit: cover;
+            filter: grayscale(0.16) saturate(0.82) contrast(1.02);
+        }
+
+        html[data-theme="dark"] .hero-media img,
+        html[data-theme="dark"] .image-card img {
+            filter: grayscale(0.18) saturate(0.72) brightness(0.78) contrast(1.04);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            margin-top: 72px;
+        }
+
+        .metric {
+            min-height: 126px;
+            padding: 24px 26px;
+        }
+
+        .metric + .metric {
+            border-left: 1px solid var(--line);
+        }
+
+        .metric strong {
+            display: block;
+            color: var(--ink);
+            font-family: "Newsreader", Georgia, serif;
+            font-size: clamp(2.35rem, 5vw, 4.3rem);
+            letter-spacing: -0.035em;
+            line-height: 1;
+        }
+
+        .metric span {
+            display: block;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .section {
+            padding: 104px 0;
+        }
+
+        .section.alt {
+            background: var(--paper-soft);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.7fr);
+            gap: 40px;
+            align-items: end;
+            margin-bottom: 44px;
+        }
+
+        .section-title {
+            margin-top: 14px;
+            font-size: clamp(2.6rem, 6vw, 5.35rem);
+        }
+
+        .section-copy {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+            gap: 32px;
+            align-items: stretch;
+        }
+
+        .image-card,
+        .content-card,
+        .feature-card,
+        .mode-card,
+        .source-card,
+        .contact-card {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--paper);
+        }
+
+        .image-card {
+            overflow: hidden;
+        }
+
+        .image-card img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: 420px;
+            object-fit: cover;
+            filter: grayscale(0.12) saturate(0.82);
+        }
+
+        .content-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: clamp(28px, 5vw, 44px);
+        }
+
+        .content-card h3,
+        .feature-card h3,
+        .mode-card h3,
+        .source-card h3,
+        .contact-card h3 {
+            color: var(--ink);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .content-card h3 {
+            max-width: 620px;
+            font-size: clamp(1.7rem, 3vw, 2.55rem);
+            letter-spacing: -0.02em;
+        }
+
+        .content-card p,
+        .feature-card p,
+        .mode-card p,
+        .source-card p,
+        .contact-card p {
+            color: var(--muted);
+        }
+
+        .content-card p {
+            margin-top: 20px;
+        }
+
+        .note-row {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 16px;
+            align-items: start;
+            margin-top: 32px;
+            border-top: 1px solid var(--line);
+            padding-top: 24px;
+        }
+
+        .note-row p {
+            color: var(--body);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 14px;
         }
 
         .feature-card,
         .mode-card,
-        #source .rounded-xl {
-            border: 1px solid var(--line);
-            border-radius: 8px !important;
-            box-shadow: var(--shadow-soft);
+        .source-card,
+        .contact-card {
             position: relative;
-            overflow: hidden;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease, background-color 0.35s ease;
-        }
-
-        .feature-card::before,
-        .mode-card::before,
-        #source .rounded-xl::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.13), transparent 42%, rgba(var(--cyan-rgb), 0.1));
-            opacity: 0;
-            transition: opacity 0.35s ease;
-            pointer-events: none;
+            padding: 26px;
+            transition: box-shadow 200ms ease, transform 200ms ease;
         }
 
         .feature-card:hover,
         .mode-card:hover,
-        #source .rounded-xl:hover {
-            border-color: rgba(var(--accent-rgb), 0.42);
-            transform: translateY(-7px);
-            box-shadow: 0 24px 48px -28px rgba(var(--accent-rgb), 0.55);
-        }
-
-        .feature-card:hover::before,
-        .mode-card:hover::before,
-        #source .rounded-xl:hover::before {
-            opacity: 1;
-        }
-
-        .mode-icon {
-            transition: all 0.3s ease;
-        }
-
-        .mode-card:hover .mode-icon {
-            transform: scale(1.1);
-        }
-
-        .hardware-img {
-            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
-            transform-origin: center;
-            animation: deviceFloat 5s ease-in-out infinite;
-        }
-
-        .image-frame {
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 26px 70px -42px rgba(15, 23, 42, 0.5);
-            position: relative;
-            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-        }
-
-        .image-frame::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent 0 45%, rgba(255, 255, 255, 0.28) 50%, transparent 56% 100%);
-            transform: translateX(-130%);
-            transition: transform 0.8s ease;
-            pointer-events: none;
-        }
-
-        .image-frame:hover {
-            border-color: rgba(var(--accent-rgb), 0.38);
-            box-shadow: 0 32px 78px -44px rgba(var(--accent-rgb), 0.52);
-            transform: translateY(-4px);
-        }
-
-        .image-frame:hover::after {
-            transform: translateX(130%);
-        }
-
-        .primary-button,
-        .secondary-button {
-            border-radius: 8px !important;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .primary-button:hover,
-        .secondary-button:hover {
+        .source-card:hover,
+        .contact-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             transform: translateY(-2px);
-            box-shadow: 0 18px 34px -24px rgba(255, 255, 255, 0.95);
         }
 
-        .hero-gradient .primary-button {
-            background: rgba(255, 255, 255, 0.96) !important;
-            color: var(--blue-dark) !important;
+        .feature-card {
+            min-height: 260px;
         }
 
-        .hero-gradient .secondary-button:hover {
-            background: rgba(255, 255, 255, 0.96) !important;
-            color: var(--blue-dark) !important;
+        .feature-card.large {
+            grid-column: span 3;
         }
 
-        #contact {
-            background: var(--contact-bg) !important;
+        .feature-card.medium {
+            grid-column: span 2;
         }
 
-        #contact .rounded-2xl,
-        footer {
-            border-top: 1px solid rgba(191, 219, 254, 0.16);
+        .feature-card.wide {
+            grid-column: span 4;
         }
 
-        footer {
-            background: var(--footer-bg) !important;
+        .feature-card h3 {
+            margin-top: 22px;
+            font-size: 1.24rem;
         }
 
-        .view-options {
-            position: fixed;
-            right: 22px;
-            bottom: 22px;
-            z-index: 60;
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-        }
-
-        .view-options__toggle {
-            width: 48px;
-            height: 48px;
-            border: 1px solid rgba(var(--accent-rgb), 0.38);
-            border-radius: 8px;
-            background: var(--surface);
-            color: var(--blue);
-            box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.7);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-        }
-
-        .view-options__toggle:hover,
-        .view-options__toggle:focus-visible {
-            transform: translateY(-3px) rotate(8deg);
-            box-shadow: 0 22px 48px -25px rgba(var(--accent-rgb), 0.72);
-            outline: none;
-        }
-
-        .view-options__panel {
-            width: min(340px, calc(100vw - 32px));
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: color-mix(in srgb, var(--surface) 94%, transparent);
-            box-shadow: 0 28px 80px -42px rgba(15, 23, 42, 0.72);
-            padding: 16px;
-            backdrop-filter: blur(18px);
-            transform-origin: right bottom;
-            animation: panelIn 0.24s ease both;
-        }
-
-        .view-options__panel[hidden] {
-            display: none;
-        }
-
-        .view-options__header,
-        .view-options__row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-        }
-
-        .view-options__header {
-            margin-bottom: 14px;
-        }
-
-        .view-options__title {
-            color: var(--ink);
+        .feature-card p,
+        .mode-card p {
+            margin-top: 12px;
             font-size: 15px;
-            font-weight: 800;
         }
 
-        .view-options__hint {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .view-options__close {
+        .mode-list {
             display: grid;
-            width: 34px;
-            height: 34px;
-            place-items: center;
-            border-radius: 8px;
+            grid-template-columns: repeat(7, minmax(220px, 1fr));
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scroll-snap-type: x proximity;
+        }
+
+        .mode-card {
+            min-height: 250px;
+            scroll-snap-align: start;
+        }
+
+        .mode-number {
             color: var(--muted);
-            transition: background-color 0.2s ease, color 0.2s ease;
+            font-family: "Newsreader", Georgia, serif;
+            font-size: 3.8rem;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
         }
 
-        .view-options__close:hover,
-        .view-options__close:focus-visible {
-            background: var(--surface-muted);
-            color: var(--ink);
-            outline: none;
+        .mode-card h3 {
+            margin-top: 26px;
+            font-size: 1.12rem;
         }
 
-        .view-options__row {
+        .hardware-layout {
+            display: grid;
+            grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1fr);
+            gap: 32px;
+            align-items: stretch;
+        }
+
+        .hardware-points {
+            display: grid;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hardware-point {
+            display: grid;
+            grid-template-columns: 34px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
             border-top: 1px solid var(--line);
             padding-top: 14px;
         }
 
-        .view-options__row + .view-options__row {
-            margin-top: 14px;
+        .hardware-point i {
+            color: var(--green-ink);
+            font-size: 20px;
+            padding-top: 2px;
         }
 
-        .view-options__label {
+        .source-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 16px;
+        }
+
+        .source-card {
+            display: flex;
+            min-height: 100%;
+            flex-direction: column;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .source-card__body {
+            padding: 26px;
+        }
+
+        .source-card h3 {
+            margin-top: 18px;
+            font-size: 1.35rem;
+        }
+
+        .source-card p {
+            margin-top: 12px;
+            font-size: 15px;
+        }
+
+        .code-window {
+            margin-top: auto;
+            border-top: 1px solid var(--line);
+            background: #171717;
+        }
+
+        .window-chrome {
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 12px;
+        }
+
+        .window-chrome span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.24);
+        }
+
+        pre {
+            margin: 0;
+            max-height: 348px;
+            overflow: auto;
+            padding: 18px;
+            color: #f7f6f3;
+            font-family: "SF Mono", "Geist Mono", "JetBrains Mono", Consolas, monospace;
+            font-size: 12.5px;
+            line-height: 1.62;
+        }
+
+        .source-shot,
+        .optional-image {
+            display: block;
+            margin-top: 20px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper-soft);
+            overflow: hidden;
+        }
+
+        .source-shot img,
+        .optional-image img {
+            display: block;
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            object-position: left top;
+            filter: saturate(0.9);
+        }
+
+        .optional-image {
+            min-height: 280px;
+        }
+
+        .optional-placeholder {
+            display: grid;
+            min-height: 280px;
+            place-items: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .optional-placeholder strong {
+            display: block;
             color: var(--ink);
-            font-size: 13px;
+            font-size: 1rem;
+        }
+
+        .optional-placeholder span {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-family: "SF Mono", Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+            gap: 16px;
+        }
+
+        .contact-card {
+            padding: 30px;
+        }
+
+        .contact-list {
+            display: grid;
+            gap: 16px;
+            margin-top: 26px;
+        }
+
+        .contact-item {
+            display: grid;
+            grid-template-columns: 36px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+            border-top: 1px solid var(--line);
+            padding-top: 16px;
+        }
+
+        .contact-item i {
+            color: var(--ink);
+            font-size: 20px;
+        }
+
+        .footer {
+            border-top: 1px solid var(--line);
+            background: var(--paper);
+            padding: 48px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.15fr repeat(3, minmax(0, 0.72fr));
+            gap: 30px;
+        }
+
+        .footer h4 {
+            color: var(--ink);
+            font-size: 14px;
             font-weight: 700;
         }
 
-        .segmented-control {
-            display: grid;
-            grid-auto-flow: column;
-            gap: 4px;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: var(--surface-muted);
-            padding: 4px;
-        }
-
-        .segmented-control button,
-        .font-control button {
-            min-width: 38px;
-            height: 34px;
-            border-radius: 7px;
+        .footer p,
+        .footer a {
             color: var(--muted);
-            font-size: 13px;
-            font-weight: 800;
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            font-size: 14px;
         }
 
-        .segmented-control button:hover,
-        .segmented-control button:focus-visible,
-        .font-control button:hover,
-        .font-control button:focus-visible {
+        .footer a:hover,
+        .footer a:focus-visible {
             color: var(--ink);
             outline: none;
-            transform: translateY(-1px);
         }
 
-        .segmented-control button.is-active,
-        .font-control button.is-active {
-            background: var(--surface);
-            color: var(--blue);
-            box-shadow: 0 10px 18px -16px rgba(var(--accent-rgb), 0.9);
+        .mobile-menu {
+            display: none;
+            border-top: 1px solid var(--line);
+            padding: 16px 0;
         }
 
-        .swatch-control,
-        .font-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .swatch-control button {
-            width: 28px;
-            height: 28px;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36), 0 8px 18px -14px rgba(15, 23, 42, 0.8);
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .swatch-control button:hover,
-        .swatch-control button:focus-visible {
-            transform: translateY(-2px);
-            outline: none;
-        }
-
-        .swatch-control button.is-active {
-            border-color: var(--ink);
-            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18), 0 12px 22px -16px rgba(var(--accent-rgb), 1);
-        }
-
-        .swatch-blue {
-            background: linear-gradient(135deg, #2563eb, #0891b2);
-        }
-
-        .swatch-emerald {
-            background: linear-gradient(135deg, #059669, #65a30d);
-        }
-
-        .swatch-rose {
-            background: linear-gradient(135deg, #e11d48, #f97316);
-        }
-
-        .swatch-violet {
-            background: linear-gradient(135deg, #7c3aed, #0ea5e9);
-        }
-
-        .toggle-switch {
-            display: inline-flex;
-            width: 56px;
-            height: 32px;
-            align-items: center;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            background: var(--surface-muted);
-            padding: 3px;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-        }
-
-        .toggle-switch::before {
-            content: "";
-            width: 24px;
-            height: 24px;
-            border-radius: 999px;
-            background: var(--muted);
-            transition: transform 0.24s ease, background-color 0.24s ease;
-        }
-
-        .toggle-switch.is-active {
-            border-color: rgba(var(--accent-rgb), 0.45);
-            background: rgba(var(--accent-rgb), 0.14);
-        }
-
-        .toggle-switch.is-active::before {
-            background: var(--blue);
-            transform: translateX(24px);
+        .footer-copy {
+            margin-top: 40px;
+            border-top: 1px solid var(--line);
+            padding-top: 24px;
+            color: var(--muted);
+            font-size: 14px;
         }
 
         [data-reveal] {
             opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.72s ease, transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
-            transition-delay: var(--reveal-delay, 0ms);
-            will-change: opacity, transform;
-        }
-
-        [data-reveal="left"] {
-            transform: translateX(-34px);
-        }
-
-        [data-reveal="right"] {
-            transform: translateX(34px);
+            transform: translateY(12px);
+            transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: var(--delay, 0ms);
         }
 
         [data-reveal].is-visible {
             opacity: 1;
-            transform: translate(0, 0);
-        }
-
-        html[data-motion="calm"] *,
-        html[data-motion="calm"] *::before,
-        html[data-motion="calm"] *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            scroll-behavior: auto !important;
-        }
-
-        html[data-motion="calm"] [data-reveal] {
-            opacity: 1 !important;
-            transform: none !important;
-            transition: none !important;
-        }
-
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0.88;
-                transform: translateY(18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes heroScan {
-            0%,
-            100% {
-                transform: translateX(-38%);
-            }
-
-            50% {
-                transform: translateX(38%);
-            }
-        }
-
-        @keyframes gridDrift {
-            from {
-                background-position: 0 0, 0 0;
-            }
-
-            to {
-                background-position: 54px 54px, -54px 54px;
-            }
-        }
-
-        @keyframes deviceFloat {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes panelIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px) scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            transform: translateY(0);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -781,784 +840,1031 @@
             }
         }
 
+        @media (max-width: 980px) {
+            .hero-grid,
+            .editorial-grid,
+            .hardware-layout,
+            .source-grid,
+            .contact-grid,
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-media img {
+                min-height: 380px;
+            }
+
+            .bento-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .feature-card.large,
+            .feature-card.medium,
+            .feature-card.wide {
+                grid-column: span 1;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
-            .hero-gradient {
-                background-position: center;
-                min-height: auto;
+            .desktop-links {
+                display: none !important;
             }
 
-            .hero-content {
-                max-width: min(100%, 22rem);
+            .nav-actions {
+                gap: 8px;
             }
 
-            .hero-content h1 {
-                font-size: clamp(2.75rem, 13vw, 3.75rem);
-                line-height: 1;
+            .mobile-menu.is-open {
+                display: grid;
             }
 
-            .hero-content > .flex {
-                align-items: flex-start;
-                flex-direction: column;
+            .hero-section {
+                padding-top: 56px;
             }
 
-            .hero-content > .flex a {
-                justify-content: center;
-                width: min(100%, 270px);
+            .hero-title {
+                max-width: 100%;
+                font-size: clamp(2.75rem, 12vw, 3.65rem);
+                overflow-wrap: anywhere;
             }
 
-            .hero-content > .grid {
+            .hero-copy {
+                max-width: 100%;
+                font-size: 1rem;
+            }
+
+            .hero-actions .button {
+                flex: 1 1 100%;
                 max-width: 100%;
             }
 
-            .view-options {
-                right: 16px;
-                bottom: 16px;
+            .metrics {
+                grid-template-columns: 1fr;
             }
 
-            .view-options__panel {
-                max-height: calc(100vh - 112px);
-                overflow-y: auto;
+            .metric + .metric {
+                border-left: 0;
+                border-top: 1px solid var(--line);
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 76px 0;
+            }
+
+            .source-card__body,
+            .feature-card,
+            .mode-card,
+            .contact-card,
+            .content-card {
+                padding: 22px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .brand-name {
+                display: none;
+            }
+
+            .nav-actions {
+                gap: 5px;
+            }
+
+            .language-switch {
+                grid-template-columns: repeat(2, 30px);
+            }
+
+            .theme-switch {
+                grid-template-columns: repeat(2, 28px);
+            }
+
+            .language-switch button,
+            .theme-switch button {
+                min-height: 28px;
+            }
+
+            .menu-button {
+                width: 34px;
+                height: 34px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-button,
+            .mobile-menu {
+                display: none !important;
             }
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans">
-    <nav class="sticky top-0 z-50 bg-white/90 shadow-sm">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="assets/images/Logo-notext-transparent.png" width="45" alt="Logo Artificial Eyes">
-                    <span class="ml-3 text-xl font-bold text-gray-800">Artificial Eyes</span>
+<body>
+    <nav class="site-nav">
+        <div class="container-shell">
+            <div class="flex min-h-[70px] items-center justify-between gap-4">
+                <a href="#top" class="flex items-center gap-3" aria-label="Artificial Eyes">
+                    <img class="brand-mark" src="assets/images/Logo-notext-transparent.png" alt="Artificial Eyes logo">
+                    <span class="brand-name">Artificial Eyes</span>
+                </a>
+
+                <div class="desktop-links">
+                    <a class="nav-link" href="#about" data-i18n="nav.about">Giới thiệu</a>
+                    <a class="nav-link" href="#features" data-i18n="nav.features">Tính năng</a>
+                    <a class="nav-link" href="#modes" data-i18n="nav.modes">Chế độ</a>
+                    <a class="nav-link" href="#hardware" data-i18n="nav.hardware">Phần cứng</a>
+                    <a class="nav-link" href="#source" data-i18n="nav.source">Mã nguồn</a>
+                    <a class="nav-link" href="#contact" data-i18n="nav.contact">Liên hệ</a>
                 </div>
-                <div class="hidden items-center space-x-7 text-sm font-semibold md:flex">
-                    <a href="#about" class="text-gray-700 transition hover:text-blue-600">Giới thiệu</a>
-                    <a href="#features" class="text-gray-700 transition hover:text-blue-600">Tính năng</a>
-                    <a href="#modes" class="text-gray-700 transition hover:text-blue-600">Chế độ</a>
-                    <a href="#hardware" class="text-gray-700 transition hover:text-blue-600">Phần cứng</a>
-                    <a href="#source" class="text-gray-700 transition hover:text-blue-600">Mã nguồn</a>
-                    <a href="#contact" class="text-gray-700 transition hover:text-blue-600">Liên hệ</a>
+
+                <div class="nav-actions">
+                    <div class="theme-switch" aria-label="Chọn chế độ giao diện">
+                        <button type="button" data-theme-button="light" aria-pressed="true" aria-label="Chế độ sáng"
+                            title="Chế độ sáng">
+                            <i class="ph-bold ph-sun"></i>
+                        </button>
+                        <button type="button" data-theme-button="dark" aria-pressed="false" aria-label="Chế độ tối"
+                            title="Chế độ tối">
+                            <i class="ph-bold ph-moon"></i>
+                        </button>
+                    </div>
+                    <div class="language-switch" aria-label="Chọn ngôn ngữ">
+                        <button type="button" data-lang-button="vi" aria-pressed="true">VI</button>
+                        <button type="button" data-lang-button="en" aria-pressed="false">EN</button>
+                    </div>
+                    <button class="menu-button" id="menu-toggle" type="button" aria-expanded="false"
+                        aria-controls="mobile-menu" aria-label="Mở menu">
+                        <i class="ph-bold ph-list"></i>
+                    </button>
                 </div>
-                <button class="md:hidden focus:outline-none" type="button" aria-label="Mở menu">
-                    <i class="fas fa-bars text-2xl text-gray-800"></i>
-                </button>
             </div>
-            <div id="mobile-menu" class="mt-4 hidden flex-col space-y-3 border-t border-gray-200 pt-4 md:hidden">
-                <a href="#about" class="text-gray-800 hover:text-blue-600">Giới thiệu</a>
-                <a href="#features" class="text-gray-800 hover:text-blue-600">Tính năng</a>
-                <a href="#modes" class="text-gray-800 hover:text-blue-600">Chế độ</a>
-                <a href="#hardware" class="text-gray-800 hover:text-blue-600">Phần cứng</a>
-                <a href="#source" class="text-gray-800 hover:text-blue-600">Mã nguồn</a>
-                <a href="#contact" class="text-gray-800 hover:text-blue-600">Liên hệ</a>
+
+            <div id="mobile-menu" class="mobile-menu gap-3">
+                <a class="nav-link" href="#about" data-i18n="nav.about.mobile">Giới thiệu</a>
+                <a class="nav-link" href="#features" data-i18n="nav.features.mobile">Tính năng</a>
+                <a class="nav-link" href="#modes" data-i18n="nav.modes.mobile">Chế độ</a>
+                <a class="nav-link" href="#hardware" data-i18n="nav.hardware.mobile">Phần cứng</a>
+                <a class="nav-link" href="#source" data-i18n="nav.source.mobile">Mã nguồn</a>
+                <a class="nav-link" href="#contact" data-i18n="nav.contact.mobile">Liên hệ</a>
             </div>
         </div>
     </nav>
 
-    <div class="view-options" aria-label="Tùy chọn giao diện">
-        <div id="view-options-panel" class="view-options__panel" hidden>
-            <div class="view-options__header">
-                <div>
-                    <p class="view-options__title">Tùy chọn hiển thị</p>
-                    <p class="view-options__hint">Các lựa chọn được lưu tự động trên trình duyệt này.</p>
-                </div>
-                <button class="view-options__close" type="button" aria-label="Đóng tùy chọn" title="Đóng">
-                    <i class="fas fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="view-options__row">
-                <span class="view-options__label">Giao diện</span>
-                <div class="segmented-control" role="group" aria-label="Chọn giao diện">
-                    <button type="button" data-theme-choice="light" aria-label="Giao diện sáng" title="Sáng">
-                        <i class="fas fa-sun"></i>
-                    </button>
-                    <button type="button" data-theme-choice="dark" aria-label="Giao diện tối" title="Tối">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button type="button" data-theme-choice="system" aria-label="Theo hệ thống" title="Theo hệ thống">
-                        <i class="fas fa-display"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="view-options__row">
-                <span class="view-options__label">Màu nhấn</span>
-                <div class="swatch-control" role="group" aria-label="Chọn màu nhấn">
-                    <button class="swatch-blue" type="button" data-accent-choice="blue" aria-label="Xanh dương" title="Xanh dương"></button>
-                    <button class="swatch-emerald" type="button" data-accent-choice="emerald" aria-label="Xanh lá" title="Xanh lá"></button>
-                    <button class="swatch-rose" type="button" data-accent-choice="rose" aria-label="Hồng cam" title="Hồng cam"></button>
-                    <button class="swatch-violet" type="button" data-accent-choice="violet" aria-label="Tím xanh" title="Tím xanh"></button>
-                </div>
-            </div>
-
-            <div class="view-options__row">
-                <span class="view-options__label">Cỡ chữ</span>
-                <div class="font-control" role="group" aria-label="Chọn cỡ chữ">
-                    <button type="button" data-font-choice="normal" aria-label="Cỡ chữ thường" title="Cỡ chữ thường">A</button>
-                    <button type="button" data-font-choice="large" aria-label="Cỡ chữ lớn" title="Cỡ chữ lớn">A+</button>
-                </div>
-            </div>
-
-            <div class="view-options__row">
-                <span class="view-options__label">Hiệu ứng</span>
-                <button id="motion-toggle" class="toggle-switch" type="button" role="switch" aria-checked="true"
-                    aria-label="Bật hoặc giảm hiệu ứng chuyển động" title="Bật hoặc giảm hiệu ứng"></button>
-            </div>
-        </div>
-
-        <button id="view-options-toggle" class="view-options__toggle" type="button" aria-expanded="false"
-            aria-controls="view-options-panel" aria-label="Mở tùy chọn giao diện" title="Tùy chọn giao diện">
-            <i class="fas fa-sliders"></i>
-        </button>
-    </div>
-
-    <section class="hero-gradient flex items-center py-20 text-white">
-        <div class="container mx-auto px-6">
-            <div class="hero-content">
-                <div class="hero-badge mb-6">
-                    <i class="fas fa-eye"></i>
-                    Trợ lý AI đeo trước ngực cho người khiếm thị
-                </div>
-                <h1 class="mb-6 text-5xl font-extrabold leading-tight md:text-7xl">Artificial Eyes</h1>
-                <h2 class="mb-6 max-w-2xl text-2xl font-semibold text-blue-100 md:text-3xl">
-                    Giải pháp hỗ trợ người khiếm thị bằng AI
-                </h2>
-                <p class="mb-8 max-w-2xl text-lg leading-8 text-blue-50">
-                    Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng giúp người khiếm thị di chuyển
-                    an toàn, đọc văn bản, nhận diện người xung quanh và liên lạc khẩn cấp thuận tiện hơn.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#features"
-                        class="primary-button bg-white px-6 py-3 font-semibold text-blue-700 transition duration-300 hover:bg-blue-50">
-                        <i class="fas fa-arrow-down"></i>
-                        Khám phá tính năng
-                    </a>
-                    <a href="#contact"
-                        class="secondary-button border border-white/70 px-6 py-3 font-semibold text-white transition duration-300 hover:bg-white hover:text-blue-700">
-                        <i class="fas fa-envelope"></i>
-                        Tìm hiểu thêm
-                    </a>
-                </div>
-                <div class="mt-10 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-                    <div class="hero-stat">
-                        <p class="text-2xl font-bold">&lt; 1s</p>
-                        <p class="mt-1 text-sm text-blue-100">Phản hồi cảnh báo</p>
-                    </div>
-                    <div class="hero-stat">
-                        <p class="text-2xl font-bold">4</p>
-                        <p class="mt-1 text-sm text-blue-100">Cảm biến siêu âm</p>
-                    </div>
-                    <div class="hero-stat">
-                        <p class="text-2xl font-bold">7</p>
-                        <p class="mt-1 text-sm text-blue-100">Chế độ hỗ trợ</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="bg-white py-24">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <p class="section-kicker">Tổng quan</p>
-                <h2 class="section-title mb-4 text-3xl md:text-4xl">Giới thiệu dự án</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="flex flex-col items-center md:flex-row">
-                <div class="image-frame mb-10 md:mb-0 md:w-1/2">
-                    <img src="assets/images/about-user.jpg" alt="Người dùng trải nghiệm Artificial Eyes"
-                        class="w-full">
-                </div>
-                <div class="md:w-1/2 md:pl-12">
-                    <h3 class="mb-6 text-2xl font-bold text-gray-800">Trao thêm sự chủ động cho người khiếm thị</h3>
-                    <p class="mb-6 text-gray-600">
-                        Artificial Eyes được xây dựng với mục tiêu tạo ra một giải pháp hỗ trợ toàn diện cho người
-                        khiếm thị trong đời sống hằng ngày. Thay vì chỉ giải quyết một nhu cầu riêng lẻ, hệ thống tích
-                        hợp nhiều chức năng quan trọng vào cùng một nền tảng duy nhất.
-                    </p>
-                    <p class="mb-6 text-gray-600">
-                        Sản phẩm kết hợp phần mềm trên điện thoại, xử lý AI, điều khiển bằng giọng nói và phần cứng
-                        đeo trước ngực để hỗ trợ di chuyển, đọc văn bản, nhận diện người ở gần, cập nhật thời gian,
-                        thời tiết và gửi cảnh báo khẩn cấp khi cần.
-                    </p>
-                    <div class="flex items-center">
-                        <i class="fas fa-lightbulb mr-4 text-3xl text-yellow-500"></i>
-                        <p class="font-semibold text-gray-600">
-                            Định hướng chi phí hợp lý, dễ tiếp cận và phù hợp điều kiện sử dụng thực tế tại Việt Nam
+    <main id="top">
+        <section class="hero-section">
+            <div class="container-shell">
+                <div class="hero-grid">
+                    <div data-reveal>
+                        <div class="eyebrow">
+                            <i class="ph-fill ph-eye"></i>
+                            <span data-i18n="hero.eyebrow">Trợ lý AI đeo trước ngực</span>
+                        </div>
+                        <h1 class="hero-title"><span>Artificial</span><span>Eyes</span></h1>
+                        <p class="hero-copy" data-i18n="hero.copy">
+                            Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng để hỗ trợ người
+                            khiếm thị di chuyển an toàn, đọc văn bản, nhận diện người ở gần và gửi cảnh báo khẩn cấp.
                         </p>
+                        <div class="hero-actions">
+                            <a href="#features" class="button primary">
+                                <i class="ph-bold ph-arrow-down"></i>
+                                <span data-i18n="hero.primary">Khám phá tính năng</span>
+                            </a>
+                            <a href="#source" class="button secondary">
+                                <i class="ph-bold ph-code"></i>
+                                <span data-i18n="hero.secondary">Xem mã nguồn</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <figure class="hero-media" data-reveal>
+                        <img src="assets/images/hero-device.jpg" alt="Thiết bị Artificial Eyes">
+                    </figure>
+                </div>
+
+                <div class="metrics" data-reveal>
+                    <div class="metric">
+                        <strong>&lt;1s</strong>
+                        <span data-i18n="metric.response">Phản hồi cảnh báo</span>
+                    </div>
+                    <div class="metric">
+                        <strong>4</strong>
+                        <span data-i18n="metric.sensors">Cảm biến siêu âm</span>
+                    </div>
+                    <div class="metric">
+                        <strong>7</strong>
+                        <span data-i18n="metric.modes">Chế độ hỗ trợ</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="features" class="bg-slate-50 py-24">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <p class="section-kicker">Điểm mạnh</p>
-                <h2 class="section-title mb-4 text-3xl md:text-4xl">Tính năng nổi bật</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                        <i class="fas fa-brain text-3xl text-blue-600"></i>
+        <section id="about" class="section">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="about.kicker">Tổng quan</p>
+                        <h2 class="section-title" data-i18n="about.title">Một hệ hỗ trợ gọn, có thể đeo và dễ mở rộng</h2>
                     </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">Hỗ trợ bằng AI</h3>
-                    <p class="text-gray-600">
-                        Ứng dụng AI để nhận diện vật cản, xử lý văn bản, trả lời câu hỏi bằng giọng nói và hỗ trợ người
-                        dùng trong nhiều tình huống khác nhau.
-                    </p>
-                </div>
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                        <i class="fas fa-robot text-3xl text-blue-600"></i>
-                    </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">7 chế độ tích hợp</h3>
-                    <p class="text-gray-600">
-                        Bao gồm hỗ trợ di chuyển, đọc văn bản, trò chuyện với AI, báo giờ, cập nhật thời tiết,
-                        nhận diện người ở gần và cảnh báo khẩn cấp.
-                    </p>
-                </div>
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-sky-100">
-                        <i class="fas fa-print text-3xl text-sky-600"></i>
-                    </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">Vỏ phần cứng in 3D</h3>
-                    <p class="text-gray-600">
-                        Thiết kế gọn nhẹ, dễ đeo trước ngực, tối ưu cho việc bố trí cảm biến và phù hợp với quá trình
-                        phát triển nguyên mẫu thực tế.
-                    </p>
-                </div>
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-cyan-100">
-                        <i class="fas fa-microphone-alt text-3xl text-cyan-600"></i>
-                    </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">Điều khiển bằng giọng nói</h3>
-                    <p class="text-gray-600">
-                        Giao diện và quy trình sử dụng ưu tiên khẩu lệnh để giúp người dùng thao tác thuận tiện và giảm
-                        phụ thuộc vào thao tác tay.
-                    </p>
-                </div>
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
-                        <i class="fas fa-mobile-alt text-3xl text-indigo-600"></i>
-                    </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">Tận dụng điện thoại thông minh</h3>
-                    <p class="text-gray-600">
-                        Sử dụng camera, loa, micro, GPS và kết nối không dây trên điện thoại để giảm chi phí và mở rộng
-                        khả năng triển khai thực tế.
-                    </p>
-                </div>
-                <div class="feature-card rounded-xl bg-white p-8 shadow-md transition duration-300">
-                    <div class="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
-                        <i class="fas fa-shield-heart text-3xl text-amber-600"></i>
-                    </div>
-                    <h3 class="mb-3 text-xl font-bold text-gray-800">Cảnh báo an toàn</h3>
-                    <p class="text-gray-600">
-                        Khi phát hiện té ngã kéo dài, hệ thống có thể phát cảnh báo và liên hệ người thân theo số điện
-                        thoại đã được cài đặt trước.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="modes" class="bg-white py-24">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <p class="section-kicker">Luồng sử dụng</p>
-                <h2 class="section-title mb-4 text-3xl md:text-4xl">Bảy chế độ hỗ trợ chính</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                            <i class="fas fa-walking mode-icon text-xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Hỗ trợ di chuyển</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Camera và AI giúp phát hiện người hoặc vật cản, kết hợp cảm biến siêu âm để thông báo khoảng
-                        cách, giúp người dùng di chuyển an toàn hơn.
+                    <p class="section-copy" data-i18n="about.copy">
+                        Artificial Eyes tập trung vào các tình huống thường gặp trong đời sống: di chuyển, đọc nội dung,
+                        nhận lệnh bằng giọng nói, phản hồi bằng âm thanh và liên hệ người thân khi cần.
                     </p>
                 </div>
 
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                            <i class="fas fa-book-reader mode-icon text-xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Chế độ đọc văn bản</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Ứng dụng chụp ảnh văn bản, dùng OCR để nhận diện nội dung rồi đọc lại bằng giọng nói cho người dùng.
-                    </p>
-                </div>
-
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-sky-100">
-                            <i class="fas fa-comments mode-icon text-xl text-sky-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Trợ lý trò chuyện AI</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Lắng nghe câu hỏi của người dùng, gửi nội dung để xử lý và đọc lại câu trả lời bằng giọng nói.
-                    </p>
-                </div>
-
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                            <i class="fas fa-clock mode-icon text-xl text-red-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Báo giờ</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Cung cấp thời gian hiện tại và nhắc các mốc thông tin cần thiết cho người sử dụng.
-                    </p>
-                </div>
-
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100">
-                            <i class="fas fa-cloud-sun mode-icon text-xl text-cyan-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Cập nhật thời tiết</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Thông báo thời tiết hiện tại và gợi ý cơ bản trước khi người dùng ra ngoài.
-                    </p>
-                </div>
-
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
-                            <i class="fas fa-user-shield mode-icon text-xl text-indigo-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Nhận diện người ở gần</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Hệ thống hỗ trợ nhận diện người thân hoặc người xung quanh để tăng cảm giác an tâm cho người dùng.
-                    </p>
-                </div>
-
-                <div class="mode-card rounded-xl bg-gray-50 p-6 transition duration-300">
-                    <div class="mb-4 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-pink-100">
-                            <i class="fas fa-triangle-exclamation mode-icon text-xl text-pink-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Cảnh báo khẩn cấp</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Khi phát hiện té ngã hoặc tình huống bất thường, hệ thống có thể kích hoạt cảnh báo để liên hệ người thân.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="hardware" class="bg-slate-50 py-24">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <p class="section-kicker">Nguyên mẫu</p>
-                <h2 class="section-title mb-4 text-3xl md:text-4xl">Phần cứng in 3D</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="flex flex-col items-center md:flex-row">
-                <div class="image-frame mb-10 bg-white p-3 md:mb-0 md:w-1/2">
-                    <img src="assets/images/hardware-shell.jpg" alt="Phần cứng Artificial Eyes"
-                        class="hardware-img mx-auto w-full max-w-md">
-                </div>
-                <div class="md:w-1/2 md:pl-12">
-                    <h3 class="mb-6 text-2xl font-bold text-gray-800">Thiết kế tối ưu cho việc đeo và cảnh báo khoảng cách</h3>
-                    <p class="mb-6 text-gray-600">
-                        Vỏ phần cứng được phát triển qua nhiều lần thử nghiệm để bố trí cảm biến hợp lý hơn, tăng độ ổn
-                        định khi sử dụng và giúp hệ thống gọn nhẹ hơn khi đeo trước ngực.
-                    </p>
-                    <ul class="mb-6 space-y-3">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
-                            <span class="text-gray-600">Bố trí chính xác cho cảm biến siêu âm HC-SR04</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
-                            <span class="text-gray-600">Thiết kế dễ đeo, phù hợp thử nghiệm thực tế</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle mr-2 mt-1 text-blue-500"></i>
-                            <span class="text-gray-600">Hỗ trợ quá trình nâng cấp từ mô hình carton sang nguyên mẫu 3D</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="source" class="bg-white py-24">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <p class="section-kicker">Minh bạch kỹ thuật</p>
-                <h2 class="section-title mb-4 text-3xl md:text-4xl">Mã nguồn dự án</h2>
-                <div class="section-line"></div>
-                <p class="mx-auto mt-6 max-w-3xl text-gray-600">
-                    Dự án gồm mã phần cứng điều khiển ESP32 và phần mềm di động được xây dựng bằng MIT App Inventor.
-                    Hai phần này phối hợp để nhận dữ liệu cảm biến, xử lý chế độ hỗ trợ và phản hồi bằng giọng nói.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                <div class="rounded-xl bg-gray-50 p-6 shadow-md">
-                    <div class="mb-5 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                            <i class="fas fa-microchip text-xl text-blue-600"></i>
-                        </div>
+                <div class="editorial-grid">
+                    <figure class="image-card" data-reveal>
+                        <img src="assets/images/about-user.jpg" alt="Người dùng trải nghiệm Artificial Eyes">
+                    </figure>
+                    <article class="content-card" data-reveal>
                         <div>
-                            <h3 class="text-xl font-bold text-gray-800">Mã nguồn phần cứng</h3>
-                            <p class="text-sm text-gray-500">ESP32, Bluetooth, servo và cảm biến siêu âm</p>
+                            <span class="tag blue" data-i18n="about.tag">Định hướng sử dụng thực tế</span>
+                            <h3 data-i18n="about.cardTitle">Trao thêm sự chủ động cho người khiếm thị</h3>
+                            <p data-i18n="about.p1">
+                                Sản phẩm kết hợp phần mềm trên điện thoại, xử lý AI, điều khiển bằng giọng nói và phần
+                                cứng đeo trước ngực. Cách tiếp cận này giúp giảm thao tác tay và gom nhiều chức năng vào
+                                cùng một nền tảng.
+                            </p>
+                            <p data-i18n="about.p2">
+                                Nhóm phát triển ưu tiên chi phí hợp lý, cấu trúc dễ thử nghiệm và khả năng nâng cấp từ
+                                nguyên mẫu phần cứng sang các phiên bản hoàn thiện hơn.
+                            </p>
                         </div>
-                    </div>
-                    <p class="mb-5 text-gray-600">
-                        File mã nguồn phần cứng cấu hình 4 cảm biến siêu âm HC-SR04, 4 servo và gửi tín hiệu cảnh báo
-                        qua Bluetooth về ứng dụng điện thoại.
-                    </p>
-                    <div class="mb-5 overflow-hidden rounded-lg border border-blue-100 bg-slate-950">
-                        <pre class="max-h-64 overflow-auto p-4 text-sm leading-6 text-blue-50"><code>#include &lt;BluetoothSerial.h&gt;
-#include &lt;ESP32Servo.h&gt;
+                        <div class="note-row">
+                            <span class="icon-box"><i class="ph-bold ph-lightbulb"></i></span>
+                            <p class="!mt-0 font-semibold" data-i18n="about.note">
+                                Thiết kế phù hợp bối cảnh sử dụng tại Việt Nam, nơi điện thoại thông minh có thể đóng
+                                vai trò trung tâm xử lý và phản hồi.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-#define WARNING_LOW 40
+        <section id="features" class="section alt">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="features.kicker">Điểm mạnh</p>
+                        <h2 class="section-title" data-i18n="features.title">Tính năng được xếp theo nhu cầu sử dụng</h2>
+                    </div>
+                    <p class="section-copy" data-i18n="features.copy">
+                        Giao diện, phần cứng và mã điều khiển đều phục vụ cùng một mục tiêu: cảnh báo rõ, phản hồi nhanh
+                        và thao tác ít bước.
+                    </p>
+                </div>
+
+                <div class="bento-grid">
+                    <article class="feature-card large" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-brain"></i></span>
+                        <h3 data-i18n="feature.ai.title">Hỗ trợ bằng AI</h3>
+                        <p data-i18n="feature.ai.copy">
+                            Nhận diện vật cản, xử lý văn bản, trả lời câu hỏi bằng giọng nói và hỗ trợ người dùng trong
+                            nhiều tình huống khác nhau.
+                        </p>
+                    </article>
+                    <article class="feature-card medium" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-stack"></i></span>
+                        <h3 data-i18n="feature.modes.title">7 chế độ tích hợp</h3>
+                        <p data-i18n="feature.modes.copy">
+                            Di chuyển, đọc văn bản, trò chuyện AI, báo giờ, thời tiết, nhận diện người ở gần và cảnh báo
+                            khẩn cấp.
+                        </p>
+                    </article>
+                    <article class="feature-card medium" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-cube"></i></span>
+                        <h3 data-i18n="feature.hardware.title">Vỏ phần cứng in 3D</h3>
+                        <p data-i18n="feature.hardware.copy">
+                            Thiết kế gọn để đeo trước ngực, bố trí cảm biến có chủ đích và phù hợp quá trình thử nghiệm
+                            thực tế.
+                        </p>
+                    </article>
+                    <article class="feature-card medium" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-microphone"></i></span>
+                        <h3 data-i18n="feature.voice.title">Điều khiển bằng giọng nói</h3>
+                        <p data-i18n="feature.voice.copy">
+                            Ưu tiên khẩu lệnh để người dùng chuyển chế độ và nhận phản hồi mà không phụ thuộc nhiều vào
+                            thao tác chạm.
+                        </p>
+                    </article>
+                    <article class="feature-card wide" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-device-mobile-camera"></i></span>
+                        <h3 data-i18n="feature.phone.title">Tận dụng điện thoại thông minh</h3>
+                        <p data-i18n="feature.phone.copy">
+                            Dùng camera, loa, micro, GPS và kết nối không dây trên điện thoại để giảm chi phí phần cứng
+                            riêng và dễ triển khai hơn.
+                        </p>
+                    </article>
+                    <article class="feature-card medium" data-reveal>
+                        <span class="icon-box"><i class="ph-bold ph-shield-check"></i></span>
+                        <h3 data-i18n="feature.safe.title">Cảnh báo an toàn</h3>
+                        <p data-i18n="feature.safe.copy">
+                            Khi phát hiện té ngã hoặc tình huống bất thường, hệ thống có thể kích hoạt cảnh báo và liên
+                            hệ người thân.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="modes" class="section">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="modes.kicker">Luồng sử dụng</p>
+                        <h2 class="section-title" data-i18n="modes.title">Bảy chế độ hỗ trợ chính</h2>
+                    </div>
+                    <p class="section-copy" data-i18n="modes.copy">
+                        Mỗi chế độ được thiết kế như một tác vụ rõ ràng để người dùng gọi nhanh bằng giọng nói.
+                    </p>
+                </div>
+
+                <div class="mode-list" data-reveal>
+                    <article class="mode-card">
+                        <div class="mode-number">01</div>
+                        <h3 data-i18n="mode.walk.title">Hỗ trợ di chuyển</h3>
+                        <p data-i18n="mode.walk.copy">Camera, AI và cảm biến siêu âm cùng cung cấp cảnh báo khoảng cách.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">02</div>
+                        <h3 data-i18n="mode.read.title">Đọc văn bản</h3>
+                        <p data-i18n="mode.read.copy">Ứng dụng chụp ảnh văn bản, nhận diện nội dung và đọc lại bằng giọng nói.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">03</div>
+                        <h3 data-i18n="mode.chat.title">Trợ lý trò chuyện AI</h3>
+                        <p data-i18n="mode.chat.copy">Lắng nghe câu hỏi, xử lý nội dung và phản hồi bằng âm thanh.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">04</div>
+                        <h3 data-i18n="mode.time.title">Báo giờ</h3>
+                        <p data-i18n="mode.time.copy">Cung cấp thời gian hiện tại và nhắc thông tin cần thiết.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">05</div>
+                        <h3 data-i18n="mode.weather.title">Cập nhật thời tiết</h3>
+                        <p data-i18n="mode.weather.copy">Thông báo thời tiết hiện tại trước khi người dùng ra ngoài.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">06</div>
+                        <h3 data-i18n="mode.nearby.title">Nhận diện người ở gần</h3>
+                        <p data-i18n="mode.nearby.copy">Hỗ trợ nhận diện người thân hoặc người xung quanh.</p>
+                    </article>
+                    <article class="mode-card">
+                        <div class="mode-number">07</div>
+                        <h3 data-i18n="mode.alert.title">Cảnh báo khẩn cấp</h3>
+                        <p data-i18n="mode.alert.copy">Kích hoạt cảnh báo khi phát hiện té ngã hoặc tình huống bất thường.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="hardware" class="section alt">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="hardware.kicker">Nguyên mẫu</p>
+                        <h2 class="section-title" data-i18n="hardware.title">Phần cứng quét 3 mức bằng 4 servo</h2>
+                    </div>
+                    <p class="section-copy" data-i18n="hardware.copy">
+                        Mã mới điều khiển hai cặp servo theo chuyển động mượt, đọc bốn cảm biến siêu âm và gửi mã cảnh
+                        báo về điện thoại qua Bluetooth.
+                    </p>
+                </div>
+
+                <div class="hardware-layout">
+                    <figure class="image-card bg-white p-3" data-reveal>
+                        <img src="assets/images/hardware-shell.jpg" alt="Phần cứng Artificial Eyes">
+                    </figure>
+                    <article class="content-card" data-reveal>
+                        <div>
+                            <span class="tag yellow" data-i18n="hardware.tag">ArtificialEye_Hardware</span>
+                            <h3 data-i18n="hardware.cardTitle">Bluetooth, servo và cảm biến được tách rõ trong mã điều khiển</h3>
+                            <p data-i18n-html="hardware.p1">
+                                Thiết bị dùng tên Bluetooth <strong>ArtificialEye_Hardware</strong>, nhận lệnh <strong>ON</strong>
+                                hoặc <strong>OFF</strong> để bật tắt quét servo. Khi tắt, hệ thống đưa các servo về vị
+                                trí home.
+                            </p>
+                        </div>
+                        <div class="hardware-points">
+                            <div class="hardware-point">
+                                <i class="ph-bold ph-check-circle"></i>
+                                <p data-i18n="hardware.point1">Servo 1 và 2 quét từ 50 đến 100 độ; servo 3 và 4 quét từ 90 đến 130 độ.</p>
+                            </div>
+                            <div class="hardware-point">
+                                <i class="ph-bold ph-check-circle"></i>
+                                <p data-i18n="hardware.point2">Ba mức quét lần lượt kiểm tra cảnh báo thấp, tường/vật cản và cảnh báo cao.</p>
+                            </div>
+                            <div class="hardware-point">
+                                <i class="ph-bold ph-check-circle"></i>
+                                <p data-i18n="hardware.point3">Các mã gửi về ứng dụng gồm 2, 3, 4 và 5 để phần mềm phát phản hồi tương ứng.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="source" class="section">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="source.kicker">Minh bạch kỹ thuật</p>
+                        <h2 class="section-title" data-i18n="source.title">Mã nguồn dự án</h2>
+                    </div>
+                    <p class="section-copy" data-i18n="source.copy">
+                        Phần này giới thiệu mã ESP32 mới, khối lệnh chính của ứng dụng và khối lệnh màn hình Setting.
+                        Ảnh Setting có thể được bổ sung sau mà không cần đổi bố cục.
+                    </p>
+                </div>
+
+                <div class="source-grid">
+                    <article class="source-card" data-reveal>
+                        <div class="source-card__body">
+                            <span class="tag blue" data-i18n="source.hardware.tag">Phần cứng</span>
+                            <h3 data-i18n="source.hardware.title">Mã điều khiển ESP32</h3>
+                            <p data-i18n="source.hardware.copy">
+                                File mới cấu hình BluetoothSerial, 4 servo, 4 cảm biến siêu âm và thuật toán quét mượt
+                                qua ba mức cảnh báo.
+                            </p>
+                            <div class="source-actions">
+                                <a href="docs/source-code/Source_HW.cpp" class="button primary">
+                                    <i class="ph-bold ph-file-code"></i>
+                                    <span data-i18n="source.hardware.button">Xem Source_HW.cpp</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="code-window" aria-label="ESP32 code preview">
+                            <div class="window-chrome"><span></span><span></span><span></span></div>
+                            <pre><code>#include &lt;ESP32Servo.h&gt;
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+#define WARNING_LOW   40
 #define HOLE_DISTANCE 120
 #define WALL_DISTANCE 70
-#define WARNING_HIGH 60
+#define WARNING_HIGH  60
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("ArtificialEye_Hardware");
+  Serial.println("Bluetooth started: ArtificialEye_Hardware");
+}
 
 void loop() {
-  scanAllAtAngle(65);
-  scanAllAtAngle(90);
-  scanAllAtAngle(115);
+  checkBluetoothConnection();
+  readBluetoothCommand();
+
+  if (servoScanEnabled) {
+    moveServoSmooth(50, 65, 130, 120);
+    scanAtPosition(65, 120, 1);
+
+    moveServoSmooth(65, 90, 120, 99);
+    scanAtPosition(90, 99, 2);
+
+    moveServoSmooth(90, 100, 99, 90);
+    scanAtPosition(100, 90, 3);
+  }
 }</code></pre>
-                    </div>
-                    <a href="docs/source-code/source-phancung.txt"
-                        class="inline-flex items-center rounded-full bg-blue-600 px-5 py-3 font-semibold text-white transition duration-300 hover:bg-blue-700">
-                        <i class="fas fa-file-code mr-2"></i>
-                        Xem mã phần cứng
-                    </a>
-                </div>
-
-                <div class="rounded-xl bg-gray-50 p-6 shadow-md">
-                    <div class="mb-5 flex items-center">
-                        <div class="mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-sky-100">
-                            <i class="fas fa-mobile-screen-button text-xl text-sky-600"></i>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800">Mã nguồn phần mềm</h3>
-                            <p class="text-sm text-gray-500">Khối lệnh MIT App Inventor của ứng dụng</p>
-                        </div>
-                    </div>
-                    <p class="mb-5 text-gray-600">
-                        Ảnh dưới đây ghi lại các khối lệnh chính của ứng dụng, gồm nhận khẩu lệnh, gọi chế độ đọc,
-                        xử lý cảnh báo té ngã, đọc thời gian, thời tiết và phản hồi bằng Text-to-Speech.
-                    </p>
-                    <a href="assets/images/source-phanmem.jpg">
-                        <img src="assets/images/source-phanmem.jpg" alt="Mã nguồn phần mềm MIT App Inventor"
-                            class="mb-5 h-80 w-full rounded-lg object-cover object-left-top shadow">
-                    </a>
-                    <a href="assets/images/source-phanmem.jpg"
-                        class="inline-flex items-center rounded-full bg-white px-5 py-3 font-semibold text-blue-600 shadow transition duration-300 hover:bg-blue-50">
-                        <i class="fas fa-image mr-2"></i>
-                        Xem ảnh mã phần mềm
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+                    </article>
 
-    <section id="contact" class="bg-blue-700 py-24 text-white">
-        <div class="container mx-auto px-6">
-            <div class="mb-16 text-center">
-                <h2 class="mb-4 text-3xl font-bold md:text-4xl">Liên hệ dự án</h2>
-                <div class="mx-auto h-1 w-20 bg-white"></div>
-            </div>
-            <div class="mx-auto max-w-4xl">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    <div>
-                        <h3 class="mb-6 text-2xl font-bold">Thông tin liên hệ</h3>
-                        <p class="mb-6">
-                            Nếu bạn muốn tìm hiểu thêm về sản phẩm, quá trình nghiên cứu hoặc khả năng ứng dụng thực tế,
-                            hãy liên hệ với nhóm phát triển.
-                        </p>
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <i class="fas fa-envelope mr-4 mt-1"></i>
-                                <span>Quachtanhung12@gmail.com</span>
+                    <article class="source-card" data-reveal>
+                        <div class="source-card__body">
+                            <span class="tag green" data-i18n="source.app.tag">Phần mềm</span>
+                            <h3 data-i18n="source.app.title">Khối lệnh chính của ứng dụng</h3>
+                            <p data-i18n="source.app.copy">
+                                Ảnh hiện có ghi lại các khối lệnh chính: nhận khẩu lệnh, gọi chế độ đọc, xử lý cảnh
+                                báo, thời gian, thời tiết và phản hồi Text-to-Speech.
+                            </p>
+                            <a class="source-shot" href="assets/images/source-phanmem.jpg">
+                                <img src="assets/images/source-phanmem.jpg"
+                                    alt="Mã nguồn phần mềm MIT App Inventor">
+                            </a>
+                            <div class="source-actions">
+                                <a href="assets/images/source-phanmem.jpg" class="button secondary">
+                                    <i class="ph-bold ph-image"></i>
+                                    <span data-i18n="source.app.button">Xem ảnh mã chính</span>
+                                </a>
                             </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-phone-alt mr-4 mt-1"></i>
+                        </div>
+                    </article>
+
+                    <article class="source-card" data-reveal>
+                        <div class="source-card__body">
+                            <span class="tag yellow" data-i18n="source.setting.tag">Setting</span>
+                            <h3 data-i18n="source.setting.title">Khối lệnh màn hình Setting</h3>
+                            <p data-i18n="source.setting.copy">
+                                Mục Setting dùng cho cấu hình thông tin người thân, số liên hệ hoặc các tuỳ chọn ứng
+                                dụng. Khung bên dưới sẽ tự hiển thị ảnh khi bạn thêm file vào đúng đường dẫn.
+                            </p>
+                            <div class="optional-image" data-optional-image="assets/images/source-setting.jpg">
+                                <div class="optional-placeholder">
+                                    <div>
+                                        <strong data-i18n="source.setting.placeholder">Ảnh Setting sẽ được bổ sung sau</strong>
+                                        <span>assets/images/source-setting.jpg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="source-actions">
+                                <a href="assets/images/source-setting.jpg" class="button secondary">
+                                    <i class="ph-bold ph-image-square"></i>
+                                    <span data-i18n="source.setting.button">Đường dẫn ảnh Setting</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="source-card" data-reveal>
+                        <div class="source-card__body">
+                            <span class="tag red" data-i18n="source.docs.tag">Tài liệu</span>
+                            <h3 data-i18n="source.docs.title">Tài liệu và kho dự án</h3>
+                            <p data-i18n="source.docs.copy">
+                                Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, ảnh source phần
+                                mềm và kho GitHub của nhóm.
+                            </p>
+                            <div class="source-actions">
+                                <a href="docs/artificial-eyes-description.docx" class="button secondary">
+                                    <i class="ph-bold ph-file-doc"></i>
+                                    <span data-i18n="source.docs.doc">Thuyết minh</span>
+                                </a>
+                                <a href="https://github.com/Hungvip69/artificial-eyes" class="button secondary">
+                                    <i class="ph-bold ph-github-logo"></i>
+                                    <span data-i18n="source.docs.github">Kho GitHub</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section alt">
+            <div class="container-shell">
+                <div class="section-header" data-reveal>
+                    <div>
+                        <p class="eyebrow" data-i18n="contact.kicker">Liên hệ</p>
+                        <h2 class="section-title" data-i18n="contact.title">Trao đổi thêm về dự án</h2>
+                    </div>
+                    <p class="section-copy" data-i18n="contact.copy">
+                        Nếu bạn muốn tìm hiểu quá trình nghiên cứu, nguyên mẫu hoặc khả năng ứng dụng thực tế, hãy liên
+                        hệ với nhóm phát triển.
+                    </p>
+                </div>
+
+                <div class="contact-grid">
+                    <article class="contact-card" data-reveal>
+                        <h3 data-i18n="contact.info.title">Thông tin liên hệ</h3>
+                        <div class="contact-list">
+                            <div class="contact-item">
+                                <i class="ph-bold ph-envelope-simple"></i>
+                                <span>Quachtanhung124@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="ph-bold ph-phone"></i>
                                 <span>(84) 0896486912</span>
                             </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-map-marker-alt mr-4 mt-1"></i>
-                                <span>139 Nguyễn Du, phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh</span>
+                            <div class="contact-item">
+                                <i class="ph-bold ph-map-pin"></i>
+                                <span data-i18n="contact.address">139 Nguyễn Du, phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="rounded-2xl bg-blue-600/40 p-6">
-                        <h4 class="mb-4 text-xl font-bold">Lưu ý về website</h4>
-                        <p class="mb-4 leading-7 text-blue-100">
-                            Website hiện dùng để giới thiệu dự án, hình ảnh và thông tin liên hệ chính thức.
+                    </article>
+                    <article class="contact-card" data-reveal>
+                        <span class="tag blue" data-i18n="contact.web.tag">Website giới thiệu</span>
+                        <h3 class="mt-5" data-i18n="contact.web.title">Nội dung hiện có</h3>
+                        <p data-i18n="contact.web.copy">
+                            Trang tập trung vào mô tả dự án, ảnh phần cứng, mã điều khiển mới và các tài nguyên để người
+                            xem có thể kiểm tra nhanh.
                         </p>
-                        <div class="space-y-3 text-blue-50">
-                            <div class="flex items-start">
-                                <i class="fas fa-circle-check mr-3 mt-1"></i>
-                                <span>Xem thông tin tổng quan, tính năng và phần cứng của dự án.</span>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-circle-check mr-3 mt-1"></i>
-                                <span>Tải thuyết minh sản phẩm, mã nguồn phần cứng và ảnh mã nguồn phần mềm.</span>
-                            </div>
-                            <div class="flex items-start">
-                                <i class="fas fa-circle-check mr-3 mt-1"></i>
-                                <span>Liên hệ trực tiếp với nhóm qua email hoặc số điện thoại ở bên cạnh.</span>
-                            </div>
-                        </div>
-                    </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <footer class="bg-blue-950 py-12 text-white">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
+    <footer class="footer">
+        <div class="container-shell">
+            <div class="footer-grid">
                 <div>
-                    <div class="mb-4 flex items-center">
-                        <img src="assets/images/Logo-notext-transparent.png" width="45" alt="Logo chân trang">
-                        <span class="ml-3 text-xl font-bold">Artificial Eyes</span>
+                    <div class="mb-4 flex items-center gap-3">
+                        <img class="brand-mark" src="assets/images/Logo-notext-transparent.png" alt="Artificial Eyes logo">
+                        <span class="brand-name">Artificial Eyes</span>
                     </div>
-                    <p class="text-gray-300">Ứng dụng công nghệ để hỗ trợ người khiếm thị sống chủ động hơn mỗi ngày.</p>
+                    <p data-i18n="footer.summary">Ứng dụng công nghệ để hỗ trợ người khiếm thị sống chủ động hơn mỗi ngày.</p>
                 </div>
                 <div>
-                    <h4 class="mb-4 text-lg font-semibold">Liên kết nhanh</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#about" class="text-gray-300 hover:text-white">Giới thiệu</a></li>
-                        <li><a href="#features" class="text-gray-300 hover:text-white">Tính năng</a></li>
-                        <li><a href="#modes" class="text-gray-300 hover:text-white">Chế độ</a></li>
-                        <li><a href="#hardware" class="text-gray-300 hover:text-white">Phần cứng</a></li>
-                        <li><a href="#source" class="text-gray-300 hover:text-white">Mã nguồn</a></li>
+                    <h4 data-i18n="footer.quick">Liên kết nhanh</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#about" data-i18n="nav.about.footer">Giới thiệu</a></li>
+                        <li><a href="#features" data-i18n="nav.features.footer">Tính năng</a></li>
+                        <li><a href="#modes" data-i18n="nav.modes.footer">Chế độ</a></li>
+                        <li><a href="#hardware" data-i18n="nav.hardware.footer">Phần cứng</a></li>
+                        <li><a href="#source" data-i18n="nav.source.footer">Mã nguồn</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="mb-4 text-lg font-semibold">Tài nguyên</h4>
-                    <ul class="space-y-2">
-                        <li><a href="docs/artificial-eyes-description.docx" class="text-gray-300 hover:text-white">Thuyết minh sản phẩm</a></li>
-                        <li><a href="docs/source-code/source-phancung.txt" class="text-gray-300 hover:text-white">Mã phần cứng ESP32</a></li>
-                        <li><a href="assets/images/source-phanmem.jpg" class="text-gray-300 hover:text-white">Ảnh mã phần mềm</a></li>
-                        <li><a href="#features" class="text-gray-300 hover:text-white">Mô tả tính năng</a></li>
-                        <li><a href="#hardware" class="text-gray-300 hover:text-white">Thiết kế phần cứng</a></li>
-                        <li><a href="https://github.com/Hungvip69/artificial-eyes" class="text-gray-300 hover:text-white">Kho GitHub</a></li>
+                    <h4 data-i18n="footer.resources">Tài nguyên</h4>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="docs/artificial-eyes-description.docx" data-i18n="footer.doc">Thuyết minh sản phẩm</a></li>
+                        <li><a href="docs/source-code/Source_HW.cpp" data-i18n="footer.hardwareCode">Mã phần cứng ESP32</a></li>
+                        <li><a href="assets/images/source-phanmem.jpg" data-i18n="footer.appSource">Ảnh mã phần mềm</a></li>
+                        <li><a href="assets/images/source-setting.jpg" data-i18n="footer.settingSource">Ảnh mã Setting</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="mb-4 text-lg font-semibold">Thông tin dự án</h4>
-                    <p class="mb-4 text-gray-300">
+                    <h4 data-i18n="footer.project">Thông tin dự án</h4>
+                    <p class="mt-4" data-i18n-html="footer.team">
                         Nhóm tác giả: Vũ Đăng Khoa - Quách Tấn Hưng<br>
                         Giáo viên hướng dẫn: ThS. Đinh Thị Vân Hà
                     </p>
-                    <p class="text-gray-300">
-                        Website hiện tập trung vào phần giới thiệu dự án và tài liệu liên quan. Để trao đổi thêm,
-                        vui lòng sử dụng thông tin liên hệ ở mục bên trên.
-                    </p>
                 </div>
             </div>
-            <div class="mt-8 border-t border-blue-900 pt-8 text-center text-gray-400">
-                <p>&copy; 2026 Artificial Eyes. Bản quyền thuộc nhóm phát triển.</p>
+            <div class="footer-copy">
+                <p data-i18n="footer.copy">&copy; 2026 Artificial Eyes. Bản quyền thuộc nhóm phát triển.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        const storageKey = "artificial-eyes-view-options";
+        const translations = {
+            vi: {
+                metaTitle: "Artificial Eyes - Hỗ trợ người khiếm thị",
+                metaDescription: "Artificial Eyes là giải pháp hỗ trợ người khiếm thị bằng trí tuệ nhân tạo, ứng dụng di động và phần cứng nhúng.",
+                "theme.lightLabel": "Chế độ sáng",
+                "theme.darkLabel": "Chế độ tối",
+                "nav.about": "Giới thiệu",
+                "nav.features": "Tính năng",
+                "nav.modes": "Chế độ",
+                "nav.hardware": "Phần cứng",
+                "nav.source": "Mã nguồn",
+                "nav.contact": "Liên hệ",
+                "nav.about.mobile": "Giới thiệu",
+                "nav.features.mobile": "Tính năng",
+                "nav.modes.mobile": "Chế độ",
+                "nav.hardware.mobile": "Phần cứng",
+                "nav.source.mobile": "Mã nguồn",
+                "nav.contact.mobile": "Liên hệ",
+                "nav.about.footer": "Giới thiệu",
+                "nav.features.footer": "Tính năng",
+                "nav.modes.footer": "Chế độ",
+                "nav.hardware.footer": "Phần cứng",
+                "nav.source.footer": "Mã nguồn",
+                "hero.eyebrow": "Trợ lý AI đeo trước ngực",
+                "hero.copy": "Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng để hỗ trợ người khiếm thị di chuyển an toàn, đọc văn bản, nhận diện người ở gần và gửi cảnh báo khẩn cấp.",
+                "hero.primary": "Khám phá tính năng",
+                "hero.secondary": "Xem mã nguồn",
+                "metric.response": "Phản hồi cảnh báo",
+                "metric.sensors": "Cảm biến siêu âm",
+                "metric.modes": "Chế độ hỗ trợ",
+                "about.kicker": "Tổng quan",
+                "about.title": "Một hệ hỗ trợ gọn, có thể đeo và dễ mở rộng",
+                "about.copy": "Artificial Eyes tập trung vào các tình huống thường gặp trong đời sống: di chuyển, đọc nội dung, nhận lệnh bằng giọng nói, phản hồi bằng âm thanh và liên hệ người thân khi cần.",
+                "about.tag": "Định hướng sử dụng thực tế",
+                "about.cardTitle": "Trao thêm sự chủ động cho người khiếm thị",
+                "about.p1": "Sản phẩm kết hợp phần mềm trên điện thoại, xử lý AI, điều khiển bằng giọng nói và phần cứng đeo trước ngực. Cách tiếp cận này giúp giảm thao tác tay và gom nhiều chức năng vào cùng một nền tảng.",
+                "about.p2": "Nhóm phát triển ưu tiên chi phí hợp lý, cấu trúc dễ thử nghiệm và khả năng nâng cấp từ nguyên mẫu phần cứng sang các phiên bản hoàn thiện hơn.",
+                "about.note": "Thiết kế phù hợp bối cảnh sử dụng tại Việt Nam, nơi điện thoại thông minh có thể đóng vai trò trung tâm xử lý và phản hồi.",
+                "features.kicker": "Điểm mạnh",
+                "features.title": "Tính năng được xếp theo nhu cầu sử dụng",
+                "features.copy": "Giao diện, phần cứng và mã điều khiển đều phục vụ cùng một mục tiêu: cảnh báo rõ, phản hồi nhanh và thao tác ít bước.",
+                "feature.ai.title": "Hỗ trợ bằng AI",
+                "feature.ai.copy": "Nhận diện vật cản, xử lý văn bản, trả lời câu hỏi bằng giọng nói và hỗ trợ người dùng trong nhiều tình huống khác nhau.",
+                "feature.modes.title": "7 chế độ tích hợp",
+                "feature.modes.copy": "Di chuyển, đọc văn bản, trò chuyện AI, báo giờ, thời tiết, nhận diện người ở gần và cảnh báo khẩn cấp.",
+                "feature.hardware.title": "Vỏ phần cứng in 3D",
+                "feature.hardware.copy": "Thiết kế gọn để đeo trước ngực, bố trí cảm biến có chủ đích và phù hợp quá trình thử nghiệm thực tế.",
+                "feature.voice.title": "Điều khiển bằng giọng nói",
+                "feature.voice.copy": "Ưu tiên khẩu lệnh để người dùng chuyển chế độ và nhận phản hồi mà không phụ thuộc nhiều vào thao tác chạm.",
+                "feature.phone.title": "Tận dụng điện thoại thông minh",
+                "feature.phone.copy": "Dùng camera, loa, micro, GPS và kết nối không dây trên điện thoại để giảm chi phí phần cứng riêng và dễ triển khai hơn.",
+                "feature.safe.title": "Cảnh báo an toàn",
+                "feature.safe.copy": "Khi phát hiện té ngã hoặc tình huống bất thường, hệ thống có thể kích hoạt cảnh báo và liên hệ người thân.",
+                "modes.kicker": "Luồng sử dụng",
+                "modes.title": "Bảy chế độ hỗ trợ chính",
+                "modes.copy": "Mỗi chế độ được thiết kế như một tác vụ rõ ràng để người dùng gọi nhanh bằng giọng nói.",
+                "mode.walk.title": "Hỗ trợ di chuyển",
+                "mode.walk.copy": "Camera, AI và cảm biến siêu âm cùng cung cấp cảnh báo khoảng cách.",
+                "mode.read.title": "Đọc văn bản",
+                "mode.read.copy": "Ứng dụng chụp ảnh văn bản, nhận diện nội dung và đọc lại bằng giọng nói.",
+                "mode.chat.title": "Trợ lý trò chuyện AI",
+                "mode.chat.copy": "Lắng nghe câu hỏi, xử lý nội dung và phản hồi bằng âm thanh.",
+                "mode.time.title": "Báo giờ",
+                "mode.time.copy": "Cung cấp thời gian hiện tại và nhắc thông tin cần thiết.",
+                "mode.weather.title": "Cập nhật thời tiết",
+                "mode.weather.copy": "Thông báo thời tiết hiện tại trước khi người dùng ra ngoài.",
+                "mode.nearby.title": "Nhận diện người ở gần",
+                "mode.nearby.copy": "Hỗ trợ nhận diện người thân hoặc người xung quanh.",
+                "mode.alert.title": "Cảnh báo khẩn cấp",
+                "mode.alert.copy": "Kích hoạt cảnh báo khi phát hiện té ngã hoặc tình huống bất thường.",
+                "hardware.kicker": "Nguyên mẫu",
+                "hardware.title": "Phần cứng quét 3 mức bằng 4 servo",
+                "hardware.copy": "Mã mới điều khiển hai cặp servo theo chuyển động mượt, đọc bốn cảm biến siêu âm và gửi mã cảnh báo về điện thoại qua Bluetooth.",
+                "hardware.tag": "ArtificialEye_Hardware",
+                "hardware.cardTitle": "Bluetooth, servo và cảm biến được tách rõ trong mã điều khiển",
+                "hardware.p1": "Thiết bị dùng tên Bluetooth <strong>ArtificialEye_Hardware</strong>, nhận lệnh <strong>ON</strong> hoặc <strong>OFF</strong> để bật tắt quét servo. Khi tắt, hệ thống đưa các servo về vị trí home.",
+                "hardware.point1": "Servo 1 và 2 quét từ 50 đến 100 độ; servo 3 và 4 quét từ 90 đến 130 độ.",
+                "hardware.point2": "Ba mức quét lần lượt kiểm tra cảnh báo thấp, tường/vật cản và cảnh báo cao.",
+                "hardware.point3": "Các mã gửi về ứng dụng gồm 2, 3, 4 và 5 để phần mềm phát phản hồi tương ứng.",
+                "source.kicker": "Minh bạch kỹ thuật",
+                "source.title": "Mã nguồn dự án",
+                "source.copy": "Phần này giới thiệu mã ESP32 mới, khối lệnh chính của ứng dụng và khối lệnh màn hình Setting. Ảnh Setting có thể được bổ sung sau mà không cần đổi bố cục.",
+                "source.hardware.tag": "Phần cứng",
+                "source.hardware.title": "Mã điều khiển ESP32",
+                "source.hardware.copy": "File mới cấu hình BluetoothSerial, 4 servo, 4 cảm biến siêu âm và thuật toán quét mượt qua ba mức cảnh báo.",
+                "source.hardware.button": "Xem Source_HW.cpp",
+                "source.app.tag": "Phần mềm",
+                "source.app.title": "Khối lệnh chính của ứng dụng",
+                "source.app.copy": "Ảnh hiện có ghi lại các khối lệnh chính: nhận khẩu lệnh, gọi chế độ đọc, xử lý cảnh báo, thời gian, thời tiết và phản hồi Text-to-Speech.",
+                "source.app.button": "Xem ảnh mã chính",
+                "source.setting.tag": "Setting",
+                "source.setting.title": "Khối lệnh màn hình Setting",
+                "source.setting.copy": "Mục Setting dùng cho cấu hình thông tin người thân, số liên hệ hoặc các tuỳ chọn ứng dụng. Khung bên dưới sẽ tự hiển thị ảnh khi bạn thêm file vào đúng đường dẫn.",
+                "source.setting.placeholder": "Ảnh Setting sẽ được bổ sung sau",
+                "source.setting.button": "Đường dẫn ảnh Setting",
+                "source.docs.tag": "Tài liệu",
+                "source.docs.title": "Tài liệu và kho dự án",
+                "source.docs.copy": "Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, ảnh source phần mềm và kho GitHub của nhóm.",
+                "source.docs.doc": "Thuyết minh",
+                "source.docs.github": "Kho GitHub",
+                "contact.kicker": "Liên hệ",
+                "contact.title": "Trao đổi thêm về dự án",
+                "contact.copy": "Nếu bạn muốn tìm hiểu quá trình nghiên cứu, nguyên mẫu hoặc khả năng ứng dụng thực tế, hãy liên hệ với nhóm phát triển.",
+                "contact.info.title": "Thông tin liên hệ",
+                "contact.address": "139 Nguyễn Du, phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh",
+                "contact.web.tag": "Website giới thiệu",
+                "contact.web.title": "Nội dung hiện có",
+                "contact.web.copy": "Trang tập trung vào mô tả dự án, ảnh phần cứng, mã điều khiển mới và các tài nguyên để người xem có thể kiểm tra nhanh.",
+                "footer.summary": "Ứng dụng công nghệ để hỗ trợ người khiếm thị sống chủ động hơn mỗi ngày.",
+                "footer.quick": "Liên kết nhanh",
+                "footer.resources": "Tài nguyên",
+                "footer.doc": "Thuyết minh sản phẩm",
+                "footer.hardwareCode": "Mã phần cứng ESP32",
+                "footer.appSource": "Ảnh mã phần mềm",
+                "footer.settingSource": "Ảnh mã Setting",
+                "footer.project": "Thông tin dự án",
+                "footer.team": "Nhóm tác giả: Vũ Đăng Khoa - Quách Tấn Hưng<br>Giáo viên hướng dẫn: ThS. Đinh Thị Vân Hà",
+                "footer.copy": "© 2026 Artificial Eyes. Bản quyền thuộc nhóm phát triển."
+            },
+            en: {
+                metaTitle: "Artificial Eyes - Assistive AI for visually impaired users",
+                metaDescription: "Artificial Eyes combines AI, a mobile app, and embedded hardware to support visually impaired users in everyday situations.",
+                "theme.lightLabel": "Light mode",
+                "theme.darkLabel": "Dark mode",
+                "nav.about": "About",
+                "nav.features": "Features",
+                "nav.modes": "Modes",
+                "nav.hardware": "Hardware",
+                "nav.source": "Source",
+                "nav.contact": "Contact",
+                "nav.about.mobile": "About",
+                "nav.features.mobile": "Features",
+                "nav.modes.mobile": "Modes",
+                "nav.hardware.mobile": "Hardware",
+                "nav.source.mobile": "Source",
+                "nav.contact.mobile": "Contact",
+                "nav.about.footer": "About",
+                "nav.features.footer": "Features",
+                "nav.modes.footer": "Modes",
+                "nav.hardware.footer": "Hardware",
+                "nav.source.footer": "Source",
+                "hero.eyebrow": "Chest-worn AI assistant",
+                "hero.copy": "A system combining a mobile app, artificial intelligence, and embedded hardware to help visually impaired users move more safely, read text, identify nearby people, and send emergency alerts.",
+                "hero.primary": "Explore features",
+                "hero.secondary": "View source",
+                "metric.response": "Warning response",
+                "metric.sensors": "Ultrasonic sensors",
+                "metric.modes": "Assistive modes",
+                "about.kicker": "Overview",
+                "about.title": "A compact wearable support system designed to grow",
+                "about.copy": "Artificial Eyes focuses on everyday situations: movement, reading, voice commands, audio responses, and contacting family members when needed.",
+                "about.tag": "Built for field use",
+                "about.cardTitle": "Giving visually impaired users more agency",
+                "about.p1": "The product combines phone software, AI processing, voice control, and chest-worn hardware. This approach reduces touch interaction and gathers multiple functions into one platform.",
+                "about.p2": "The team prioritizes reasonable cost, a structure that is easy to test, and a path from prototype hardware to more refined versions.",
+                "about.note": "The design fits use in Vietnam, where a smartphone can act as the central processor and response device.",
+                "features.kicker": "Strengths",
+                "features.title": "Features organized around real use",
+                "features.copy": "The interface, hardware, and control code all serve the same goal: clear warnings, fast responses, and fewer steps.",
+                "feature.ai.title": "AI support",
+                "feature.ai.copy": "Detects obstacles, processes text, answers spoken questions, and supports users across different situations.",
+                "feature.modes.title": "7 integrated modes",
+                "feature.modes.copy": "Navigation, text reading, AI chat, time, weather, nearby person recognition, and emergency alerts.",
+                "feature.hardware.title": "3D-printed shell",
+                "feature.hardware.copy": "A compact chest-worn design with intentional sensor placement for practical testing.",
+                "feature.voice.title": "Voice control",
+                "feature.voice.copy": "Prioritizes spoken commands so users can switch modes and receive responses with fewer touch actions.",
+                "feature.phone.title": "Uses a smartphone",
+                "feature.phone.copy": "Uses the phone camera, speaker, microphone, GPS, and wireless connection to reduce dedicated hardware cost.",
+                "feature.safe.title": "Safety alerts",
+                "feature.safe.copy": "When a fall or abnormal situation is detected, the system can activate an alert and contact a family member.",
+                "modes.kicker": "Usage flow",
+                "modes.title": "Seven primary assistive modes",
+                "modes.copy": "Each mode is shaped as a clear task that can be started quickly by voice.",
+                "mode.walk.title": "Movement support",
+                "mode.walk.copy": "Camera, AI, and ultrasonic sensors work together to provide distance warnings.",
+                "mode.read.title": "Text reading",
+                "mode.read.copy": "The app captures text, recognizes the content, and reads it aloud.",
+                "mode.chat.title": "AI chat assistant",
+                "mode.chat.copy": "Listens to questions, processes the content, and responds with audio.",
+                "mode.time.title": "Time report",
+                "mode.time.copy": "Provides the current time and useful reminders.",
+                "mode.weather.title": "Weather update",
+                "mode.weather.copy": "Reports current weather before the user goes outside.",
+                "mode.nearby.title": "Nearby person recognition",
+                "mode.nearby.copy": "Helps recognize family members or people nearby.",
+                "mode.alert.title": "Emergency alert",
+                "mode.alert.copy": "Triggers an alert when a fall or unusual situation is detected.",
+                "hardware.kicker": "Prototype",
+                "hardware.title": "Three-level scanning with four servos",
+                "hardware.copy": "The new code controls two servo pairs with smooth movement, reads four ultrasonic sensors, and sends warning codes to the phone over Bluetooth.",
+                "hardware.tag": "ArtificialEye_Hardware",
+                "hardware.cardTitle": "Bluetooth, servos, and sensors are clearly separated in the control code",
+                "hardware.p1": "The device uses the Bluetooth name <strong>ArtificialEye_Hardware</strong> and accepts <strong>ON</strong> or <strong>OFF</strong> commands to start or stop servo scanning. When stopped, the system returns the servos to their home position.",
+                "hardware.point1": "Servos 1 and 2 scan from 50 to 100 degrees; servos 3 and 4 scan from 90 to 130 degrees.",
+                "hardware.point2": "The three scan levels check low warnings, wall/obstacle detection, and high warnings.",
+                "hardware.point3": "The codes sent to the app are 2, 3, 4, and 5 so the software can play the matching response.",
+                "source.kicker": "Technical transparency",
+                "source.title": "Project source",
+                "source.copy": "This section introduces the new ESP32 code, the main application blocks, and the Setting screen blocks. The Setting image can be added later without changing the layout.",
+                "source.hardware.tag": "Hardware",
+                "source.hardware.title": "ESP32 control code",
+                "source.hardware.copy": "The new file configures BluetoothSerial, 4 servos, 4 ultrasonic sensors, and smooth scanning across three warning levels.",
+                "source.hardware.button": "View Source_HW.cpp",
+                "source.app.tag": "Software",
+                "source.app.title": "Main application blocks",
+                "source.app.copy": "The current image records the main blocks: voice commands, reading mode, alert handling, time, weather, and Text-to-Speech responses.",
+                "source.app.button": "View main source image",
+                "source.setting.tag": "Setting",
+                "source.setting.title": "Setting screen blocks",
+                "source.setting.copy": "The Setting screen is used for family contact details, phone numbers, or app options. The frame below will show the image automatically when you add the file at the expected path.",
+                "source.setting.placeholder": "Setting image will be added later",
+                "source.setting.button": "Setting image path",
+                "source.docs.tag": "Docs",
+                "source.docs.title": "Documents and repository",
+                "source.docs.copy": "The website keeps the core resources for checking the product description, software source images, and the team repository.",
+                "source.docs.doc": "Description doc",
+                "source.docs.github": "GitHub repo",
+                "contact.kicker": "Contact",
+                "contact.title": "Discuss the project",
+                "contact.copy": "If you want to learn more about the research process, prototype, or practical use, contact the development team.",
+                "contact.info.title": "Contact information",
+                "contact.address": "139 Nguyen Du, Ben Thanh Ward, District 1, Ho Chi Minh City",
+                "contact.web.tag": "Project website",
+                "contact.web.title": "Current content",
+                "contact.web.copy": "The page focuses on the project description, hardware images, new control code, and resources viewers can check quickly.",
+                "footer.summary": "Using technology to help visually impaired users live more independently every day.",
+                "footer.quick": "Quick links",
+                "footer.resources": "Resources",
+                "footer.doc": "Product description",
+                "footer.hardwareCode": "ESP32 hardware code",
+                "footer.appSource": "Software source image",
+                "footer.settingSource": "Setting source image",
+                "footer.project": "Project information",
+                "footer.team": "Authors: Vu Dang Khoa - Quach Tan Hung<br>Advisor: MSc. Dinh Thi Van Ha",
+                "footer.copy": "© 2026 Artificial Eyes. All rights reserved by the development team."
+            }
+        };
+
         const root = document.documentElement;
-        const defaultPreferences = { theme: "system", accent: "blue", motion: "rich", font: "normal" };
-        const menuButton = document.querySelector('button[aria-label="Mở menu"]');
+        const languageKey = "artificial-eyes-language";
+        const themeKey = "artificial-eyes-theme";
+        const menuToggle = document.getElementById("menu-toggle");
         const mobileMenu = document.getElementById("mobile-menu");
-        const viewOptions = document.querySelector(".view-options");
-        const viewOptionsToggle = document.getElementById("view-options-toggle");
-        const viewOptionsPanel = document.getElementById("view-options-panel");
-        const viewOptionsClose = document.querySelector(".view-options__close");
-        const themeButtons = document.querySelectorAll("[data-theme-choice]");
-        const accentButtons = document.querySelectorAll("[data-accent-choice]");
-        const fontButtons = document.querySelectorAll("[data-font-choice]");
-        const motionToggle = document.getElementById("motion-toggle");
-        const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const langButtons = document.querySelectorAll("[data-lang-button]");
+        const themeButtons = document.querySelectorAll("[data-theme-button]");
+        const htmlTargets = document.querySelectorAll("[data-i18n-html]");
+        const textTargets = document.querySelectorAll("[data-i18n]");
+        const themeColor = document.querySelector('meta[name="theme-color"]');
 
-        const loadPreferences = () => {
-            try {
-                return { ...defaultPreferences, ...JSON.parse(localStorage.getItem(storageKey)) };
-            } catch (error) {
-                return { ...defaultPreferences };
-            }
-        };
-
-        let preferences = loadPreferences();
-
-        const savePreferences = () => {
-            try {
-                localStorage.setItem(storageKey, JSON.stringify(preferences));
-            } catch (error) {
-                return;
-            }
-        };
-
-        const resolveTheme = () => {
-            if (preferences.theme === "system") {
-                return systemThemeQuery.matches ? "dark" : "light";
+        const getInitialLanguage = () => {
+            const saved = localStorage.getItem(languageKey);
+            if (saved === "vi" || saved === "en") {
+                return saved;
             }
 
-            return preferences.theme;
+            return document.documentElement.lang === "en" ? "en" : "vi";
         };
 
-        const setActiveButton = (buttons, value, attribute) => {
-            buttons.forEach((button) => {
-                const isActive = button.dataset[attribute] === value;
+        const applyLanguage = (language) => {
+            const dictionary = translations[language] || translations.vi;
+
+            document.documentElement.lang = language;
+            document.title = dictionary.metaTitle;
+
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+                metaDescription.setAttribute("content", dictionary.metaDescription);
+            }
+
+            textTargets.forEach((element) => {
+                const value = dictionary[element.dataset.i18n];
+                if (value) {
+                    element.textContent = value;
+                }
+            });
+
+            htmlTargets.forEach((element) => {
+                const value = dictionary[element.dataset.i18nHtml];
+                if (value) {
+                    element.innerHTML = value;
+                }
+            });
+
+            langButtons.forEach((button) => {
+                const isActive = button.dataset.langButton === language;
                 button.classList.toggle("is-active", isActive);
                 button.setAttribute("aria-pressed", String(isActive));
             });
-        };
 
-        const applyPreferences = ({ persist = true } = {}) => {
-            root.dataset.theme = resolveTheme();
-            root.dataset.themeChoice = preferences.theme;
-            root.dataset.accent = preferences.accent;
-            root.dataset.motion = preferences.motion;
-            root.dataset.font = preferences.font;
-
-            const currentHeroContent = document.querySelector(".hero-content");
-
-            if (currentHeroContent && preferences.motion !== "rich") {
-                currentHeroContent.style.transform = "";
-            }
-
-            setActiveButton(themeButtons, preferences.theme, "themeChoice");
-            setActiveButton(accentButtons, preferences.accent, "accentChoice");
-            setActiveButton(fontButtons, preferences.font, "fontChoice");
-
-            if (motionToggle) {
-                const richMotion = preferences.motion === "rich";
-                motionToggle.classList.toggle("is-active", richMotion);
-                motionToggle.setAttribute("aria-checked", String(richMotion));
-            }
-
-            if (persist) {
-                savePreferences();
-            }
-        };
-
-        if (menuButton && mobileMenu) {
-            menuButton.addEventListener("click", () => {
-                mobileMenu.classList.toggle("hidden");
-                mobileMenu.classList.toggle("flex");
+            themeButtons.forEach((button) => {
+                const label = dictionary[`theme.${button.dataset.themeButton}Label`];
+                if (label) {
+                    button.setAttribute("aria-label", label);
+                    button.setAttribute("title", label);
+                }
             });
-        }
 
-        const setOptionsOpen = (isOpen) => {
-            if (!viewOptionsPanel || !viewOptionsToggle) {
-                return;
-            }
-
-            viewOptionsPanel.hidden = !isOpen;
-            viewOptionsToggle.setAttribute("aria-expanded", String(isOpen));
+            localStorage.setItem(languageKey, language);
         };
 
-        if (viewOptionsToggle && viewOptionsPanel) {
-            viewOptionsToggle.addEventListener("click", () => {
-                setOptionsOpen(viewOptionsPanel.hidden);
-            });
-        }
-
-        if (viewOptionsClose) {
-            viewOptionsClose.addEventListener("click", () => setOptionsOpen(false));
-        }
-
-        document.addEventListener("click", (event) => {
-            if (viewOptions && !viewOptions.contains(event.target)) {
-                setOptionsOpen(false);
-            }
+        langButtons.forEach((button) => {
+            button.addEventListener("click", () => applyLanguage(button.dataset.langButton));
         });
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
-                setOptionsOpen(false);
+        const getInitialTheme = () => {
+            const requested = new URLSearchParams(window.location.search).get("theme");
+            if (requested === "dark" || requested === "light") {
+                return requested;
             }
-        });
+
+            const saved = localStorage.getItem(themeKey);
+            return saved === "dark" || saved === "light" ? saved : "light";
+        };
+
+        const applyTheme = (theme) => {
+            const nextTheme = theme === "dark" ? "dark" : "light";
+            root.dataset.theme = nextTheme;
+
+            if (themeColor) {
+                themeColor.setAttribute("content", nextTheme === "dark" ? "#10100f" : "#fbfbfa");
+            }
+
+            themeButtons.forEach((button) => {
+                const isActive = button.dataset.themeButton === nextTheme;
+                button.classList.toggle("is-active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            localStorage.setItem(themeKey, nextTheme);
+        };
 
         themeButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                preferences.theme = button.dataset.themeChoice;
-                applyPreferences();
-            });
+            button.addEventListener("click", () => applyTheme(button.dataset.themeButton));
         });
 
-        accentButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                preferences.accent = button.dataset.accentChoice;
-                applyPreferences();
-            });
-        });
-
-        fontButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                preferences.font = button.dataset.fontChoice;
-                applyPreferences();
-            });
-        });
-
-        if (motionToggle) {
-            motionToggle.addEventListener("click", () => {
-                preferences.motion = preferences.motion === "rich" ? "calm" : "rich";
-                applyPreferences();
-
-                if (preferences.motion === "rich") {
-                    requestAnimationFrame(updateHeroParallax);
-                }
-            });
-        }
-
-        if (systemThemeQuery.addEventListener) {
-            systemThemeQuery.addEventListener("change", () => {
-                if (preferences.theme === "system") {
-                    applyPreferences({ persist: false });
-                }
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener("click", () => {
+                const nextState = !mobileMenu.classList.contains("is-open");
+                mobileMenu.classList.toggle("is-open", nextState);
+                menuToggle.setAttribute("aria-expanded", String(nextState));
             });
         }
 
         document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-            anchor.addEventListener("click", function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute("href"));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: "smooth"
-                    });
+            anchor.addEventListener("click", (event) => {
+                const target = document.querySelector(anchor.getAttribute("href"));
+                if (!target) {
+                    return;
                 }
-                if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
-                    mobileMenu.classList.add("hidden");
-                    mobileMenu.classList.remove("flex");
+
+                event.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                if (mobileMenu) {
+                    mobileMenu.classList.remove("is-open");
+                }
+
+                if (menuToggle) {
+                    menuToggle.setAttribute("aria-expanded", "false");
                 }
             });
         });
 
-        const revealTargets = Array.from(document.querySelectorAll(
-            "section .mb-16, .feature-card, .mode-card, .image-frame, #source .rounded-xl, #contact .grid > div, footer .grid > div, [class*='md:pl-12']"
-        ));
-
+        const revealTargets = document.querySelectorAll("[data-reveal]");
         revealTargets.forEach((element, index) => {
-            const isImage = element.classList.contains("image-frame");
-            const isTextColumn = element.matches("[class*='md:pl-12']");
-            element.dataset.reveal = isImage ? "left" : isTextColumn ? "right" : "up";
-            element.style.setProperty("--reveal-delay", `${(index % 6) * 70}ms`);
+            element.style.setProperty("--delay", `${Math.min(index, 8) * 70}ms`);
         });
 
         if ("IntersectionObserver" in window) {
@@ -1569,75 +1875,29 @@ void loop() {
                         revealObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+            }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
 
             revealTargets.forEach((element) => revealObserver.observe(element));
         } else {
             revealTargets.forEach((element) => element.classList.add("is-visible"));
         }
 
-        const heroStats = document.querySelectorAll(".hero-stat .text-2xl");
-        const animateNumber = (element, endValue) => {
-            const duration = 1150;
-            const startTime = performance.now();
-
-            const tick = (time) => {
-                const progress = Math.min((time - startTime) / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                element.textContent = Math.round(endValue * eased);
-
-                if (progress < 1) {
-                    requestAnimationFrame(tick);
-                } else {
-                    element.textContent = endValue;
-                }
+        const optionalImageSlots = document.querySelectorAll("[data-optional-image]");
+        optionalImageSlots.forEach((slot) => {
+            const src = slot.dataset.optionalImage;
+            const probe = new Image();
+            probe.onload = () => {
+                const image = document.createElement("img");
+                image.src = src;
+                image.alt = translations[getInitialLanguage()]["source.setting.title"];
+                slot.textContent = "";
+                slot.appendChild(image);
             };
+            probe.src = src;
+        });
 
-            requestAnimationFrame(tick);
-        };
-
-        const startStatsAnimation = () => {
-            if (preferences.motion !== "rich" || reducedMotionQuery.matches) {
-                return;
-            }
-
-            heroStats.forEach((stat) => {
-                const finalValue = stat.textContent.trim();
-                const numericValue = Number(finalValue);
-
-                if (Number.isFinite(numericValue)) {
-                    stat.textContent = "0";
-                    animateNumber(stat, numericValue);
-                }
-            });
-        };
-
-        if (heroStats.length && "IntersectionObserver" in window) {
-            const statObserver = new IntersectionObserver((entries) => {
-                if (entries.some((entry) => entry.isIntersecting)) {
-                    startStatsAnimation();
-                    statObserver.disconnect();
-                }
-            }, { threshold: 0.45 });
-
-            statObserver.observe(document.querySelector(".hero-gradient"));
-        } else {
-            startStatsAnimation();
-        }
-
-        const heroContent = document.querySelector(".hero-content");
-        const updateHeroParallax = () => {
-            if (!heroContent || preferences.motion !== "rich" || reducedMotionQuery.matches) {
-                return;
-            }
-
-            const offset = Math.min(window.scrollY * 0.08, 34);
-            heroContent.style.transform = `translateY(${offset}px)`;
-        };
-
-        window.addEventListener("scroll", () => requestAnimationFrame(updateHeroParallax), { passive: true });
-        applyPreferences({ persist: false });
-        updateHeroParallax();
+        applyTheme(getInitialTheme());
+        applyLanguage(getInitialLanguage());
     </script>
 </body>
 
