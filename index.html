@@ -384,7 +384,8 @@
         }
 
         html[data-theme="dark"] .hero-media img,
-        html[data-theme="dark"] .image-card img {
+        html[data-theme="dark"] .image-card img,
+        html[data-theme="dark"] .hardware-shot__media img {
             filter: grayscale(0.18) saturate(0.72) brightness(0.78) contrast(1.04);
         }
 
@@ -611,6 +612,62 @@
             grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1fr);
             gap: 32px;
             align-items: stretch;
+        }
+
+        .hardware-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            align-content: start;
+        }
+
+        .hardware-shot {
+            display: grid;
+            grid-template-rows: auto auto;
+            min-width: 0;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--paper);
+            overflow: hidden;
+        }
+
+        .hardware-shot.featured {
+            grid-column: 1 / -1;
+        }
+
+        .hardware-shot__media {
+            aspect-ratio: 3 / 4;
+            background: var(--paper-soft);
+            overflow: hidden;
+        }
+
+        .hardware-shot.featured .hardware-shot__media {
+            min-height: 340px;
+            aspect-ratio: 16 / 10;
+        }
+
+        .hardware-shot__media img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.12) saturate(0.82);
+        }
+
+        .hardware-shot.back .hardware-shot__media img {
+            object-position: center 35%;
+        }
+
+        .hardware-shot.shell .hardware-shot__media img {
+            object-position: center 56%;
+        }
+
+        .hardware-shot figcaption {
+            border-top: 1px solid var(--line);
+            padding: 12px 14px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
         }
 
         .hardware-points {
@@ -987,6 +1044,19 @@
                 display: none;
             }
 
+            .hardware-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .hardware-shot.featured {
+                grid-column: auto;
+            }
+
+            .hardware-shot.featured .hardware-shot__media {
+                min-height: 0;
+                aspect-ratio: 3 / 4;
+            }
+
             .nav-actions {
                 gap: 5px;
             }
@@ -1297,9 +1367,29 @@
                 </div>
 
                 <div class="hardware-layout">
-                    <figure class="image-card bg-white p-3" data-reveal>
-                        <img src="assets/images/hardware-shell.jpg" alt="Phần cứng Artificial Eyes">
-                    </figure>
+                    <div class="hardware-gallery" data-reveal>
+                        <figure class="hardware-shot featured">
+                            <div class="hardware-shot__media">
+                                <img src="assets/images/device-front.png"
+                                    alt="Thiết bị Artificial Eyes được đeo phía trước" loading="lazy">
+                            </div>
+                            <figcaption data-i18n="hardware.frontCaption">Mặt trước của thiết bị khi đeo, với bốn cụm cảm biến siêu âm trên vỏ in 3D.</figcaption>
+                        </figure>
+                        <figure class="hardware-shot back">
+                            <div class="hardware-shot__media">
+                                <img src="assets/images/device-back.png"
+                                    alt="Dây đeo phía sau của thiết bị Artificial Eyes" loading="lazy">
+                            </div>
+                            <figcaption data-i18n="hardware.backCaption">Dây đeo phía sau cố định thiết bị trước ngực và giữ tư thế ổn định khi di chuyển.</figcaption>
+                        </figure>
+                        <figure class="hardware-shot shell">
+                            <div class="hardware-shot__media">
+                                <img src="assets/images/hardware-shell.jpg"
+                                    alt="Chi tiết vỏ phần cứng Artificial Eyes" loading="lazy">
+                            </div>
+                            <figcaption data-i18n="hardware.shellCaption">Chi tiết vỏ nguyên mẫu với vị trí đặt cảm biến trước khi lắp hoàn thiện.</figcaption>
+                        </figure>
+                    </div>
                     <article class="content-card" data-reveal>
                         <div>
                             <span class="tag yellow" data-i18n="hardware.tag">ArtificialEye_Hardware</span>
@@ -1654,6 +1744,9 @@ void loop() {
                 "hardware.point1": "Servo 1 và 2 quét từ 50 đến 100 độ; servo 3 và 4 quét từ 90 đến 130 độ.",
                 "hardware.point2": "Ba mức quét lần lượt kiểm tra cảnh báo thấp, tường/vật cản và cảnh báo cao.",
                 "hardware.point3": "Các mã gửi về ứng dụng gồm 2, 3, 4 và 5 để phần mềm phát phản hồi tương ứng.",
+                "hardware.frontCaption": "Mặt trước của thiết bị khi đeo, với bốn cụm cảm biến siêu âm trên vỏ in 3D.",
+                "hardware.backCaption": "Dây đeo phía sau cố định thiết bị trước ngực và giữ tư thế ổn định khi di chuyển.",
+                "hardware.shellCaption": "Chi tiết vỏ nguyên mẫu với vị trí đặt cảm biến trước khi lắp hoàn thiện.",
                 "source.kicker": "Tài nguyên dự án",
                 "source.title": "Tải ứng dụng và mã nguồn",
                 "source.copy": "Quét mã để tải APK, xem source phần mềm mới, khối lệnh Setting và mã điều khiển ESP32.",
@@ -1780,6 +1873,9 @@ void loop() {
                 "hardware.point1": "Servos 1 and 2 scan from 50 to 100 degrees; servos 3 and 4 scan from 90 to 130 degrees.",
                 "hardware.point2": "The three scan levels check low warnings, wall/obstacle detection, and high warnings.",
                 "hardware.point3": "The codes sent to the app are 2, 3, 4, and 5 so the software can play the matching response.",
+                "hardware.frontCaption": "Front view of the worn device, with four ultrasonic sensor groups arranged across the 3D-printed shell.",
+                "hardware.backCaption": "Rear strap system that keeps the chest-mounted device stable while the user moves.",
+                "hardware.shellCaption": "Prototype shell detail showing sensor placement before the finished assembly.",
                 "source.kicker": "Project resources",
                 "source.title": "Download the app and source",
                 "source.copy": "Scan the code to download the APK, then review the new software source, Setting blocks, and ESP32 control code.",
