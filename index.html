@@ -317,6 +317,7 @@
         }
 
         .hero-actions,
+        .download-actions,
         .source-actions {
             display: flex;
             flex-wrap: wrap;
@@ -661,6 +662,53 @@
             font-size: 15px;
         }
 
+        .download-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 18px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--paper);
+            padding: clamp(24px, 4vw, 34px);
+        }
+
+        .download-card h3 {
+            margin-top: 18px;
+            color: var(--ink);
+            font-size: clamp(1.45rem, 3vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.16;
+        }
+
+        .download-card p {
+            max-width: 680px;
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .download-actions {
+            margin-top: 24px;
+        }
+
+        .qr-frame {
+            display: block;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 14px;
+        }
+
+        .qr-frame img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+        }
+
         .code-window {
             margin-top: auto;
             border-top: 1px solid var(--line);
@@ -842,6 +890,7 @@
 
         @media (max-width: 980px) {
             .hero-grid,
+            .download-card,
             .editorial-grid,
             .hardware-layout,
             .source-grid,
@@ -897,7 +946,8 @@
                 font-size: 1rem;
             }
 
-            .hero-actions .button {
+            .hero-actions .button,
+            .download-actions .button {
                 flex: 1 1 100%;
                 max-width: 100%;
             }
@@ -1042,6 +1092,10 @@
                             <a href="#source" class="button secondary">
                                 <i class="ph-bold ph-code"></i>
                                 <span data-i18n="hero.secondary">Xem mã nguồn</span>
+                            </a>
+                            <a href="#download" class="button secondary">
+                                <i class="ph-bold ph-download-simple"></i>
+                                <span data-i18n="hero.download">Tải ứng dụng</span>
                             </a>
                         </div>
                     </div>
@@ -1279,14 +1333,38 @@
             <div class="container-shell">
                 <div class="section-header" data-reveal>
                     <div>
-                        <p class="eyebrow" data-i18n="source.kicker">Minh bạch kỹ thuật</p>
-                        <h2 class="section-title" data-i18n="source.title">Mã nguồn dự án</h2>
+                        <p class="eyebrow" data-i18n="source.kicker">Tài nguyên dự án</p>
+                        <h2 class="section-title" data-i18n="source.title">Tải ứng dụng và mã nguồn</h2>
                     </div>
                     <p class="section-copy" data-i18n="source.copy">
-                        Phần này giới thiệu mã ESP32 mới, khối lệnh chính của ứng dụng và khối lệnh màn hình Setting.
-                        Ảnh Setting có thể được bổ sung sau mà không cần đổi bố cục.
+                        Quét mã để tải APK, xem source phần mềm mới, khối lệnh Setting và mã điều khiển ESP32.
                     </p>
                 </div>
+
+                <article id="download" class="download-card" data-reveal>
+                    <div>
+                        <span class="tag green" data-i18n="download.tag">APK Android</span>
+                        <h3 data-i18n="download.title">Quét mã để tải Artificial Eyes</h3>
+                        <p data-i18n="download.copy">
+                            Mã QR trỏ tới bản APK mới trong thư mục build. Người xem có thể quét bằng điện thoại hoặc
+                            tải trực tiếp từ website.
+                        </p>
+                        <div class="download-actions">
+                            <a href="assets/build/artificial_eyes.apk" download class="button primary">
+                                <i class="ph-bold ph-file-arrow-down"></i>
+                                <span data-i18n="download.apk">Tải APK</span>
+                            </a>
+                            <a href="assets/images/qr_code_apk_build.png" class="button secondary">
+                                <i class="ph-bold ph-qr-code"></i>
+                                <span data-i18n="download.qr">Mở mã QR</span>
+                            </a>
+                        </div>
+                    </div>
+                    <a class="qr-frame" href="assets/build/artificial_eyes.apk" download
+                        aria-label="Download Artificial Eyes APK">
+                        <img src="assets/images/qr_code_apk_build.png" alt="Mã QR tải APK Artificial Eyes">
+                    </a>
+                </article>
 
                 <div class="source-grid">
                     <article class="source-card" data-reveal>
@@ -1348,12 +1426,12 @@ void loop() {
                                 Ảnh hiện có ghi lại các khối lệnh chính: nhận khẩu lệnh, gọi chế độ đọc, xử lý cảnh
                                 báo, thời gian, thời tiết và phản hồi Text-to-Speech.
                             </p>
-                            <a class="source-shot" href="assets/images/source-phanmem.jpg">
-                                <img src="assets/images/source-phanmem.jpg"
+                            <a class="source-shot" href="assets/images/source-phanmem.png">
+                                <img src="assets/images/source-phanmem.png"
                                     alt="Mã nguồn phần mềm MIT App Inventor">
                             </a>
                             <div class="source-actions">
-                                <a href="assets/images/source-phanmem.jpg" class="button secondary">
+                                <a href="assets/images/source-phanmem.png" class="button secondary">
                                     <i class="ph-bold ph-image"></i>
                                     <span data-i18n="source.app.button">Xem ảnh mã chính</span>
                                 </a>
@@ -1366,21 +1444,17 @@ void loop() {
                             <span class="tag yellow" data-i18n="source.setting.tag">Setting</span>
                             <h3 data-i18n="source.setting.title">Khối lệnh màn hình Setting</h3>
                             <p data-i18n="source.setting.copy">
-                                Mục Setting dùng cho cấu hình thông tin người thân, số liên hệ hoặc các tuỳ chọn ứng
-                                dụng. Khung bên dưới sẽ tự hiển thị ảnh khi bạn thêm file vào đúng đường dẫn.
+                                Ảnh mới ghi lại các khối cấu hình quyền truy cập, Bluetooth, số điện thoại khẩn cấp và
+                                lựa chọn dùng phần cứng.
                             </p>
-                            <div class="optional-image" data-optional-image="assets/images/source-setting.jpg">
-                                <div class="optional-placeholder">
-                                    <div>
-                                        <strong data-i18n="source.setting.placeholder">Ảnh Setting sẽ được bổ sung sau</strong>
-                                        <span>assets/images/source-setting.jpg</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <a class="source-shot" href="assets/images/source-setting.png">
+                                <img src="assets/images/source-setting.png"
+                                    alt="Mã nguồn màn hình Setting MIT App Inventor">
+                            </a>
                             <div class="source-actions">
-                                <a href="assets/images/source-setting.jpg" class="button secondary">
+                                <a href="assets/images/source-setting.png" class="button secondary">
                                     <i class="ph-bold ph-image-square"></i>
-                                    <span data-i18n="source.setting.button">Đường dẫn ảnh Setting</span>
+                                    <span data-i18n="source.setting.button">Xem ảnh Setting</span>
                                 </a>
                             </div>
                         </div>
@@ -1391,8 +1465,8 @@ void loop() {
                             <span class="tag red" data-i18n="source.docs.tag">Tài liệu</span>
                             <h3 data-i18n="source.docs.title">Tài liệu và kho dự án</h3>
                             <p data-i18n="source.docs.copy">
-                                Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, ảnh source phần
-                                mềm và kho GitHub của nhóm.
+                                Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, APK, ảnh source
+                                phần mềm và kho GitHub của nhóm.
                             </p>
                             <div class="source-actions">
                                 <a href="docs/artificial-eyes-description.docx" class="button secondary">
@@ -1479,8 +1553,10 @@ void loop() {
                     <ul class="mt-4 space-y-2">
                         <li><a href="docs/artificial-eyes-description.docx" data-i18n="footer.doc">Thuyết minh sản phẩm</a></li>
                         <li><a href="docs/source-code/Source_HW.cpp" data-i18n="footer.hardwareCode">Mã phần cứng ESP32</a></li>
-                        <li><a href="assets/images/source-phanmem.jpg" data-i18n="footer.appSource">Ảnh mã phần mềm</a></li>
-                        <li><a href="assets/images/source-setting.jpg" data-i18n="footer.settingSource">Ảnh mã Setting</a></li>
+                        <li><a href="assets/build/artificial_eyes.apk" download data-i18n="footer.apk">Tải APK Android</a></li>
+                        <li><a href="assets/images/qr_code_apk_build.png" data-i18n="footer.qr">Mã QR tải app</a></li>
+                        <li><a href="assets/images/source-phanmem.png" data-i18n="footer.appSource">Ảnh mã phần mềm</a></li>
+                        <li><a href="assets/images/source-setting.png" data-i18n="footer.settingSource">Ảnh mã Setting</a></li>
                     </ul>
                 </div>
                 <div>
@@ -1525,6 +1601,7 @@ void loop() {
                 "hero.copy": "Hệ thống kết hợp ứng dụng di động, trí tuệ nhân tạo và phần cứng nhúng để hỗ trợ người khiếm thị di chuyển an toàn, đọc văn bản, nhận diện người ở gần và gửi cảnh báo khẩn cấp.",
                 "hero.primary": "Khám phá tính năng",
                 "hero.secondary": "Xem mã nguồn",
+                "hero.download": "Tải ứng dụng",
                 "metric.response": "Phản hồi cảnh báo",
                 "metric.sensors": "Cảm biến siêu âm",
                 "metric.modes": "Chế độ hỗ trợ",
@@ -1577,9 +1654,14 @@ void loop() {
                 "hardware.point1": "Servo 1 và 2 quét từ 50 đến 100 độ; servo 3 và 4 quét từ 90 đến 130 độ.",
                 "hardware.point2": "Ba mức quét lần lượt kiểm tra cảnh báo thấp, tường/vật cản và cảnh báo cao.",
                 "hardware.point3": "Các mã gửi về ứng dụng gồm 2, 3, 4 và 5 để phần mềm phát phản hồi tương ứng.",
-                "source.kicker": "Minh bạch kỹ thuật",
-                "source.title": "Mã nguồn dự án",
-                "source.copy": "Phần này giới thiệu mã ESP32 mới, khối lệnh chính của ứng dụng và khối lệnh màn hình Setting. Ảnh Setting có thể được bổ sung sau mà không cần đổi bố cục.",
+                "source.kicker": "Tài nguyên dự án",
+                "source.title": "Tải ứng dụng và mã nguồn",
+                "source.copy": "Quét mã để tải APK, xem source phần mềm mới, khối lệnh Setting và mã điều khiển ESP32.",
+                "download.tag": "APK Android",
+                "download.title": "Quét mã để tải Artificial Eyes",
+                "download.copy": "Mã QR trỏ tới bản APK mới trong thư mục build. Người xem có thể quét bằng điện thoại hoặc tải trực tiếp từ website.",
+                "download.apk": "Tải APK",
+                "download.qr": "Mở mã QR",
                 "source.hardware.tag": "Phần cứng",
                 "source.hardware.title": "Mã điều khiển ESP32",
                 "source.hardware.copy": "File mới cấu hình BluetoothSerial, 4 servo, 4 cảm biến siêu âm và thuật toán quét mượt qua ba mức cảnh báo.",
@@ -1590,12 +1672,12 @@ void loop() {
                 "source.app.button": "Xem ảnh mã chính",
                 "source.setting.tag": "Setting",
                 "source.setting.title": "Khối lệnh màn hình Setting",
-                "source.setting.copy": "Mục Setting dùng cho cấu hình thông tin người thân, số liên hệ hoặc các tuỳ chọn ứng dụng. Khung bên dưới sẽ tự hiển thị ảnh khi bạn thêm file vào đúng đường dẫn.",
-                "source.setting.placeholder": "Ảnh Setting sẽ được bổ sung sau",
-                "source.setting.button": "Đường dẫn ảnh Setting",
+                "source.setting.copy": "Ảnh mới ghi lại các khối cấu hình quyền truy cập, Bluetooth, số điện thoại khẩn cấp và lựa chọn dùng phần cứng.",
+                "source.setting.placeholder": "Ảnh Setting mới đã được bổ sung",
+                "source.setting.button": "Xem ảnh Setting",
                 "source.docs.tag": "Tài liệu",
                 "source.docs.title": "Tài liệu và kho dự án",
-                "source.docs.copy": "Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, ảnh source phần mềm và kho GitHub của nhóm.",
+                "source.docs.copy": "Website giữ các tài nguyên chính để người xem kiểm tra mô tả sản phẩm, APK, ảnh source phần mềm và kho GitHub của nhóm.",
                 "source.docs.doc": "Thuyết minh",
                 "source.docs.github": "Kho GitHub",
                 "contact.kicker": "Liên hệ",
@@ -1611,6 +1693,8 @@ void loop() {
                 "footer.resources": "Tài nguyên",
                 "footer.doc": "Thuyết minh sản phẩm",
                 "footer.hardwareCode": "Mã phần cứng ESP32",
+                "footer.apk": "Tải APK Android",
+                "footer.qr": "Mã QR tải app",
                 "footer.appSource": "Ảnh mã phần mềm",
                 "footer.settingSource": "Ảnh mã Setting",
                 "footer.project": "Thông tin dự án",
@@ -1643,6 +1727,7 @@ void loop() {
                 "hero.copy": "A system combining a mobile app, artificial intelligence, and embedded hardware to help visually impaired users move more safely, read text, identify nearby people, and send emergency alerts.",
                 "hero.primary": "Explore features",
                 "hero.secondary": "View source",
+                "hero.download": "Download app",
                 "metric.response": "Warning response",
                 "metric.sensors": "Ultrasonic sensors",
                 "metric.modes": "Assistive modes",
@@ -1695,9 +1780,14 @@ void loop() {
                 "hardware.point1": "Servos 1 and 2 scan from 50 to 100 degrees; servos 3 and 4 scan from 90 to 130 degrees.",
                 "hardware.point2": "The three scan levels check low warnings, wall/obstacle detection, and high warnings.",
                 "hardware.point3": "The codes sent to the app are 2, 3, 4, and 5 so the software can play the matching response.",
-                "source.kicker": "Technical transparency",
-                "source.title": "Project source",
-                "source.copy": "This section introduces the new ESP32 code, the main application blocks, and the Setting screen blocks. The Setting image can be added later without changing the layout.",
+                "source.kicker": "Project resources",
+                "source.title": "Download the app and source",
+                "source.copy": "Scan the code to download the APK, then review the new software source, Setting blocks, and ESP32 control code.",
+                "download.tag": "Android APK",
+                "download.title": "Scan to download Artificial Eyes",
+                "download.copy": "The QR code points to the latest APK in the build folder. Viewers can scan it with a phone or download it directly from the website.",
+                "download.apk": "Download APK",
+                "download.qr": "Open QR code",
                 "source.hardware.tag": "Hardware",
                 "source.hardware.title": "ESP32 control code",
                 "source.hardware.copy": "The new file configures BluetoothSerial, 4 servos, 4 ultrasonic sensors, and smooth scanning across three warning levels.",
@@ -1708,12 +1798,12 @@ void loop() {
                 "source.app.button": "View main source image",
                 "source.setting.tag": "Setting",
                 "source.setting.title": "Setting screen blocks",
-                "source.setting.copy": "The Setting screen is used for family contact details, phone numbers, or app options. The frame below will show the image automatically when you add the file at the expected path.",
-                "source.setting.placeholder": "Setting image will be added later",
-                "source.setting.button": "Setting image path",
+                "source.setting.copy": "The new image records the blocks for permissions, Bluetooth, emergency phone numbers, and the hardware-use choice.",
+                "source.setting.placeholder": "Setting image has been added",
+                "source.setting.button": "View Setting image",
                 "source.docs.tag": "Docs",
                 "source.docs.title": "Documents and repository",
-                "source.docs.copy": "The website keeps the core resources for checking the product description, software source images, and the team repository.",
+                "source.docs.copy": "The website keeps the core resources for checking the product description, APK, software source images, and the team repository.",
                 "source.docs.doc": "Description doc",
                 "source.docs.github": "GitHub repo",
                 "contact.kicker": "Contact",
@@ -1729,6 +1819,8 @@ void loop() {
                 "footer.resources": "Resources",
                 "footer.doc": "Product description",
                 "footer.hardwareCode": "ESP32 hardware code",
+                "footer.apk": "Download Android APK",
+                "footer.qr": "App download QR",
                 "footer.appSource": "Software source image",
                 "footer.settingSource": "Setting source image",
                 "footer.project": "Project information",
