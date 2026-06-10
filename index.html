@@ -631,19 +631,10 @@
             overflow: hidden;
         }
 
-        .hardware-shot.featured {
-            grid-column: 1 / -1;
-        }
-
         .hardware-shot__media {
             aspect-ratio: 3 / 4;
             background: var(--paper-soft);
             overflow: hidden;
-        }
-
-        .hardware-shot.featured .hardware-shot__media {
-            min-height: 340px;
-            aspect-ratio: 16 / 10;
         }
 
         .hardware-shot__media img {
@@ -656,10 +647,6 @@
 
         .hardware-shot.back .hardware-shot__media img {
             object-position: center 35%;
-        }
-
-        .hardware-shot.shell .hardware-shot__media img {
-            object-position: center 56%;
         }
 
         .hardware-shot figcaption {
@@ -1048,15 +1035,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .hardware-shot.featured {
-                grid-column: auto;
-            }
-
-            .hardware-shot.featured .hardware-shot__media {
-                min-height: 0;
-                aspect-ratio: 3 / 4;
-            }
-
             .nav-actions {
                 gap: 5px;
             }
@@ -1368,7 +1346,7 @@
 
                 <div class="hardware-layout">
                     <div class="hardware-gallery" data-reveal>
-                        <figure class="hardware-shot featured">
+                        <figure class="hardware-shot">
                             <div class="hardware-shot__media">
                                 <img src="assets/images/device-front.png"
                                     alt="Thiết bị Artificial Eyes được đeo phía trước" loading="lazy">
@@ -1381,13 +1359,6 @@
                                     alt="Dây đeo phía sau của thiết bị Artificial Eyes" loading="lazy">
                             </div>
                             <figcaption data-i18n="hardware.backCaption">Dây đeo phía sau cố định thiết bị trước ngực và giữ tư thế ổn định khi di chuyển.</figcaption>
-                        </figure>
-                        <figure class="hardware-shot shell">
-                            <div class="hardware-shot__media">
-                                <img src="assets/images/hardware-shell.jpg"
-                                    alt="Chi tiết vỏ phần cứng Artificial Eyes" loading="lazy">
-                            </div>
-                            <figcaption data-i18n="hardware.shellCaption">Chi tiết vỏ nguyên mẫu với vị trí đặt cảm biến trước khi lắp hoàn thiện.</figcaption>
                         </figure>
                     </div>
                     <article class="content-card" data-reveal>
@@ -1746,7 +1717,6 @@ void loop() {
                 "hardware.point3": "Các mã gửi về ứng dụng gồm 2, 3, 4 và 5 để phần mềm phát phản hồi tương ứng.",
                 "hardware.frontCaption": "Mặt trước của thiết bị khi đeo, với bốn cụm cảm biến siêu âm trên vỏ in 3D.",
                 "hardware.backCaption": "Dây đeo phía sau cố định thiết bị trước ngực và giữ tư thế ổn định khi di chuyển.",
-                "hardware.shellCaption": "Chi tiết vỏ nguyên mẫu với vị trí đặt cảm biến trước khi lắp hoàn thiện.",
                 "source.kicker": "Tài nguyên dự án",
                 "source.title": "Tải ứng dụng và mã nguồn",
                 "source.copy": "Quét mã để tải APK, xem source phần mềm mới, khối lệnh Setting và mã điều khiển ESP32.",
@@ -1875,7 +1845,6 @@ void loop() {
                 "hardware.point3": "The codes sent to the app are 2, 3, 4, and 5 so the software can play the matching response.",
                 "hardware.frontCaption": "Front view of the worn device, with four ultrasonic sensor groups arranged across the 3D-printed shell.",
                 "hardware.backCaption": "Rear strap system that keeps the chest-mounted device stable while the user moves.",
-                "hardware.shellCaption": "Prototype shell detail showing sensor placement before the finished assembly.",
                 "source.kicker": "Project resources",
                 "source.title": "Download the app and source",
                 "source.copy": "Scan the code to download the APK, then review the new software source, Setting blocks, and ESP32 control code.",
