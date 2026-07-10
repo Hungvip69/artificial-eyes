@@ -22,7 +22,7 @@ Artificial Eyes focuses on everyday support scenarios:
 | `index.html` | Main static website |
 | `assets/build/artificial_eyes.apk` | Android APK build |
 | `assets/images/` | Product images, QR code, and source screenshots |
-| `docs/source-code/Source_HW.cpp` | ESP32 hardware control source |
+| `docs/source-code/Source_HW.ino` | ESP32 hardware control source |
 | `docs/artificial-eyes-description.docx` | Project description document |
 
 ## Run Locally

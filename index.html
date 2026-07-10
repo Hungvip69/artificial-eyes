@@ -1437,9 +1437,9 @@
                                 qua ba mức cảnh báo.
                             </p>
                             <div class="source-actions">
-                                <a href="docs/source-code/Source_HW.cpp" class="button primary">
+                                <a href="docs/source-code/Source_HW.ino" class="button primary">
                                     <i class="ph-bold ph-file-code"></i>
-                                    <span data-i18n="source.hardware.button">Xem Source_HW.cpp</span>
+                                    <span data-i18n="source.hardware.button">Xem Source_HW.ino</span>
                                 </a>
                             </div>
                         </div>
@@ -1450,30 +1450,37 @@
 
 BluetoothSerial SerialBT;
 
-#define WARNING_LOW   40
-#define HOLE_DISTANCE 120
-#define WALL_DISTANCE 70
-#define WARNING_HIGH  60
+const char* BT_DEVICE_NAME = "ArtificialEye_Hardware";
+const float DEFAULT_USER_HEIGHT_CM = 170.0;
+const float SENSOR_HEIGHT_RATIO = 0.60;
+
+float userHeightCm = DEFAULT_USER_HEIGHT_CM;
+float sensorHeightCm = DEFAULT_USER_HEIGHT_CM * SENSOR_HEIGHT_RATIO;
+
+float WARNING_LOW = 40.0;
+float HOLE_DISTANCE = 120.0;
+float WALL_DISTANCE = 70.0;
+float WARNING_HIGH = 60.0;
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("ArtificialEye_Hardware");
-  Serial.println("Bluetooth started: ArtificialEye_Hardware");
+  SerialBT.begin(BT_DEVICE_NAME);
+  updateThresholdsByHeight(userHeightCm);
+  setupServos();
+  setupUltrasonicSensors();
 }
 
-void loop() {
-  checkBluetoothConnection();
-  readBluetoothCommand();
+void processBluetoothCommand(String command) {
+  command.trim();
+  command.toUpperCase();
 
-  if (servoScanEnabled) {
-    moveServoSmooth(50, 65, 130, 120);
-    scanAtPosition(65, 120, 1);
-
-    moveServoSmooth(65, 90, 120, 99);
-    scanAtPosition(90, 99, 2);
-
-    moveServoSmooth(90, 100, 99, 90);
-    scanAtPosition(100, 90, 3);
+  if (command.startsWith("HEIGHT|")) {
+    updateThresholdsByHeight(command.substring(7).toFloat());
+  } else if (command == "ON") {
+    servoScanEnabled = true;
+  } else if (command == "OFF") {
+    servoScanEnabled = false;
+    setServoHome();
   }
 }</code></pre>
                         </div>
@@ -1613,7 +1620,7 @@ void loop() {
                     <h4 data-i18n="footer.resources">Tài nguyên</h4>
                     <ul class="mt-4 space-y-2">
                         <li><a href="docs/artificial-eyes-description.docx" data-i18n="footer.doc">Thuyết minh sản phẩm</a></li>
-                        <li><a href="docs/source-code/Source_HW.cpp" data-i18n="footer.hardwareCode">Mã phần cứng ESP32</a></li>
+                        <li><a href="docs/source-code/Source_HW.ino" data-i18n="footer.hardwareCode">Mã phần cứng ESP32</a></li>
                         <li><a href="assets/build/artificial_eyes.apk" download data-i18n="footer.apk">Tải APK Android</a></li>
                         <li><a href="assets/images/qr_code_apk_build.png" data-i18n="footer.qr">Mã QR tải app</a></li>
                         <li><a href="assets/images/source-phanmem.png" data-i18n="footer.appSource">Ảnh mã phần mềm</a></li>
@@ -1728,7 +1735,7 @@ void loop() {
                 "source.hardware.tag": "Phần cứng",
                 "source.hardware.title": "Mã điều khiển ESP32",
                 "source.hardware.copy": "File mới cấu hình BluetoothSerial, 4 servo, 4 cảm biến siêu âm và thuật toán quét mượt qua ba mức cảnh báo.",
-                "source.hardware.button": "Xem Source_HW.cpp",
+                "source.hardware.button": "Xem Source_HW.ino",
                 "source.app.tag": "Phần mềm",
                 "source.app.title": "Khối lệnh chính của ứng dụng",
                 "source.app.copy": "Ảnh hiện có ghi lại các khối lệnh chính: nhận khẩu lệnh, gọi chế độ đọc, xử lý cảnh báo, thời gian, thời tiết và phản hồi Text-to-Speech.",
@@ -1856,7 +1863,7 @@ void loop() {
                 "source.hardware.tag": "Hardware",
                 "source.hardware.title": "ESP32 control code",
                 "source.hardware.copy": "The new file configures BluetoothSerial, 4 servos, 4 ultrasonic sensors, and smooth scanning across three warning levels.",
-                "source.hardware.button": "View Source_HW.cpp",
+                "source.hardware.button": "View Source_HW.ino",
                 "source.app.tag": "Software",
                 "source.app.title": "Main application blocks",
                 "source.app.copy": "The current image records the main blocks: voice commands, reading mode, alert handling, time, weather, and Text-to-Speech responses.",
