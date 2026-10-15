@@ -3,7 +3,7 @@
 Artificial Eyes is an AI-assisted assistive technology prototype for visually impaired users.
 It combines a project website, Android APK resources, product images, documentation, and ESP32 hardware source materials.
 
-[Live Website](https://artificialeyes.ddns.net/) | [Download APK](assets/build/artificial_eyes.apk)
+[Live Website](https://artificialeyes.hungw.id.vn/) | [Download APK](assets/build/artificial_eyes.apk)
 
 ## Overview
 
